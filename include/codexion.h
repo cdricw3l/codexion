@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/15 15:54:49 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/15 17:31:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ enum e_PARAMS
 };
 
 /* parsing */
-int parse_arguments(char **args, t_params params);
+int parse_arguments(char **args, t_params *params);
 
 size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);

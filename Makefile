@@ -1,7 +1,7 @@
 CC=cc
 NAME=codexion
 CFLAGS= -Wall -Wextra -Werror -pthread
-
+SHELL=/bin/bash
 SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c
@@ -16,9 +16,10 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=
+ARG=""
+
 run: $(NAME)
-	./$(NAME) $(ARG)
+	./$(NAME) $(shell echo $(GARG))
 
 valrun: $(NAME)
 	@valgrind \
@@ -51,7 +52,6 @@ ras:
 	@make  -s -C  assert run
 
 COM="generic comment"
-
 git: fclean
 	git add .
 	git commit -m $(COM)
