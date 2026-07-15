@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/15 17:31:42 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/15 18:20:49 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 #define FIFO 0
 #define EDF 1
 
+/* philo max is defined by: cat /proc/sys/kernel/threads-max */
+#define CODER_MAX 124441
+
 
 typedef struct s_params
 {
@@ -41,6 +44,14 @@ typedef struct s_params
     int scheduler;
 
 } t_params;
+
+
+typedef struct s_coder
+{
+    int id;
+    t_params *param;
+    
+} t_coder;
 
 enum e_PARAMS
 {
@@ -57,7 +68,14 @@ enum e_PARAMS
 /* parsing */
 int parse_arguments(char **args, t_params *params);
 
+/* display */
+
+void display_params(t_params param);
+
+/* utils */
 size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);
 
+/* thread */
+int thead_luncher(t_params *param);
 #endif

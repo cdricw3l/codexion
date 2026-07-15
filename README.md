@@ -45,3 +45,9 @@ make re
 # Blocking cases handled
 
 # Thread synchronization mechanisms
+
+# notes and idees
+
+for seeing the number max of thread for process: cat /proc/sys/kernel/threads-max
+
+

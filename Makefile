@@ -4,7 +4,9 @@ CFLAGS= -Wall -Wextra -Werror -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
 		srcs/parsing.c \
-		srcs/utils.c
+		srcs/utils.c \
+		srcs/display.c \
+		srcs/thread.c  
 
 SRCS_OBJS= ${SRCS:.c=.o}
 
