@@ -55,6 +55,6 @@ COM="generic comment"
 git: fclean
 	git add .
 	git commit -m $(COM)
-	git push origin $(shell git branch --show-current)
+	git push --all
 
 .PHONY: codexion run valrun helrun clean fclean
