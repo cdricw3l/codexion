@@ -18,10 +18,10 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=""
+ARG=10 200 100 100 100 10 100 fifo
 
 run: $(NAME)
-	./$(NAME) $(shell echo $(GARG))
+	./$(NAME) $(ARG)
 
 valrun: $(NAME)
 	@valgrind \

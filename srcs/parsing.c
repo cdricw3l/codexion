@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:51:42 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/15 16:05:29 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/16 21:31:49 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ int parse_arguments(char **args, t_params *params)
 {
     int i;
     if (get_str_arr_len(args) != 8)
+    {
+        printf("nv arg %zu\n", get_str_arr_len(args));
         return (parsing_error_msg(NB_ARG, NULL));
+    }
     i = 0;
     while (args[i])
     {
