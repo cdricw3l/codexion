@@ -70,6 +70,19 @@ gettimeofday:
 clock_gettime
 
 
+
+
+# CPU time vs real-time clock
+
+...
+
+## second, microsecond, nanosecond
+
+* one second is equal to 1000 millisecond:      1sec -> 1000ms
+* One second is equal to 10^6 microsecond:      1sec -> 1000000 microsec
+* One microsecond is equal to 1000 nanosecond:  1 -> 1000ns
+
+
 # lldb
 
 ## Launch process codexion with arguments 10 200 100 100 100 10 100 fifo  by setting the args in the debugger
