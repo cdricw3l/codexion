@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 09:32:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 11:36:34 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
+#define DEBUG printf("DEBBUG\n")
 typedef pthread_mutex_t mutex;
 
 
@@ -83,17 +84,23 @@ int mutex_initialisation_error();
 int parsing_error_msg(int code, char *arg);
 
 /* parsing */
+
 int parse_arguments(char **args, t_params *params);
 
 /* display */
 
 void display_params(t_params param);
+void display_coder(t_coder coder);
+void display_coders(t_coder **coders);
 
 /* utils */
+
 size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);
+void copy_coder(t_coder *c1, t_coder *c2);
 
 /* thread */
+
 int thead_luncher(t_params *param, mutex *dongles);
 
 #endif

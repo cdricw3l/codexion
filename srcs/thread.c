@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 09:52:10 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 11:55:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,55 +40,74 @@ int get_dongle(int id, int number_of_coder, int type, mutex *dongles)
     return (-1);
 }
 
-t_coder *init_coder(t_params *params, mutex *dongles)
+void *destroy_coders(t_coder ***coders, int idx)
+{
+    t_coder **c;
+    int i;
+
+    c = *coders;
+    i = 0;
+    while (i <= idx)
+        free(c[i++]);
+    free(*coders);
+    return (NULL);
+}
+
+t_coder **init_coder(t_params *params, mutex *dongles)
 {
     size_t  i;
+    t_coder **coders;
     t_coder *coder;
 
     i = 0;
-    coder = malloc(sizeof(t_coder) * params->coder);
-    if (!coder)
+    coders = malloc(sizeof(t_coder *) * (params->coder + 1));
+    if (!coders)
         return (NULL);
     while (i < params->coder)
     {
-        coder[i].id = i;
-        coder[i].dongle_l = dongles[get_dongle(i, params->coder, LEFT, dongles)];
-        coder[i].dongle_l = dongles[get_dongle(i, params->coder, RIGHT, dongles)];
-        coder[i].param = *params;
+        coder = malloc(sizeof(t_coder));
+        if (!coder)
+            return (destroy_coders(&coders, i));
+        coder->id = i;
+        coder->dongle_l = dongles[get_dongle(i, params->coder, LEFT, dongles)];
+        coder->dongle_l = dongles[get_dongle(i, params->coder, RIGHT, dongles)];
+        coder->param = *params;
+        coders[i] = coder;
         i++;
     }
-    return (coder);
+    coders[i] = NULL;
+    display_coders(coders);
+    return (coders);
 }
 
 int thead_luncher(t_params *param, mutex *dongles)
 {
 
-    size_t i;
+    size_t      i;
     pthread_t   thread[CODER_MAX];
-    t_coder     *coders;
+    t_coder     **coders;
 
-    
     coders = init_coder(param, dongles);
     if(!coders)
-        return (NULL);
+        return (FALSE);
     i = 0; 
     while (i < param->coder)
     {
-        
-        pthread_create(&thread[i], NULL, coder_thread, &coders[i]);
-        
-        printf("coder %d started \n", i);
+
+        printf("coder %zu started \n", i);
+        pthread_create(&thread[i], NULL, coder_thread, coders[i]);
         usleep(200);
         i++;
     }
-    
     i = 0;
     while(i < param->coder)
     {
-        pthread_join(thread[i++], NULL);
+        pthread_join(thread[i], NULL);
+        free(coders[i]);
         printf("Fin du thread %zu\n", i);
-        free(dongles);
-        free(coders);
-    }   
+        i++;
+    }
+    free(coders[i]);
+    free(coders);
     return (TRUE);
 }

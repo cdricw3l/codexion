@@ -6,11 +6,32 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 08:36:06 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 11:51:20 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
+void display_coder(t_coder coder)
+{
+    printf("Coder: %d\n", coder.id);
+    printf("Usb left: %p\n", &coder.dongle_l);
+    printf("Usb right: %p\n", &coder.dongle_r);
+}
+
+void display_coders(t_coder **coders)
+{
+    size_t i;
+
+    i = 0;
+    printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
+    while (coders[i])
+    {
+        display_coder(*coders[i]);
+        printf("\n");
+        i++;
+    }
+}
 
 void display_params(t_params param)
 {

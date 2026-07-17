@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 09:30:40 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 11:50:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 mutex *mutex_initialisation(size_t nb_coder)
 {
     size_t i;
+    char *msg;
     mutex *dongles;
     
     dongles = malloc(sizeof(mutex) * nb_coder);
@@ -27,7 +28,8 @@ mutex *mutex_initialisation(size_t nb_coder)
     /* pthread_mutex_init return always zero. see man */
     while(i < nb_coder)
         pthread_mutex_init(&dongles[i++], NULL);
-    write(STDOUT_FILENO, "Mutex initialised, usb are ready\n", strlen("Mutex initialised, usb are ready\n"));
+    msg = HGRN"Mutex initialised, usb are ready tu use !\n"CRESET;
+    write(STDOUT_FILENO, msg, strlen(msg));
     return (dongles);
 }
 
@@ -47,5 +49,6 @@ int main(int argc, char **argv)
     if(!dongles)
         return (write(STDERR_FILENO, "Mutex initialisation error\n", strlen("Mutex initialisation error\n")));
     thead_luncher(&params, dongles);
+    free(dongles);
     return (0);
 }
