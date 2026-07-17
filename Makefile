@@ -1,12 +1,15 @@
 CC=cc
 NAME=codexion
-CFLAGS= -Wall -Wextra -Werror -pthread
+CFLAGS= -Wall -Wextra -Werror -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c \
 		srcs/display.c \
-		srcs/thread.c  
+		srcs/thread.c  \
+		srcs/time.c \
+		srcs/error.c \
+
 
 SRCS_OBJS= ${SRCS:.c=.o}
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/16 21:41:40 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 08:45:40 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,39 @@ void *coder_thread(void *data)
     return (NULL);
 }
 
-int get_dongle(int id, int number_of_coder)
-{
-    if (id == 0)
-    {
+// int get_dongle(int id, int number_of_coder)
+// {
+//     if (id == 0)
+//     {
 
-    }
-}
+//     }
+// }
 
-int thead_luncher(t_params *param)
+int thead_luncher(t_params *param, mutex dongles[CODER_MAX])
 {
-    int i;
-    pthread_t   thread[CODER_MAX];
-    t_coder     coder[CODER_MAX];
-    int         dongle[CODER_MAX];
+    printf("START coder %d\n", 0);
+
+    size_t i;
+    //pthread_t           thread[CODER_MAX];
+    t_coder             coder[CODER_MAX];
 
     i = 0;
-    memset(dongle, 0, CODER_MAX * sizeof(int));
-    while (i < param->nb_philo)
+    (void) dongles;
+
+    while (i < param->coder)
     {
+
         coder[i].id = i;
         coder[i].param = param;
-        pthread_create(&thread[i], NULL, coder_thread, &coder[i]);
+        //pthread_create(&thread[i], NULL, coder_thread, &coder[i]);
         usleep(200);
         i++;
     }
     i = 0;
-    while(i < param->nb_philo)
-    {
-        pthread_join(thread[i++], NULL);
-        printf("Fin du thread %d\n", i);
-    }
+    // while(i < param->coder)
+    // {
+    //     pthread_join(thread[i++], NULL);
+    //     printf("Fin du thread %zu\n", i);
+    // }
     return (TRUE);
 }

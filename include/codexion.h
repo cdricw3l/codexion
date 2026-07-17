@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/16 21:41:30 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 08:43:00 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <limits.h>
+#include <time.h>
 #include "color-codes.h"
 
 #define FALSE 0
@@ -30,17 +31,18 @@
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
+typedef pthread_mutex_t mutex;
 
 
 typedef struct s_params
 {
-    int nb_philo;
-    int ttb;
-    int ttc;
-    int ttd;
-    int ttr;
-    int ncr;
-    int dc;
+    size_t coder;
+    size_t ttb;
+    size_t ttc;
+    size_t ttd;
+    size_t ttr;
+    size_t ncr;
+    size_t dc;
     int scheduler;
 
 } t_params;
@@ -48,9 +50,10 @@ typedef struct s_params
 
 typedef struct s_coder
 {
-    int id;
-    int *dongles[2];
-    t_params *param;
+    int             id;
+    pthread_mutex_t *dongle_l;
+    pthread_mutex_t *dongle_r;
+    t_params        *param;
     
 } t_coder;
 
@@ -66,6 +69,17 @@ enum e_PARAMS
     scheduler
 };
 
+enum e_PARSING_ERROR
+{
+    NB_ARG,
+    BAD_ARG
+};
+
+/* error */
+
+int mutex_initialisation_error();
+int parsing_error_msg(int code, char *arg);
+
 /* parsing */
 int parse_arguments(char **args, t_params *params);
 
@@ -78,5 +92,6 @@ size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);
 
 /* thread */
-int thead_luncher(t_params *param);
+int thead_luncher(t_params *param, mutex dongle[CODER_MAX]);
+
 #endif

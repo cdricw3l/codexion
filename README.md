@@ -40,6 +40,7 @@ make re
 
 ## Resources
 
+* https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3.html
 
 
 # Blocking cases handled
@@ -51,3 +52,30 @@ make re
 for seeing the number max of thread for process: cat /proc/sys/kernel/threads-max
 
 
+# autorized External Function
+
+pthread_create
+pthread_join
+pthread_mutex_init,
+pthread_mutex_lock,
+pthread_mutex_unlock
+pthread_mutex_destroy:
+pthread_cond_init:
+pthread_cond_wait
+pthread_cond_timedwait:
+pthread_cond_signal:
+pthread_cond_broadcast:
+pthread_cond_destroy:
+gettimeofday:
+clock_gettime
+
+
+# lldb
+
+## Launch process codexion with arguments 10 200 100 100 100 10 100 fifo  by setting the args in the debugger
+
+settings set target.run-args 10 200 100 100 100 10 100 fifo
+
+## Set a breakpoint in file *<name_file>* at line *<line_number>*
+
+breakpoint set --file *<name_file>* --line *<line_number>*
