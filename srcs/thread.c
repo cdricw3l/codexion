@@ -6,11 +6,23 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 23:13:27 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 00:21:52 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
+void safe_print(t_coder coder, int action)
+{
+    mutex print_mutex;
+
+    pthread_mutex_lock(&print_mutex);
+    if (action == TAKE)
+        printf(HCYN"[ %d ] i'm the coder number %d, i take dongle left: %p and dongle right %p\n"CRESET,coder.param.ncr ,coder.id, coder.dongle_l, coder.dongle_r);
+    if (action == RELEASE)
+        printf(HYEL"[ %d ] i'm the coder number %d, i release dongle left: %p and dongle right %p\n"CRESET, coder.param.ncr ,coder.id, coder.dongle_l, coder.dongle_r);
+    pthread_mutex_unlock(&print_mutex);
+}
 
 mutex *mutex_initialisation(size_t nb_coder)
 {
@@ -33,24 +45,21 @@ mutex *mutex_initialisation(size_t nb_coder)
 void *coder_thread(void *data)
 {
     t_coder *coder;
-
-    coder = (t_coder *)data;
-    while(pthread_mutex_lock(coder->dongle_l) == EBUSY);
-    {
-        printf("coder %d try to take dongle left %p\n", coder->id);
-        pthread_mutex_lock(coder->dongle_l);
-    }
-    while(pthread_mutex_lock(coder->dongle_r) == EBUSY);
-    {
-        printf("coder %d try to take dongle right\n", coder->id);
-        pthread_mutex_lock(coder->dongle_r);
-    }
-    printf(HCYN"i'm the coder number %d, i take dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
-    usleep(1000000);
-    pthread_mutex_unlock(coder->dongle_l);
-    pthread_mutex_unlock(coder->dongle_r);
-    printf(HCYN"i'm the coder number %d, i release dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
     
+    coder = (t_coder *)data;
+    while (coder->param.ncr >=0)
+    {
+        if (pthread_mutex_lock(coder->dongle_l) == EBUSY)
+            printf("coder %d wait for dongle left %p\n", coder->id, coder->dongle_l);
+        if (pthread_mutex_lock(coder->dongle_r) == EBUSY)
+            printf("coder %d wait for dongle left %p\n", coder->id, coder->dongle_r);
+        safe_print(*coder, TAKE);
+        usleep(1000000);
+        pthread_mutex_unlock(coder->dongle_l);
+        pthread_mutex_unlock(coder->dongle_r);
+        safe_print(*coder, RELEASE);
+        coder->param.ncr--;
+    }
     return (NULL);
 }
 
@@ -96,8 +105,8 @@ t_coder **init_coder(t_params *params, mutex *dongles)
         coder = malloc(sizeof(t_coder));
         if (!coder)
             return (destroy_coders(&coders, i));
-        printf("dongle left %d\nDongle right %d\n",get_dongle(i, params->coder, LEFT), get_dongle(i, params->coder, RIGHT));
-        printf("dongle left %p\nDongle right %p\n", &dongles[get_dongle(i, params->coder, LEFT)], &dongles[get_dongle(i, params->coder, RIGHT)]);
+        //printf("dongle left %d\nDongle right %d\n",get_dongle(i, params->coder, LEFT), get_dongle(i, params->coder, RIGHT));
+        //printf("dongle left %p\nDongle right %p\n", &dongles[get_dongle(i, params->coder, LEFT)], &dongles[get_dongle(i, params->coder, RIGHT)]);
         coder->id = i;
         coder->dongle_l = &dongles[get_dongle(i, params->coder, LEFT)];
         coder->dongle_r = &dongles[get_dongle(i, params->coder, RIGHT)];
@@ -117,7 +126,7 @@ int thead_luncher(t_params *param, mutex **dongles)
     pthread_t   thread[CODER_MAX];
     t_coder     **coders;
 
-    coders = init_coder(param, dongles);
+    coders = init_coder(param, *dongles);
     if(!coders)
         return (FALSE);
     i = 0; 

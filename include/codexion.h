@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 23:10:27 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 00:18:06 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 #define LEFT 0
 #define RIGHT 1
 
+/* action */
+
+#define TAKE 0
+#define RELEASE 1
+
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
 #define DEBUG printf("DEBBUG\n")
@@ -47,7 +52,7 @@ typedef struct s_params
     size_t ttc;
     size_t ttd;
     size_t ttr;
-    size_t ncr;
+    int     ncr;
     size_t dc;
     int scheduler;
 

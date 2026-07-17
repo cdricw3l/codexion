@@ -1,7 +1,7 @@
 CC=cc
 NAME=codexion
-#CFLAGS= -Wall -Wextra -Werror -g -pthread
-CFLAGS=  -g -pthread
+CFLAGS= -Wall -Wextra -Werror -g -pthread
+#CFLAGS=  -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
 		srcs/parsing.c \
@@ -22,7 +22,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=10 200 100 100 100 10 100 fifo
+ARG=2 200 100 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)
