@@ -1,6 +1,7 @@
 CC=cc
 NAME=codexion
-CFLAGS= -Wall -Wextra -Werror -g -pthread
+#CFLAGS= -Wall -Wextra -Werror -g -pthread
+CFLAGS=  -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
 		srcs/parsing.c \
@@ -32,8 +33,7 @@ valrun: $(NAME)
 	--leak-check=full \
 	--track-origins=yes \
 	--show-leak-kinds=all \
-	--verbose \
-	./$(NAME)
+	./$(NAME) $(ARG)
 
 helrun: $(NAME)
 	valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME) 

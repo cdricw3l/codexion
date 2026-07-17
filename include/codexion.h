@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 08:43:00 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 09:32:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 #define TRUE 1
 #define FIFO 0
 #define EDF 1
+#define LEFT 0
+#define RIGHT 1
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
@@ -51,9 +53,9 @@ typedef struct s_params
 typedef struct s_coder
 {
     int             id;
-    pthread_mutex_t *dongle_l;
-    pthread_mutex_t *dongle_r;
-    t_params        *param;
+    pthread_mutex_t dongle_l;
+    pthread_mutex_t dongle_r;
+    t_params        param;
     
 } t_coder;
 
@@ -92,6 +94,6 @@ size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);
 
 /* thread */
-int thead_luncher(t_params *param, mutex dongle[CODER_MAX]);
+int thead_luncher(t_params *param, mutex *dongles);
 
 #endif
