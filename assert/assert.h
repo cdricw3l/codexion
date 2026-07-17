@@ -8,6 +8,6 @@
 #define END_TEST(name) printf(HGRN"test module: %s [OK]\n"CRESET, name)
 
 void get_str_arr_len_assert(void);
-
+int get_dongle_assert(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 14:28:19 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 17:28:47 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ void *coder_thread(void *data)
     t_coder *coder;
 
     coder = (t_coder *)data;
-    printf(HCYN"i'm the coder number %d\n"CRESET, coder->id);
-    pthread_mutex_lock(&coder->dongle_l);
-    pthread_mutex_lock(&coder->dongle_r);
+    printf(HCYN"i'm the coder number %d, dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
+    pthread_mutex_lock(coder->dongle_l);
+    pthread_mutex_lock(coder->dongle_r);
     
     return (NULL);
 }
 
-int get_dongle(int id, int number_of_coder, int type, mutex *dongles)
+int get_dongle(int id, int number_of_coder, int type)
 {
     if (type == RIGHT)
     {
@@ -56,7 +56,7 @@ void *destroy_coders(t_coder ***coders, int idx)
     return (NULL);
 }
 
-t_coder **init_coder(t_params *params, mutex *dongles)
+t_coder **init_coder(t_params *params, mutex **dongles)
 {
     size_t  i;
     t_coder **coders;
@@ -72,10 +72,9 @@ t_coder **init_coder(t_params *params, mutex *dongles)
         if (!coder)
             return (destroy_coders(&coders, i));
         coder->id = i;
-        coder->dongle_l = dongles[get_dongle(i, params->coder, LEFT, dongles)];
-        coder->dongle_l = dongles[get_dongle(i, params->coder, RIGHT, dongles)];
-        ft_memcopy(params, coder->param, sizeof(*params));
-        display_params(*coder->param);
+        coder->dongle_l = dongles[get_dongle(i, params->coder, LEFT)];
+        coder->dongle_r = dongles[get_dongle(i, params->coder, RIGHT)];
+        ft_memcopy(params, &coder->param, sizeof(t_params));
         coders[i] = coder;
         i++;
     }
@@ -84,7 +83,7 @@ t_coder **init_coder(t_params *params, mutex *dongles)
     return (coders);
 }
 
-int thead_luncher(t_params *param, mutex *dongles)
+int thead_luncher(t_params *param, mutex **dongles)
 {
 
     size_t      i;

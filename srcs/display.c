@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 12:44:25 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 17:29:19 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void display_coder(t_coder coder)
 {
     printf("Coder: %d\n", coder.id);
-    printf("Usb left: %p\n", &coder.dongle_l);
-    printf("Usb right: %p\n", &coder.dongle_r);
+    printf("Usb left: %p\n", coder.dongle_l);
+    printf("Usb right: %p\n", coder.dongle_r);
 }
 
 void display_coders(t_coder **coders)

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 14:24:29 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 17:25:16 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ typedef struct s_params
 typedef struct s_coder
 {
     int             id;
-    pthread_mutex_t dongle_l;
-    pthread_mutex_t dongle_r;
-    t_params        *param;
+    pthread_mutex_t *dongle_l;
+    pthread_mutex_t *dongle_r;
+    t_params        param;
     
 } t_coder;
 
@@ -81,27 +81,27 @@ enum e_PARSING_ERROR
 
 /* error */
 
-int mutex_initialisation_error();
-int parsing_error_msg(int code, char *arg);
+int     mutex_initialisation_error();
+int     parsing_error_msg(int code, char *arg);
 
 /* parsing */
 
-int parse_arguments(char **args, t_params *params);
+int     parse_arguments(char **args, t_params *params);
 
 /* display */
 
-void display_params(t_params param);
-void display_coder(t_coder coder);
-void display_coders(t_coder **coders);
+void    display_params(t_params param);
+void    display_coder(t_coder coder);
+void    display_coders(t_coder **coders);
 
 /* utils */
 
-size_t get_str_arr_len(char **str_arr);
-int ft_is_digit(char c);
-void ft_memcopy(void *src, void *dst, unsigned long size);
+size_t  get_str_arr_len(char **str_arr);
+int     ft_is_digit(char c);
+void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 
-int thead_luncher(t_params *param, mutex *dongles);
+int     thead_luncher(t_params *param, mutex **dongles);
 
 #endif

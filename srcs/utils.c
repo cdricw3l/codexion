@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:53:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 14:28:08 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 17:21:11 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t get_str_arr_len(char **str_arr)
 
 int ft_is_digit(char c)
 {
-    return c >= 48 && c <= 57;
+    return (c >= 48 && c <= 57);
 }
 
 void ft_memcopy(void *src, void *dst, unsigned long size)
@@ -39,8 +39,6 @@ void ft_memcopy(void *src, void *dst, unsigned long size)
     i = 0;
     while (i < size)
     {
-        DEBUG;
-        printf("%d\n", i);
         ((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
         i++;
     }
