@@ -6,20 +6,50 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 22:41:20 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 23:13:27 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
+mutex *mutex_initialisation(size_t nb_coder)
+{
+    size_t i;
+    char *msg;
+    mutex *dongles;
+    
+    dongles = malloc(sizeof(mutex) * nb_coder);
+    if(!dongles)
+        return (NULL);
+    i = 0;
+    /* pthread_mutex_init return always zero. see man */
+    while(i < nb_coder)
+        pthread_mutex_init(&dongles[i++], NULL);
+    msg = HGRN"Mutex initialised, usb are ready tu use !\n"CRESET;
+    write(STDOUT_FILENO, msg, strlen(msg));
+    return (dongles);
+}
 
 void *coder_thread(void *data)
 {
     t_coder *coder;
 
     coder = (t_coder *)data;
-    printf(HCYN"i'm the coder number %d, dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
-    pthread_mutex_lock(coder->dongle_l);
-    pthread_mutex_lock(coder->dongle_r);
+    while(pthread_mutex_lock(coder->dongle_l) == EBUSY);
+    {
+        printf("coder %d try to take dongle left %p\n", coder->id);
+        pthread_mutex_lock(coder->dongle_l);
+    }
+    while(pthread_mutex_lock(coder->dongle_r) == EBUSY);
+    {
+        printf("coder %d try to take dongle right\n", coder->id);
+        pthread_mutex_lock(coder->dongle_r);
+    }
+    printf(HCYN"i'm the coder number %d, i take dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
+    usleep(1000000);
+    pthread_mutex_unlock(coder->dongle_l);
+    pthread_mutex_unlock(coder->dongle_r);
+    printf(HCYN"i'm the coder number %d, i release dongle left: %p and dongle right %p\n"CRESET, coder->id, coder->dongle_l, coder->dongle_r);
     
     return (NULL);
 }
@@ -51,7 +81,7 @@ void *destroy_coders(t_coder ***coders, int idx)
     return (NULL);
 }
 
-t_coder **init_coder(t_params *params, mutex **dongles)
+t_coder **init_coder(t_params *params, mutex *dongles)
 {
     size_t  i;
     t_coder **coders;
@@ -66,9 +96,11 @@ t_coder **init_coder(t_params *params, mutex **dongles)
         coder = malloc(sizeof(t_coder));
         if (!coder)
             return (destroy_coders(&coders, i));
+        printf("dongle left %d\nDongle right %d\n",get_dongle(i, params->coder, LEFT), get_dongle(i, params->coder, RIGHT));
+        printf("dongle left %p\nDongle right %p\n", &dongles[get_dongle(i, params->coder, LEFT)], &dongles[get_dongle(i, params->coder, RIGHT)]);
         coder->id = i;
-        coder->dongle_l = dongles[get_dongle(i, params->coder, LEFT)];
-        coder->dongle_r = dongles[get_dongle(i, params->coder, RIGHT)];
+        coder->dongle_l = &dongles[get_dongle(i, params->coder, LEFT)];
+        coder->dongle_r = &dongles[get_dongle(i, params->coder, RIGHT)];
         ft_memcopy(params, &coder->param, sizeof(t_params));
         coders[i] = coder;
         i++;

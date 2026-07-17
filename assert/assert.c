@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assert.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 17:33:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 22:48:27 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int assert_thread()
 {
     START_TEST(__func__);
     get_dongle_assert();
+    mutex_initialisation_assert();
     END_TEST(__func__);
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 17:24:34 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 22:51:32 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 
 
 #define DISPLAY_PARAMS TRUE
-
-mutex *mutex_initialisation(size_t nb_coder)
-{
-    size_t i;
-    char *msg;
-    mutex *dongles;
-    
-    dongles = malloc(sizeof(mutex) * nb_coder);
-    if(!dongles)
-        return (NULL);
-    i = 0;
-    /* pthread_mutex_init return always zero. see man */
-    while(i < nb_coder)
-        pthread_mutex_init(&dongles[i++], NULL);
-    msg = HGRN"Mutex initialised, usb are ready tu use !\n"CRESET;
-    write(STDOUT_FILENO, msg, strlen(msg));
-    return (dongles);
-}
 
 int main(int argc, char **argv)
 {

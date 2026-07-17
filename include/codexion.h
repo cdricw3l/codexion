@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 17:25:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 23:10:27 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <string.h>
 #include <limits.h>
 #include <time.h>
+#include <errno.h>
 #include <sys/types.h>
 #include "color-codes.h"
 
@@ -35,6 +36,7 @@
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
 #define DEBUG printf("DEBBUG\n")
+
 typedef pthread_mutex_t mutex;
 
 
@@ -103,5 +105,5 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 /* thread */
 
 int     thead_luncher(t_params *param, mutex **dongles);
-
+mutex   *mutex_initialisation(size_t nb_coder);
 #endif

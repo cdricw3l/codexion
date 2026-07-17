@@ -9,5 +9,6 @@
 
 void get_str_arr_len_assert(void);
 int get_dongle_assert(void);
+int mutex_initialisation_assert(void);
 
 #endif

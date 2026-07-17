@@ -6,13 +6,14 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 17:30:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 22:42:47 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 22:49:22 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 int get_dongle(int id, int number_of_coder, int type);
+mutex *mutex_initialisation(size_t nb_coder);
 
 int get_dongle_assert(void)
 {
@@ -35,4 +36,16 @@ int get_dongle_assert(void)
         }
     }
     return (TRUE);
+}
+
+int mutex_initialisation_assert(void)
+{
+    mutex *mu;
+
+    mu = mutex_initialisation(10);
+    assert(mu);
+
+    for(int i = 0; i < 10; i++)
+        printf("mutex %p\n", &mu[i]);
+    return(TRUE);
 }
