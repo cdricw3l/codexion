@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 11:57:42 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 14:28:19 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void *coder_thread(void *data)
 
     coder = (t_coder *)data;
     printf(HCYN"i'm the coder number %d\n"CRESET, coder->id);
+    pthread_mutex_lock(&coder->dongle_l);
+    pthread_mutex_lock(&coder->dongle_r);
+    
     return (NULL);
 }
 
@@ -71,7 +74,8 @@ t_coder **init_coder(t_params *params, mutex *dongles)
         coder->id = i;
         coder->dongle_l = dongles[get_dongle(i, params->coder, LEFT, dongles)];
         coder->dongle_l = dongles[get_dongle(i, params->coder, RIGHT, dongles)];
-        coder->param = *params;
+        ft_memcopy(params, coder->param, sizeof(*params));
+        display_params(*coder->param);
         coders[i] = coder;
         i++;
     }

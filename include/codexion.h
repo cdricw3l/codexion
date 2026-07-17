@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 12:24:48 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/17 14:24:29 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_coder
     int             id;
     pthread_mutex_t dongle_l;
     pthread_mutex_t dongle_r;
-    t_params        param;
+    t_params        *param;
     
 } t_coder;
 
@@ -98,7 +98,7 @@ void display_coders(t_coder **coders);
 
 size_t get_str_arr_len(char **str_arr);
 int ft_is_digit(char c);
-void copy_coder(t_coder *c1, t_coder *c2);
+void ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 

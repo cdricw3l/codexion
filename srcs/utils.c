@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:53:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 11:21:29 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 14:28:08 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ int ft_is_digit(char c)
     return c >= 48 && c <= 57;
 }
 
-void copy_coder(t_coder *c1, t_coder *c2)
+void ft_memcopy(void *src, void *dst, unsigned long size)
 {
     unsigned long i;
 
     i = 0;
-    while (i < sizeof(*c1))
+    while (i < size)
     {
-        ((unsigned char *)c2)[i] = ((unsigned char * )c1)[i];
+        DEBUG;
+        printf("%d\n", i);
+        ((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
         i++;
     }
 }
