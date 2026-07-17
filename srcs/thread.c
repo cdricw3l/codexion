@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 17:28:47 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/17 22:41:20 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ void *coder_thread(void *data)
 int get_dongle(int id, int number_of_coder, int type)
 {
     if (type == RIGHT)
-    {
-        if (id == number_of_coder - 1)
-            return (0);
-        else
-            return (id + 1);
-    }
+        return (id);
     if (type == LEFT)
     {
         if (id == 0)
