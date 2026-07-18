@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 00:18:06 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 09:05:48 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,19 @@
 
 /* action */
 
-#define TAKE 0
-#define RELEASE 1
+
+typedef enum e_actions
+{
+    TAKE,
+    RELEASE,
+    COMPILE,
+    DEBBUG,
+    REFACTO
+
+} t_actions;
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
-#define DEBUG printf("DEBBUG\n")
 
 typedef pthread_mutex_t mutex;
 
@@ -58,10 +65,18 @@ typedef struct s_params
 
 } t_params;
 
+typedef struct s_monitor
+{
+    
+
+} t_monitor;
+
+
 
 typedef struct s_coder
 {
     int             id;
+    int             *last_compile;
     pthread_mutex_t *dongle_l;
     pthread_mutex_t *dongle_r;
     t_params        param;
@@ -100,10 +115,11 @@ int     parse_arguments(char **args, t_params *params);
 void    display_params(t_params param);
 void    display_coder(t_coder coder);
 void    display_coders(t_coder **coders);
-
+void    safe_print(t_coder coder, int action);
 /* utils */
 
 size_t  get_str_arr_len(char **str_arr);
+int get_dongle(int id, int number_of_coder, int type);
 int     ft_is_digit(char c);
 void    ft_memcopy(void *src, void *dst, unsigned long size);
 
@@ -111,4 +127,9 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 int     thead_luncher(t_params *param, mutex **dongles);
 mutex   *mutex_initialisation(size_t nb_coder);
+
+/* time */
+
+void update_timestamps(int *dashboard);
+
 #endif

@@ -1,6 +1,7 @@
-CC=cc
+CC=gcc
 NAME=codexion
 CFLAGS= -Wall -Wextra -Werror -g -pthread
+#CFLAGS= -Wextra -Werror -Wall  -g -pthread
 #CFLAGS=  -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \

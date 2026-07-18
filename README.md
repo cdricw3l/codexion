@@ -41,7 +41,7 @@ make re
 ## Resources
 
 * https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3.html
-
+* https://sites.uclouvain.be/SyllabusC/notes/Theorie/Threads/threads2.html
 
 # Blocking cases handled
 

@@ -6,13 +6,14 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/17 12:48:02 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 00:41:20 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "include/codexion.h"
 
-int main(void)
+
+void test_time()
 {
     struct timespec time;
 
@@ -25,5 +26,45 @@ int main(void)
     clock_gettime(CLOCK_REALTIME, &time);
     time_t t2 = time.tv_nsec;
     printf("%ld\n", t2 - t1);
+}
+
+int compile()
+{
+    printf("Compile\n");
+    sleep(3);
+    return (TRUE);
+}
+
+int refacto()
+{
+    printf("Refacto\n");
+    sleep(3);
+    return (TRUE);
+}
+int release()
+{
+    printf("Release\n");
+    sleep(3);
+    return (TRUE);
+}
+
+int main(void)
+{
+    void *arr[4];
+
+    arr[0] = compile;
+    arr[1] = refacto;
+    arr[2] = release;
+    arr[3] = NULL;
+
+    int i = 0;
+    while (arr[i])
+    {
+        void (*f)() = arr[i];
+        f();
+        i++;
+    }
+    
+
     return (0);
 }
