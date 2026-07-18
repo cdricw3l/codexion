@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 09:11:40 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 09:29:17 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void *coder_thread(void *data)
         safe_print(*coder, COMPILE);
         /* compiling */
         usleep(coder->param.ttc * 1000);
+        /* cooldown */
+        usleep(coder->param.dc * 1000);
         pthread_mutex_unlock(coder->dongle_l);
         pthread_mutex_unlock(coder->dongle_r);
         /* debbuging */
