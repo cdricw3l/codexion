@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/18 00:41:20 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 22:43:13 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,24 @@
 void test_time()
 {
     struct timespec time;
+    int i = 100;
 
-    clock_gettime(CLOCK_REALTIME, &time);
-    printf("%d\n", CLOCK_REALTIME);
-    printf("nsec %ld\n", time.tv_nsec);
-    printf("sec %ld\n", time.tv_sec);
-    time_t t1 = time.tv_nsec;
-    usleep(100000);
-    clock_gettime(CLOCK_REALTIME, &time);
-    time_t t2 = time.tv_nsec;
-    printf("%ld\n", t2 - t1);
+
+    while (i >= 0)
+    {
+        clock_gettime(1, &time);
+        time_t t1 = time.tv_nsec;
+
+        printf("nsec %ld\n", time.tv_nsec);
+        usleep(200000);
+        clock_gettime(1, &time);
+        time_t t2 = time.tv_nsec;
+        printf("nsec %ld\n", time.tv_nsec);
+        printf("%ld\n", (t2 - t1) );
+        i--;
+    }
+    
+    
 }
 
 int compile()
@@ -50,20 +58,7 @@ int release()
 
 int main(void)
 {
-    void *arr[4];
-
-    arr[0] = compile;
-    arr[1] = refacto;
-    arr[2] = release;
-    arr[3] = NULL;
-
-    int i = 0;
-    while (arr[i])
-    {
-        void (*f)() = arr[i];
-        f();
-        i++;
-    }
+    test_time();
     
 
     return (0);

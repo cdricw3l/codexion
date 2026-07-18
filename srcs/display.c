@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 09:12:42 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 21:14:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void safe_print(t_coder coder, int action)
 {
-    mutex print_mutex;
+    mutex_t print_mutex;
 
+    memset(&print_mutex, 0, sizeof(mutex_t));
     pthread_mutex_lock(&print_mutex);
     if (action == TAKE)
     {
@@ -36,7 +37,8 @@ void display_coder(t_coder coder)
     printf("Coder: %d\n", coder.id);
     printf("Usb left: %p\n", coder.dongle_l);
     printf("Usb right: %p\n", coder.dongle_r);
-    printf("dashboard adress %p\n", coder.last_compile);
+    printf("dashboard mutex %p\n", coder.mutex_dashboard);
+    printf("dashboard adress %p\n", coder.compilation_dashboard);
 }
 
 void display_coders(t_coder **coders)

@@ -8,9 +8,10 @@ SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c \
 		srcs/display.c \
-		srcs/thread.c  \
+		srcs/coder_thread.c \
 		srcs/time.c \
 		srcs/error.c \
+		srcs/mutex.c
 
 
 SRCS_OBJS= ${SRCS:.c=.o}
@@ -23,7 +24,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=2 200 100 100 100 10 10 fifo
+ARG=2 400 100 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)

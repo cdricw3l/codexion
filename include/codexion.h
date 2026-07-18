@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 09:05:48 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/18 22:29:20 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include "color-codes.h"
 
 #define FALSE 0
@@ -49,7 +50,7 @@ typedef enum e_actions
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
 
-typedef pthread_mutex_t mutex;
+typedef pthread_mutex_t mutex_t;
 
 
 typedef struct s_params
@@ -65,23 +66,29 @@ typedef struct s_params
 
 } t_params;
 
-typedef struct s_monitor
-{
-    
-
-} t_monitor;
 
 
 
 typedef struct s_coder
 {
     int             id;
-    int             *last_compile;
+    int             ncr;
+    int             *compilation_dashboard;
+    mutex_t         *mutex_dashboard;
     pthread_mutex_t *dongle_l;
     pthread_mutex_t *dongle_r;
-    t_params        param;
+    t_params        params;
     
 } t_coder;
+
+typedef struct  s_monitoring
+{
+    int     ttb;
+    int     nb_coder;
+    int     *dashboard;
+    mutex_t *dashboard_mu;
+    
+} t_monitoring;
 
 enum e_PARAMS
 {
@@ -125,8 +132,10 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 
-int     thead_luncher(t_params *param, mutex **dongles);
-mutex   *mutex_initialisation(size_t nb_coder);
+int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu);
+
+/* mutex */
+mutex_t     *mutex_initialisation(size_t nb_coder);
 
 /* time */
 

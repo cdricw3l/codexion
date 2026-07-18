@@ -78,10 +78,35 @@ clock_gettime
 
 ## second, microsecond, nanosecond
 
-* one second is equal to 1000 millisecond:      1sec -> 1000ms
-* One second is equal to 10^6 microsecond:      1sec -> 1000000 microsec
-* One microsecond is equal to 1000 nanosecond:  1 -> 1000ns
+* 200 millisecond == 200000 microseconds.
+* 200 millisecond == 200000000 nano seconde
 
+Les contrainte de temps: time_to_burnout, time_to_compile, time_to_debug,
+time_to_refactor, dongle_cooldown sont exprimees en milliseconde.
+
+La fonction usleep elle prend en parametre des micro seconde no contrainte doivent donc etre convertie en microseconde: *contrainte* * 1000
+
+### mesure du temps
+
+#### clock_gettime
+
+La fonction clock_gettime() prend en argument une resolution  (CLOCK_REALTIME, CLOCK_THREAD_CPUTIME_ID...) et un pointeur vers une structure  struct timespec 
+
+```c
+ struct timespec 
+{
+    time_t  tv_sec;  /* Seconds */
+    long    tv_nsec; /* Nanoseconds */
+};
+
+clock_gettime(CLOCK_REALTIME, &timespec)
+
+```
+Pour etablire le temps ecouler en milliseconde depuis un apelle de reference a  clock_gettime if faut apliquer la fomule suivente:
+
+(temps_de_reference_2(en nanoseconde) - temps_de_reference_1(en nanoseconde)) / 1000000
+
+#### gettimeofday
 
 # lldb
 
