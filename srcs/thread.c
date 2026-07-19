@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/19 08:24:01 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/19 08:53:36 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ void *monitoring_thread(void *data)
     monitor = (t_monitoring *)data;
     while (1)
     {   
+        printf("nombre de coder %d\n", monitor->nb_coder);
         i = 0;
         while (i < monitor->nb_coder)
         {
-            pthread_mutex_lock(&monitor->dashboard_mu[i]);
-            ref = monitor->dashboard[i];
-            pthread_mutex_unlock(&monitor->dashboard_mu[i]);
-            clock_gettime(0, &now);
-            if (now.tv_nsec - ref > (monitor->ttb * 1000000))
-                printf("Philo %d is dead\n", i);
+            
+            // pthread_mutex_lock(&monitor->dashboard_mu[i]);
+            // ref = monitor->dashboard[i];
+            // pthread_mutex_unlock(&monitor->dashboard_mu[i]);
+            // clock_gettime(0, &now);
+            // if (now.tv_nsec - ref > (monitor->ttb * 1000000))
+            //     printf("Philo %d is dead\n", i);
             i++;
             usleep(10000);
         }
@@ -67,7 +69,7 @@ void *monitoring_thread(void *data)
     return (NULL);
 }
 
-int launch_monitoring_thread(int *dashboard, mutex_t *dashboard_mu, t_params params, pthread_t *monitoring)
+int launch_monitoring_thread(time_t *dashboard, mutex_t *dashboard_mu, t_params params, pthread_t *monitoring)
 {
     t_monitoring    monitoring_data;
 
@@ -75,12 +77,15 @@ int launch_monitoring_thread(int *dashboard, mutex_t *dashboard_mu, t_params par
     monitoring_data.dashboard_mu = dashboard_mu;
     monitoring_data.nb_coder = params.coder;
     monitoring_data.ttb = params.ttb;
+    assert(monitoring_data.nb_coder == 2);
+    display_monitoring_dashboard(dashboard, monitoring_data.nb_coder);
     if(pthread_create(monitoring, NULL, monitoring_thread, &monitoring_data) != 0)
     {
         perror("thread monitoring creation error");
         return(FALSE);
     }
     printf("Thread de monitoring initialisé\n");
+    usleep(10000);
     return (TRUE);
 }
 
@@ -92,13 +97,13 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     pthread_t       thread_coders[2000];
     pthread_t       thread_monitoring;
     t_coder         **coders;
-    int             *dashboard;
+    time_t          *dashboard;
     //struct          timespec time;
 
-    dashboard = malloc(sizeof(int) * param->coder);
+    dashboard = malloc(sizeof(time_t) * param->coder);
     if(!dashboard)
         return (FALSE);
-    memset(dashboard, 0, sizeof(int) * param->coder);
+    memset(dashboard, 0, sizeof(time_t) * param->coder);
     coders = init_coder(param, dongles, dashboard_mu, dashboard);
     if(!coders)
     {
@@ -112,20 +117,20 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
         return (FALSE);
     }
     i = 0;
-    while (i < param->coder)
-    {
-        printf("start thread %ld\n", i);
-        pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
-        usleep(10);
-        i++;
-    }
-    i = 0;
-    while(i < param->coder)
-    {
-        pthread_join(thread_coders[i], NULL);
-        free(coders[i]);
-        i++;
-    }
+
+    // while (i < param->coder)
+    // {
+    //     pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
+    //     usleep(1000);
+    //     i++;
+    // }
+    // i = 0;
+    // while(i < param->coder)
+    // {
+    //     pthread_join(thread_coders[i], NULL);
+    //     free(coders[i]);
+    //     i++;
+    // }
     pthread_join(thread_monitoring, NULL);
     free(coders[i]);
     free(coders);

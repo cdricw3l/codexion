@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 21:14:33 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/19 08:50:57 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ void display_params(t_params param)
         printf("edf"CRESET"\n");
     else if (param.scheduler == EDF)
         printf("edf"CRESET"\n");
+}
+
+void display_monitoring_dashboard(time_t *dashboard, int coders)
+{
+    int i;
+
+    i = 0;
+    printf("Nombre de coder %d\n", coders);
+    while (i < coders)
+    {
+        printf("Coder %d last compilation %ld\n", i, dashboard[i]);
+        i++;
+    }
 }
