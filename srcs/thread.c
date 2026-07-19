@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 22:48:49 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/19 08:24:01 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,46 +67,21 @@ void *monitoring_thread(void *data)
     return (NULL);
 }
 
-void *destroy_coders(t_coder ***coders, int idx)
+int launch_monitoring_thread(int *dashboard, mutex_t *dashboard_mu, t_params params, pthread_t *monitoring)
 {
-    t_coder **c;
-    int i;
+    t_monitoring    monitoring_data;
 
-    c = *coders;
-    i = 0;
-    while (i <= idx)
-        free(c[i++]);
-    free(*coders);
-    return (NULL);
-}
-
-t_coder **init_coder(t_params *params, mutex_t *dongles, mutex_t *dashboard_mu, int *dashboard)
-{
-    size_t  i;
-    t_coder **coders;
-    t_coder *coder;
-    i = 0;
-    coders = malloc(sizeof(t_coder *) * (params->coder + 1));
-    if (!coders)
-        return (NULL);
-    while (i < params->coder)
+    monitoring_data.dashboard = dashboard;
+    monitoring_data.dashboard_mu = dashboard_mu;
+    monitoring_data.nb_coder = params.coder;
+    monitoring_data.ttb = params.ttb;
+    if(pthread_create(monitoring, NULL, monitoring_thread, &monitoring_data) != 0)
     {
-        coder = malloc(sizeof(t_coder));
-        if (!coder)
-            return (destroy_coders(&coders, i));
-        coder->id = i;
-        coder->dongle_l = &dongles[get_dongle(i, params->coder, LEFT)];
-        coder->dongle_r = &dongles[get_dongle(i, params->coder, RIGHT)];
-        coder->mutex_dashboard = &dashboard_mu[i];
-        coder->compilation_dashboard = &dashboard[i];
-        /* give a copy of param to each coder avoid to use mutex for read param value */
-        ft_memcopy(params, &coder->params, sizeof(t_params));
-        coders[i] = coder;
-        i++;
+        perror("thread monitoring creation error");
+        return(FALSE);
     }
-    coders[i] = NULL;
-    display_coders(coders);
-    return (coders);
+    printf("Thread de monitoring initialisé\n");
+    return (TRUE);
 }
 
 int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
@@ -117,8 +92,8 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     pthread_t       thread_coders[2000];
     pthread_t       thread_monitoring;
     t_coder         **coders;
-    t_monitoring    monitoring_data;
     int             *dashboard;
+    //struct          timespec time;
 
     dashboard = malloc(sizeof(int) * param->coder);
     if(!dashboard)
@@ -130,14 +105,11 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
         free(dashboard);
         return (FALSE);
     }
-    monitoring_data.dashboard = dashboard;
-    monitoring_data.dashboard_mu = dashboard_mu;
-    monitoring_data.nb_coder = param->coder;
-    monitoring_data.ttb = param->ttb;
-    if(pthread_create(&thread_monitoring, NULL, monitoring_thread, &monitoring_data) != 0)
+    if(!launch_monitoring_thread(dashboard, dashboard_mu, *param, &thread_monitoring))
     {
-        perror("thread monitoring creation error");
-        return(FALSE);
+        free(dashboard);
+        destroy_coders(&coders, param->coder);
+        return (FALSE);
     }
     i = 0;
     while (i < param->coder)

@@ -8,10 +8,11 @@ SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c \
 		srcs/display.c \
-		srcs/coder_thread.c \
+		srcs/thread.c \
 		srcs/time.c \
 		srcs/error.c \
-		srcs/mutex.c
+		srcs/mutex.c \
+		srcs/init.c
 
 
 SRCS_OBJS= ${SRCS:.c=.o}

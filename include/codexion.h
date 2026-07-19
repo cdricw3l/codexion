@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 22:29:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/19 08:13:51 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_params
 typedef struct s_coder
 {
     int             id;
-    int             ncr;
+    time_t          start;
     int             *compilation_dashboard;
     mutex_t         *mutex_dashboard;
     pthread_mutex_t *dongle_l;
@@ -117,12 +117,18 @@ int     parsing_error_msg(int code, char *arg);
 
 int     parse_arguments(char **args, t_params *params);
 
+/* init */
+
+t_coder **init_coder(t_params *params, mutex_t *dongles, mutex_t *dashboard_mu, int *dashboard);
+void    *destroy_coders(t_coder ***coders, int idx);
+
 /* display */
 
 void    display_params(t_params param);
 void    display_coder(t_coder coder);
 void    display_coders(t_coder **coders);
 void    safe_print(t_coder coder, int action);
+
 /* utils */
 
 size_t  get_str_arr_len(char **str_arr);
