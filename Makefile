@@ -11,8 +11,9 @@ SRCS= srcs/codexion.c \
 		srcs/mutex.c \
 		srcs/error.c \
 		srcs/time.c \
+		srcs/init_monitoring.c \
+#		srcs/init_coders.c \
 # 		srcs/thread_coder.c \
-#		srcs/init.c \
 # 		srcs/thread_manager.c \
 # 		srcs/thread_monitoring.c \
 

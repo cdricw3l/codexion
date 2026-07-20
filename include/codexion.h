@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 22:39:00 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 23:09:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,11 @@ typedef struct s_coder
 
 typedef struct  s_monitoring
 {
-    int         ttb;
-    int         nb_coder;
-    clock_t     *timestamps;
-    t_mutex     *dashboard_mu;
+    int        ttb;
+    int        nb_coder;
+    clock_t    *timestamps_arr;
+    t_mutex    *timestamp_data;
+    t_mutex    *timestamp_f;
     
 } t_monitoring;
 
@@ -134,7 +135,7 @@ int     parsing_error_msg(int code, char *arg);
 int     parse_arguments(char **args, t_params *params);
 
 /* init */
-
+int     init_monitoring(t_monitoring  *monitoring, t_params params, t_global_mutex *gmu);
 t_coder **init_coder(t_params *params, t_mutex *dongles, t_mutex *dashboard_mu, time_t *dashboard);
 void    *destroy_coders(t_coder ***coders, int idx);
 
@@ -161,7 +162,6 @@ int     thead_luncher(t_params *param, t_mutex *dongles, t_mutex *dashboard_mu);
 
 /* mutex */
 int clean_gmutex(t_global_mutex *mu, size_t coders);
-int mutex_initialisation(t_mutex *mu);
 int g_mutex_initialisation(t_global_mutex  *gmutex, size_t coders);
 
 /* time */

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 22:48:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 23:10:21 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 
     t_params        params;
     t_global_mutex  global_mu;
+    t_monitoring    monitoring;
 
 
     memset(&params, 0, sizeof(t_params));
@@ -45,8 +46,14 @@ int main(int argc, char **argv)
         write(STDERR_FILENO, "Global mutex initialisation error\n", strlen("Global mutex initialisation error\n"));
         return (1);
     }
-    display_mutex_data(global_mu, params.coder);
+    if(!init_monitoring(&monitoring,  params, &global_mu))
+    {
+        clean_gmutex(&global_mu, params.coder);
+        write(STDERR_FILENO, "Monitoring structure initialisation error\n", strlen("Monitoring structure initialisation error\n"));
+        return (1);
+    }
     clean_gmutex(&global_mu, params.coder);
+    free(monitoring.timestamps_arr);
     return (0);
 }
 
