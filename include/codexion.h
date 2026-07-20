@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 12:35:37 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:27:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void    *destroy_coders(t_coder ***coders, int idx);
 void    display_params(t_params param);
 void    display_coder(t_coder coder);
 void    display_coders(t_coder **coders);
-void safe_print(t_coder coder, int action, time_t timestamp);
+void    safe_print(t_coder coder, int action, clock_t timestamp);
 void    display_monitoring_dashboard(time_t *dashboard, int coders);
 
 /* utils */
@@ -148,6 +148,6 @@ mutex_t     *mutex_initialisation(size_t nb_coder);
 /* time */
 
 void    update_timestamps(int *dashboard);
-time_t  time_diff(time_t start, time_t end);
+struct timespec time_diff(struct timespec start, struct timespec end);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/20 12:32:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:26:51 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,54 +39,68 @@ void test_time()
     
 }
 
-time_t time_diff(time_t start, time_t end)
+struct timespec time_diff(struct timespec start, struct timespec end)
 {
-    time_t elapsed;
+    struct timespec temp;
 
-    if ((end - start) < 0)
-        elapsed =  1000000000 + end - start;
+    if ((end.tv_nsec - start.tv_nsec) < 0)
+    {
+        temp.tv_sec = end.tv_sec + - start.tv_sec - 1;
+        temp.tv_nsec =  1000000000 + end.tv_nsec - start.tv_nsec;
+    }
     else
-        elapsed = end - start;
-    
-    return elapsed / 1000000;
+    {
+        temp.tv_sec = end.tv_sec - start.tv_sec;
+        temp.tv_nsec = end.tv_nsec - start.tv_nsec;
+    }
+    return temp;
+}
+
+clock_t time_calculation(struct timespec time)
+{
+    /* convert second to nano*/
+    clock_t n_to_sec;
+
+    n_to_sec  = time.tv_sec * 1000000000;
+    return ((n_to_sec + time.tv_nsec) / 1000000);
 }
 
 struct s_mu
 {
     pthread_mutex_t *mu_memset;
     pthread_mutex_t *mu_printf;
+    struct timespec start;
+    int id;
 };
 
 
 void *thread(void *data)
 {
-    int i;
     pthread_t id;
     struct s_mu *mu; 
-    struct timespec start;
     struct timespec end;
-    
+    clock_t timestamp;
+
     id = pthread_self();
     
-    i = 10;
     mu = (struct s_mu *)data;
     printf("Start thread %p\n", &(mu->mu_memset));
     
     pthread_mutex_lock(mu->mu_memset);
     printf("resultat du lock\n");
-    memset(&start, 0, sizeof(struct timespec));
     memset(&end, 0, sizeof(struct timespec));
     pthread_mutex_unlock(mu->mu_memset);
-    printf("resultat du unlock\n");
     while (1)
     {
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        timestamp = time_calculation(time_diff(mu->start, end));
+        printf("%ld %d start sleep\n", timestamp, mu->id);
         usleep(200000);
         clock_gettime(CLOCK_MONOTONIC, &end);
+        timestamp = time_calculation(time_diff(mu->start, end));
+        printf("%ld %d end sleep\n", timestamp , mu->id);
         pthread_mutex_lock(mu->mu_printf);
-        printf("[thread %ld]elapsed time %ld\n", id,  time_diff(start.tv_nsec, end.tv_nsec));
         pthread_mutex_unlock(mu->mu_printf);
-        i--;
     }
     return (NULL);
 }
@@ -99,6 +113,7 @@ int main(void)
     pthread_mutex_t m1;
     pthread_mutex_t m2;
     struct s_mu *mu;
+    struct timespec tm;
 
     mu = malloc(sizeof(struct s_mu));
     assert(mu);
@@ -106,6 +121,9 @@ int main(void)
     assert(pthread_mutex_init(&m2, NULL) == 0);
     mu->mu_memset = &m1;
     mu->mu_printf = &m2;
+    clock_gettime(CLOCK_MONOTONIC, &tm);
+    mu->start = tm;
+    mu->id = 1;
     pthread_create(&t1, NULL, thread, mu);
     //pthread_create(&t2, NULL, thread, &mu);
     pthread_join(t1, NULL);

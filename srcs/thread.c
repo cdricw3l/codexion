@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 12:39:07 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:04:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,13 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     pthread_t       thread_coders[2000];
     pthread_t       thread_monitoring;
     t_coder         **coders;
-    time_t          *dashboard;
+    clock_t          *dashboard;
     struct          timespec start;
 
-    dashboard = malloc(sizeof(time_t) * param->coder);
+    dashboard = malloc(sizeof(clock_t) * param->coder);
     if(!dashboard)
         return (FALSE);
-    memset(dashboard, 0, sizeof(time_t) * param->coder);
+    memset(dashboard, 0, sizeof(clock_t) * param->coder);
     coders = init_coder(param, dongles, dashboard_mu, dashboard);
     if(!coders)
     {

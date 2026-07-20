@@ -6,15 +6,15 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 12:39:28 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:02:07 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-time_t time_diff(time_t start, time_t end)
+long time_diff(time_t start, time_t end)
 {
-    time_t elapsed;
+    long elapsed;
 
     if ((end - start) < 0)
         elapsed =  1000000000 + end - start;
