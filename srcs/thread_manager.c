@@ -1,86 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                           :+:      :+:    :+:   */
+/*   thread_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:49:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:20:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-
-void *coder_thread(void *data)
-{
-    t_coder *coder;
-    struct timespec tm;
-
-    coder = (t_coder *)data;
-    while (coder->params.ncr > 0)
-    {
-        if (coder->id == 0)
-        {
-            pthread_mutex_lock(coder->dongle_r);
-            pthread_mutex_lock(coder->dongle_l);
-        }
-        else
-        {
-            pthread_mutex_lock(coder->dongle_l);
-            pthread_mutex_lock(coder->dongle_r);
-        }
-        clock_gettime(CLOCK_MONOTONIC, &tm);    
-        safe_print(*coder, TAKE);
-        clock_gettime(CLOCK_MONOTONIC, &tm);
-        safe_print(*coder, COMPILE);
-
-        /* compiling */
-        usleep(coder->params.ttc * 1000);
-        /* cooldown */
-        usleep(coder->params.dc * 1000);
-        pthread_mutex_unlock(coder->dongle_r);
-        pthread_mutex_unlock(coder->dongle_l);
-        clock_gettime(CLOCK_MONOTONIC, &tm);
-        /* debbuging */
-        safe_print(*coder, DEBBUG);
-        usleep(coder->params.ttd * 1000);
-        clock_gettime(CLOCK_MONOTONIC, &tm);
-        safe_print(*coder, REFACTO);
-        usleep(coder->params.ttr * 1000);
-        coder->params.ncr--;
-    }
-    return (NULL);
-}
-
-void *monitoring_thread(void *data)
-{
-    t_monitoring *monitor;
-    struct timespec now;
-    time_t ref;
-    int i;
-
-    monitor = (t_monitoring *)data;
-    while (1)
-    {   
-        printf("nombre de coder %d\n", monitor->nb_coder);
-        i = 0;
-        while (i < monitor->nb_coder)
-        {
-            
-            // pthread_mutex_lock(&monitor->dashboard_mu[i]);
-            // ref = monitor->dashboard[i];
-            // pthread_mutex_unlock(&monitor->dashboard_mu[i]);
-            // clock_gettime(0, &now);
-            // if (now.tv_nsec - ref > (monitor->ttb * 1000000))
-            //     printf("Philo %d is dead\n", i);
-            i++;
-            usleep(10000);
-        }
-    }
-    return (NULL);
-}
 
 int launch_monitoring_thread(time_t *dashboard, mutex_t *dashboard_mu, t_params params, pthread_t *monitoring)
 {
@@ -137,7 +68,7 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
         coders[i]->start = start;
         coders[i]->mu_print = &mu_print;
         pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
-        usleep(10000);
+        usleep(100);
         i++;
     }
     i = 0;

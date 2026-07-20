@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/18 21:18:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:12:46 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int destroy_mutex(mutex_t *mu, int idx)
     i = 0;
 
     while (i < idx)
-    {
-        printf("mutex %d: %p\n",i, &mu[i]);
         pthread_mutex_destroy(&mu[i++]);
-    }
     free(mu);
     return (TRUE);    
 }

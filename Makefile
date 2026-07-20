@@ -8,7 +8,9 @@ SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c \
 		srcs/display.c \
-		srcs/thread.c \
+		srcs/thread_coder.c \
+		srcs/thread_manager.c \
+		srcs/thread_monitoring.c \
 		srcs/time.c \
 		srcs/error.c \
 		srcs/mutex.c \

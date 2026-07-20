@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:49:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:24:40 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void safe_print(t_coder coder, int action)
     clock_gettime(CLOCK_MONOTONIC, &tm);
     timestamp = time_calculation(time_diff(coder.start, tm));
     if (action == TAKE)
-    {
         printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
-        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
-    }
     if (action == COMPILE)
         printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
     if (action == DEBBUG)

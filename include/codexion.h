@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:47:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:17:25 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,15 +134,18 @@ void    display_monitoring_dashboard(time_t *dashboard, int coders);
 /* utils */
 
 size_t  get_str_arr_len(char **str_arr);
-int get_dongle(int id, int number_of_coder, int type);
+int     get_dongle(int id, int number_of_coder, int type);
 int     ft_is_digit(char c);
 void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 
-int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu);
+void    *coder_thread(void *data);
+void    *monitoring_thread(void *data);
+int     thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu);
 
 /* mutex */
+
 mutex_t     *mutex_initialisation(size_t nb_coder);
 
 /* time */
