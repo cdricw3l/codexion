@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 23:10:21 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 00:28:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     t_params        params;
     t_global_mutex  global_mu;
     t_monitoring    monitoring;
-
+    t_coder         *coders;
 
     memset(&params, 0, sizeof(t_params));
     memset(&global_mu, 0, sizeof(t_global_mutex));
@@ -46,14 +46,23 @@ int main(int argc, char **argv)
         write(STDERR_FILENO, "Global mutex initialisation error\n", strlen("Global mutex initialisation error\n"));
         return (1);
     }
-    if(!init_monitoring(&monitoring,  params, &global_mu))
+    if(!init_monitoring(&monitoring, params, &global_mu))
     {
         clean_gmutex(&global_mu, params.coder);
         write(STDERR_FILENO, "Monitoring structure initialisation error\n", strlen("Monitoring structure initialisation error\n"));
         return (1);
     }
+    coders = init_coders(&params, &global_mu, &monitoring);
+    if(!coders)
+    {
+        clean_gmutex(&global_mu, params.coder);
+        write(STDERR_FILENO, "Coders structure initialisation error\n", strlen("Coders structure initialisation error\n"));
+        return (1);
+    }
+    display_coders(coders, params.coder);
     clean_gmutex(&global_mu, params.coder);
     free(monitoring.timestamps_arr);
+    destroy_coders(&coders, params.coder);
     return (0);
 }
 

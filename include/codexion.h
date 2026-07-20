@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 23:09:42 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 00:25:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,23 @@ typedef struct s_global_mutex
 
 typedef struct s_coder_mutex
 {
-    t_mutex     *display;
-    t_mutex     *dongles;
-    t_mutex     *timestamp_data;
-    t_mutex     *timestamp_update;
+    t_mutex     *display_f;
+    t_mutex     *dongles_l;
+    t_mutex     *dongles_r;
+    t_mutex     *m_timestamp_data;
+    t_mutex     *m_timestamp_f;
 
 } t_coder_mutex;
+
+typedef struct  s_monitoring
+{
+    int        ttb;
+    int        nb_coder;
+    clock_t    *timestamps_arr;
+    t_mutex    *m_timestamp_data;
+    t_mutex    *m_timestamp_f;
+    
+} t_monitoring;
 
 typedef struct s_coder
 {
@@ -91,19 +102,11 @@ typedef struct s_coder
     clock_t         *timestamps;
     t_params        params;
     timespec_t      start;
-    t_coder_mutex   coder_mutex;
+    t_coder_mutex   *coder_mutex;
     
 } t_coder;
 
-typedef struct  s_monitoring
-{
-    int        ttb;
-    int        nb_coder;
-    clock_t    *timestamps_arr;
-    t_mutex    *timestamp_data;
-    t_mutex    *timestamp_f;
-    
-} t_monitoring;
+
 
 
 
@@ -136,14 +139,13 @@ int     parse_arguments(char **args, t_params *params);
 
 /* init */
 int     init_monitoring(t_monitoring  *monitoring, t_params params, t_global_mutex *gmu);
-t_coder **init_coder(t_params *params, t_mutex *dongles, t_mutex *dashboard_mu, time_t *dashboard);
-void    *destroy_coders(t_coder ***coders, int idx);
+t_coder *init_coders(t_params *params, t_global_mutex *gmu, t_monitoring *monitoring);
+void *destroy_coders(t_coder **coders, int idx);
 
 /* display */
 void    display_mutex_data(t_global_mutex mu, size_t coders);
 void    display_params(t_params param);
-void    display_coder(t_coder coder);
-void    display_coders(t_coder **coders);
+void    display_coders(t_coder *coders, size_t coder);
 void    safe_print(t_coder coder, int action);
 void    display_monitoring_dashboard(time_t *dashboard, int coders);
 

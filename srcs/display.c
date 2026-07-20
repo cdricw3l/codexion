@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 23:07:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 00:25:32 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,31 @@ void display_mutex_data(t_global_mutex mu, size_t coders)
 //     pthread_mutex_unlock(coder.mu_print);
 // }
 
-// void display_coder(t_coder coder)
-// {
-//     printf("Coder: %d\n", coder.id);
-//     printf("Usb left: %p\n", coder.dongle_l);
-//     printf("Usb right: %p\n", coder.dongle_r);
-//     printf("dashboard mutex %p\n", coder.mutex_dashboard);
-//     printf("dashboard adress %p\n", coder.compilation_dashboard);
-// }
+static void display_coder(t_coder coder)
+{
+    printf("Coder: %d\n", coder.id);
+    printf("Usb left: %p\n", coder.coder_mutex->dongles_l);
+    printf("Usb right: %p\n", coder.coder_mutex->dongles_r);
+    printf("display mutex %p\n", coder.coder_mutex->display_f);
+    printf("timestamp field %p\n", coder.timestamps);
+    printf("timestamp_f mutex %p\n", coder.coder_mutex->m_timestamp_f);
+    printf("timestamp data mutex %p\n", coder.coder_mutex->m_timestamp_data);
+    display_params(coder.params);
+}
 
-// void display_coders(t_coder **coders)
-// {
-//     size_t i;
+void display_coders(t_coder *coders, size_t coder)
+{
+    size_t i;
 
-//     i = 0;
-//     printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
-//     while (coders[i])
-//     {
-//         display_coder(*coders[i]);
-//         printf("\n");
-//         i++;
-//     }
-// }
+    i = 0;
+    printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
+    while (i < coder)
+    {
+        display_coder(coders[i]);
+        printf("\n");
+        i++;
+    }
+}
 
 void display_params(t_params param)
 {

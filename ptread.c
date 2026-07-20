@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 13:12:02 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/20 21:39:55 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 00:11:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void *arr_thread(void *data)
 int main(void)
 {
 
-    pthread_mutex_t mu;
+    t_coder *coders;
 
-    printf("init test %d\n",    pthread_mutex_init(&mu, NULL));
-    printf("destroy test %d\n", pthread_mutex_destroy(&mu));
+    coders = malloc(sizeof(t_coder) * 2);
+    assert(coders);
+
+    coders[0].id = 1;
+    
     return (0);
 }
