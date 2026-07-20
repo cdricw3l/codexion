@@ -6,19 +6,34 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:02:07 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:43:34 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-long time_diff(time_t start, time_t end)
+struct timespec time_diff(struct timespec start, struct timespec end)
 {
-    long elapsed;
+    struct timespec temp;
 
-    if ((end - start) < 0)
-        elapsed =  1000000000 + end - start;
+    if ((end.tv_nsec - start.tv_nsec) < 0)
+    {
+        temp.tv_sec = end.tv_sec + - start.tv_sec - 1;
+        temp.tv_nsec =  1000000000 + end.tv_nsec - start.tv_nsec;
+    }
     else
-        elapsed = end - start;
-    return elapsed / 1000000;
+    {
+        temp.tv_sec = end.tv_sec - start.tv_sec;
+        temp.tv_nsec = end.tv_nsec - start.tv_nsec;
+    }
+    return temp;
+}
+
+clock_t time_calculation(struct timespec time)
+{
+    /* convert second to nano*/
+    clock_t n_to_sec;
+
+    n_to_sec  = time.tv_sec * 1000000000;
+    return ((n_to_sec + time.tv_nsec) / 1000000);
 }

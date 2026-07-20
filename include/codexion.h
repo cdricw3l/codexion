@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:27:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:47:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_params
 typedef struct s_coder
 {
     int             id;
-    time_t          start;
+    struct timespec  start;
     time_t          *compilation_dashboard;
     mutex_t         *mutex_dashboard;
     mutex_t         *mu_print;
@@ -128,7 +128,7 @@ void    *destroy_coders(t_coder ***coders, int idx);
 void    display_params(t_params param);
 void    display_coder(t_coder coder);
 void    display_coders(t_coder **coders);
-void    safe_print(t_coder coder, int action, clock_t timestamp);
+void    safe_print(t_coder coder, int action);
 void    display_monitoring_dashboard(time_t *dashboard, int coders);
 
 /* utils */
@@ -147,7 +147,7 @@ mutex_t     *mutex_initialisation(size_t nb_coder);
 
 /* time */
 
-void    update_timestamps(int *dashboard);
 struct timespec time_diff(struct timespec start, struct timespec end);
+clock_t         time_calculation(struct timespec time);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:04:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:49:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void *coder_thread(void *data)
             pthread_mutex_lock(coder->dongle_r);
         }
         clock_gettime(CLOCK_MONOTONIC, &tm);    
-        safe_print(*coder, TAKE,tm.tv_nsec);
+        safe_print(*coder, TAKE);
         clock_gettime(CLOCK_MONOTONIC, &tm);
-        safe_print(*coder, COMPILE, tm.tv_nsec);
+        safe_print(*coder, COMPILE);
 
         /* compiling */
         usleep(coder->params.ttc * 1000);
@@ -44,10 +44,10 @@ void *coder_thread(void *data)
         pthread_mutex_unlock(coder->dongle_l);
         clock_gettime(CLOCK_MONOTONIC, &tm);
         /* debbuging */
-        safe_print(*coder, DEBBUG, tm.tv_nsec);
+        safe_print(*coder, DEBBUG);
         usleep(coder->params.ttd * 1000);
         clock_gettime(CLOCK_MONOTONIC, &tm);
-        safe_print(*coder, REFACTO, tm.tv_nsec);
+        safe_print(*coder, REFACTO);
         usleep(coder->params.ttr * 1000);
         coder->params.ncr--;
     }
@@ -134,7 +134,7 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     clock_gettime(CLOCK_MONOTONIC, &start);
     while (i < param->coder)
     {
-        coders[i]->start = start.tv_nsec;
+        coders[i]->start = start;
         coders[i]->mu_print = &mu_print;
         pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
         usleep(10000);

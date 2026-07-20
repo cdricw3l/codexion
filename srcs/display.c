@@ -6,30 +6,31 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:06:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:49:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-void safe_print(t_coder coder, int action, clock_t timestamp)
+void safe_print(t_coder coder, int action)
 {
-    clock_t now;
+    clock_t timestamp;
+    struct timespec tm;
     
     pthread_mutex_lock(coder.mu_print);
-
-    now = time_diff(coder.start, timestamp);
+    clock_gettime(CLOCK_MONOTONIC, &tm);
+    timestamp = time_calculation(time_diff(coder.start, tm));
     if (action == TAKE)
     {
-        printf(HCYN"start:%ld now:%ld result: %ld %d has taken a dongle"CRESET"\n",coder.start, timestamp,now, coder.id);
-        printf(HCYN"start:%ld now:%ld result: %ld %d has taken a dongle"CRESET"\n",coder.start, timestamp, now,coder.id);
+        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
+        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
     }
     if (action == COMPILE)
-        printf(HCYN"start:%ld now:%ld result: %ld %d is compiling"CRESET"\n",coder.start, timestamp, now, coder.id);
+        printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
     if (action == DEBBUG)
-        printf(HCYN"start:%ld now:%ld result: %ld %d is debugging"CRESET"\n",coder.start, timestamp, now, coder.id);
+        printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
     if (action == REFACTO)
-        printf(HCYN"start:%ld now:%ld result: %ld %d is refactoring"CRESET"\n",coder.start, timestamp,now, coder.id);
+        printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
     pthread_mutex_unlock(coder.mu_print);
 }
 
