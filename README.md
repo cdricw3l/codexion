@@ -43,6 +43,8 @@ make re
 * https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3.html
 * https://sites.uclouvain.be/SyllabusC/notes/Theorie/Threads/threads2.html
 
+* https://www.guyrutenberg.com/2007/09/22/profiling-code-using-clock_gettime/
+
 # Blocking cases handled
 
 # Thread synchronization mechanisms
