@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 11:46:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 12:39:07 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 void *coder_thread(void *data)
 {
     t_coder *coder;
-    
+    struct timespec tm;
+
     coder = (t_coder *)data;
     while (coder->params.ncr > 0)
     {
@@ -30,18 +31,23 @@ void *coder_thread(void *data)
             pthread_mutex_lock(coder->dongle_l);
             pthread_mutex_lock(coder->dongle_r);
         }
-        safe_print(*coder, TAKE);
-        safe_print(*coder, COMPILE);
+        clock_gettime(CLOCK_MONOTONIC, &tm);    
+        safe_print(*coder, TAKE,tm.tv_nsec);
+        clock_gettime(CLOCK_MONOTONIC, &tm);
+        safe_print(*coder, COMPILE, tm.tv_nsec);
+
         /* compiling */
         usleep(coder->params.ttc * 1000);
         /* cooldown */
         usleep(coder->params.dc * 1000);
         pthread_mutex_unlock(coder->dongle_r);
         pthread_mutex_unlock(coder->dongle_l);
+        clock_gettime(CLOCK_MONOTONIC, &tm);
         /* debbuging */
-        safe_print(*coder, DEBBUG);
+        safe_print(*coder, DEBBUG, tm.tv_nsec);
         usleep(coder->params.ttd * 1000);
-        safe_print(*coder, REFACTO);
+        clock_gettime(CLOCK_MONOTONIC, &tm);
+        safe_print(*coder, REFACTO, tm.tv_nsec);
         usleep(coder->params.ttr * 1000);
         coder->params.ncr--;
     }
@@ -125,13 +131,13 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     // }
     pthread_mutex_init(&mu_print, NULL);
     i = 0;
-    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    clock_gettime(CLOCK_MONOTONIC, &start);
     while (i < param->coder)
     {
         coders[i]->start = start.tv_nsec;
         coders[i]->mu_print = &mu_print;
         pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
-        usleep(100000);
+        usleep(10000);
         i++;
     }
     i = 0;

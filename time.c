@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/20 10:26:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 12:32:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void *thread(void *data)
     memset(&end, 0, sizeof(struct timespec));
     pthread_mutex_unlock(mu->mu_memset);
     printf("resultat du unlock\n");
-    while (i >= 0)
+    while (1)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);
         usleep(200000);
