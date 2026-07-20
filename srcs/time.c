@@ -6,16 +6,20 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 08:13:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 10:29:17 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-// void test_time()
-// {
-//     struct timespec time;
+time_t time_diff(time_t start, time_t end)
+{
+    time_t elapsed;
 
-//     clock_gettime();
-
-// }
+    if ((end - start) < 0)
+        elapsed =  1000000000 + end - start;
+    else
+        elapsed = end - start;
+    
+    return elapsed / 100000;
+}

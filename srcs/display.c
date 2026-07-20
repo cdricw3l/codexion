@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 07:38:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 10:28:57 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void safe_print(t_coder coder, int action)
 {
-    mutex_t print_mutex;
-    struct timeval timestamp;
+    struct timespec timestamp;
     time_t now;
-    memset(&print_mutex, 0, sizeof(mutex_t));
-    pthread_mutex_lock(&print_mutex);
 
-    gettimeofday(&timestamp, NULL);
-    now = (timestamp.tv_usec - coder.start) / 1000;
+    
+    
+    pthread_mutex_lock(coder.mu_print);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+    now = time_diff(coder.start, timestamp.tv_nsec);
     if (action == TAKE)
     {
         printf(HCYN"%ld %d has taken a dongle"CRESET"\n",now,coder.id);
@@ -33,8 +33,7 @@ void safe_print(t_coder coder, int action)
         printf(HCYN"%ld %d is debugging"CRESET"\n", now, coder.id);
     if (action == REFACTO)
         printf(HCYN"%ld %d is refactoring"CRESET"\n", now, coder.id);
-    pthread_mutex_unlock(&print_mutex);
-    pthread_mutex_destroy(&print_mutex);
+    pthread_mutex_unlock(coder.mu_print);
 }
 
 void display_coder(t_coder coder)

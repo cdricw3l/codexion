@@ -6,11 +6,12 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/20 09:56:40 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 10:26:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "include/codexion.h"
+
 
 
 void test_time()
@@ -38,7 +39,6 @@ void test_time()
     
 }
 
-
 time_t time_diff(time_t start, time_t end)
 {
     time_t elapsed;
@@ -48,8 +48,9 @@ time_t time_diff(time_t start, time_t end)
     else
         elapsed = end - start;
     
-    return elapsed;
+    return elapsed / 1000000;
 }
+
 struct s_mu
 {
     pthread_mutex_t *mu_memset;

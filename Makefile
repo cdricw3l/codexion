@@ -39,7 +39,7 @@ valrun: $(NAME)
 	./$(NAME) $(ARG)
 
 helrun: $(NAME)
-	valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME) 
+	valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)  $(ARG)
 
 clean:
 	rm -f srcs/*.o

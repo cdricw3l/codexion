@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 07:37:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 10:18:20 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_coder
     time_t          start;
     time_t          *compilation_dashboard;
     mutex_t         *mutex_dashboard;
+    mutex_t         *mu_print;
     pthread_mutex_t *dongle_l;
     pthread_mutex_t *dongle_r;
     t_params        params;
@@ -83,10 +84,10 @@ typedef struct s_coder
 
 typedef struct  s_monitoring
 {
-    int     ttb;
-    int     nb_coder;
-    time_t     *dashboard;
-    mutex_t *dashboard_mu;
+    int         ttb;
+    int         nb_coder;
+    time_t      *dashboard;
+    mutex_t     *dashboard_mu;
     
 } t_monitoring;
 
@@ -146,6 +147,7 @@ mutex_t     *mutex_initialisation(size_t nb_coder);
 
 /* time */
 
-void update_timestamps(int *dashboard);
+void    update_timestamps(int *dashboard);
+time_t  time_diff(time_t start, time_t end);
 
 #endif

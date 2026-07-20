@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 07:43:06 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 10:30:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ void *coder_thread(void *data)
     coder = (t_coder *)data;
     while (coder->params.ncr > 0)
     {
-        pthread_mutex_lock(coder->dongle_l);
         pthread_mutex_lock(coder->dongle_r);
-        //update_timestamps(coder->last_compile);
+        pthread_mutex_lock(coder->dongle_l);
         safe_print(*coder, TAKE);
         safe_print(*coder, COMPILE);
         /* compiling */
         usleep(coder->params.ttc * 1000);
         /* cooldown */
         usleep(coder->params.dc * 1000);
-        pthread_mutex_unlock(coder->dongle_l);
         pthread_mutex_unlock(coder->dongle_r);
+        pthread_mutex_unlock(coder->dongle_l);
         /* debbuging */
         safe_print(*coder, DEBBUG);
         usleep(coder->params.ttd * 1000);
@@ -92,35 +91,38 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
 {
 
     size_t          i;
+    pthread_mutex_t mu_print;
     /* CODER_MAX is the num of thread max  -1 for the monitoring thread les see to reduce de max philo to 200 (evalsheet max)*/
     pthread_t       thread_coders[2000];
     pthread_t       thread_monitoring;
     t_coder         **coders;
     time_t          *dashboard;
-    struct          timeval start;
+    struct          timespec start;
 
     dashboard = malloc(sizeof(time_t) * param->coder);
     if(!dashboard)
         return (FALSE);
     memset(dashboard, 0, sizeof(time_t) * param->coder);
+
     coders = init_coder(param, dongles, dashboard_mu, dashboard);
     if(!coders)
     {
         free(dashboard);
         return (FALSE);
     }
-    if(!launch_monitoring_thread(dashboard, dashboard_mu, *param, &thread_monitoring))
-    {
-        free(dashboard);
-        destroy_coders(&coders, param->coder);
-        return (FALSE);
-    }
+    // if(!launch_monitoring_thread(dashboard, dashboard_mu, *param, &thread_monitoring))
+    // {
+    //     free(dashboard);
+    //     destroy_coders(&coders, param->coder);
+    //     return (FALSE);
+    // }
+    pthread_mutex_init(&mu_print, NULL);
     i = 0;
-
-    gettimeofday(&start, NULL);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     while (i < param->coder)
     {
-        coders[i]->start = start.tv_usec;
+        coders[i]->start = start.tv_nsec;
+        coders[i]->mu_print = &mu_print;
         pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
         usleep(100000);
         i++;
@@ -132,7 +134,8 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
         free(coders[i]);
         i++;
     }
-    pthread_join(thread_monitoring, NULL);
+    pthread_mutex_destroy(&mu_print);
+    //pthread_join(thread_monitoring, NULL);
     free(coders[i]);
     free(coders);
     return (TRUE);
