@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 10:30:33 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 11:26:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,16 @@ void *coder_thread(void *data)
     coder = (t_coder *)data;
     while (coder->params.ncr > 0)
     {
-        pthread_mutex_lock(coder->dongle_r);
-        pthread_mutex_lock(coder->dongle_l);
+        if (coder->id == 0)
+        {
+            pthread_mutex_lock(coder->dongle_r);
+            pthread_mutex_lock(coder->dongle_l);
+        }
+        else
+        {
+            pthread_mutex_lock(coder->dongle_l);
+            pthread_mutex_lock(coder->dongle_r);
+        }
         safe_print(*coder, TAKE);
         safe_print(*coder, COMPILE);
         /* compiling */
