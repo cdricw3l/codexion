@@ -6,53 +6,80 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 20:24:40 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 22:46:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-void safe_print(t_coder coder, int action)
-{
-    clock_t timestamp;
-    struct timespec tm;
-    
-    pthread_mutex_lock(coder.mu_print);
-    clock_gettime(CLOCK_MONOTONIC, &tm);
-    timestamp = time_calculation(time_diff(coder.start, tm));
-    if (action == TAKE)
-        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
-    if (action == COMPILE)
-        printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
-    if (action == DEBBUG)
-        printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
-    if (action == REFACTO)
-        printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
-    pthread_mutex_unlock(coder.mu_print);
-}
-
-void display_coder(t_coder coder)
-{
-    printf("Coder: %d\n", coder.id);
-    printf("Usb left: %p\n", coder.dongle_l);
-    printf("Usb right: %p\n", coder.dongle_r);
-    printf("dashboard mutex %p\n", coder.mutex_dashboard);
-    printf("dashboard adress %p\n", coder.compilation_dashboard);
-}
-
-void display_coders(t_coder **coders)
+void display_mutex_data(t_global_mutex mu, size_t coders)
 {
     size_t i;
 
-    i = 0;
-    printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
-    while (coders[i])
+    printf("display fonction mutex %p\n", &mu.display_f);
+    printf("timestamp fonction mutex %p\n", &mu.timestamp_f);
+    if (mu.dongles)
     {
-        display_coder(*coders[i]);
-        printf("\n");
-        i++;
+        i = 0;
+        while (i < coders)
+        {
+            printf("Dongle [%ld] %p\n", i, &mu.dongles[i]);
+            i++;
+        }
+
+    }
+    if (mu.timestamp_data)
+    {
+        i = 0;
+        while (i < coders)
+        {
+            printf("timestamp field [%ld] %p\n", i, &mu.timestamp_data[i]);
+            i++;
+        }
     }
 }
+
+// void safe_print(t_coder coder, int action)
+// {
+//     clock_t timestamp;
+//     struct timespec tm;
+    
+//     pthread_mutex_lock(coder.mu_print);
+//     clock_gettime(CLOCK_MONOTONIC, &tm);
+//     timestamp = time_calculation(time_diff(coder.start, tm));
+//     if (action == TAKE)
+//         printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
+//     if (action == COMPILE)
+//         printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
+//     if (action == DEBBUG)
+//         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
+//     if (action == REFACTO)
+//         printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
+//     pthread_mutex_unlock(coder.mu_print);
+// }
+
+// void display_coder(t_coder coder)
+// {
+//     printf("Coder: %d\n", coder.id);
+//     printf("Usb left: %p\n", coder.dongle_l);
+//     printf("Usb right: %p\n", coder.dongle_r);
+//     printf("dashboard mutex %p\n", coder.mutex_dashboard);
+//     printf("dashboard adress %p\n", coder.compilation_dashboard);
+// }
+
+// void display_coders(t_coder **coders)
+// {
+//     size_t i;
+
+//     i = 0;
+//     printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
+//     while (coders[i])
+//     {
+//         display_coder(*coders[i]);
+//         printf("\n");
+//         i++;
+//     }
+// }
 
 void display_params(t_params param)
 {

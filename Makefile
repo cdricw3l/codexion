@@ -8,13 +8,13 @@ SRCS= srcs/codexion.c \
 		srcs/parsing.c \
 		srcs/utils.c \
 		srcs/display.c \
-		srcs/thread_coder.c \
-		srcs/thread_manager.c \
-		srcs/thread_monitoring.c \
-		srcs/time.c \
-		srcs/error.c \
 		srcs/mutex.c \
-		srcs/init.c
+		srcs/error.c \
+		srcs/time.c \
+# 		srcs/thread_coder.c \
+#		srcs/init.c \
+# 		srcs/thread_manager.c \
+# 		srcs/thread_monitoring.c \
 
 
 SRCS_OBJS= ${SRCS:.c=.o}

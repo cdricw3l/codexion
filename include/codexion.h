@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 20:17:25 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 22:39:00 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,48 @@ typedef enum e_actions
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 124441
 
-typedef pthread_mutex_t mutex_t;
+typedef         pthread_mutex_t t_mutex;
+typedef  struct timespec        timespec_t;
 
 
 typedef struct s_params
 {
-    size_t coder;
-    size_t ttb;
-    size_t ttc;
-    size_t ttd;
-    size_t ttr;
+    size_t  coder;
+    size_t  ttb;
+    size_t  ttc;
+    size_t  ttd;
+    size_t  ttr;
+    size_t  dc;
     int     ncr;
-    size_t dc;
-    int scheduler;
+    int     scheduler;
 
 } t_params;
 
+typedef struct s_global_mutex
+{
+    t_mutex     display_f;
+    t_mutex     timestamp_f;
+    t_mutex     *dongles;
+    t_mutex     *timestamp_data;
 
+} t_global_mutex;
 
+typedef struct s_coder_mutex
+{
+    t_mutex     *display;
+    t_mutex     *dongles;
+    t_mutex     *timestamp_data;
+    t_mutex     *timestamp_update;
+
+} t_coder_mutex;
 
 typedef struct s_coder
 {
     int             id;
-    struct timespec  start;
-    time_t          *compilation_dashboard;
-    mutex_t         *mutex_dashboard;
-    mutex_t         *mu_print;
-    pthread_mutex_t *dongle_l;
-    pthread_mutex_t *dongle_r;
+    clock_t         *timestamps;
     t_params        params;
+    timespec_t      start;
+    t_coder_mutex   coder_mutex;
     
 } t_coder;
 
@@ -86,10 +99,12 @@ typedef struct  s_monitoring
 {
     int         ttb;
     int         nb_coder;
-    time_t      *dashboard;
-    mutex_t     *dashboard_mu;
+    clock_t     *timestamps;
+    t_mutex     *dashboard_mu;
     
 } t_monitoring;
+
+
 
 enum e_PARAMS
 {
@@ -120,11 +135,11 @@ int     parse_arguments(char **args, t_params *params);
 
 /* init */
 
-t_coder **init_coder(t_params *params, mutex_t *dongles, mutex_t *dashboard_mu, time_t *dashboard);
+t_coder **init_coder(t_params *params, t_mutex *dongles, t_mutex *dashboard_mu, time_t *dashboard);
 void    *destroy_coders(t_coder ***coders, int idx);
 
 /* display */
-
+void    display_mutex_data(t_global_mutex mu, size_t coders);
 void    display_params(t_params param);
 void    display_coder(t_coder coder);
 void    display_coders(t_coder **coders);
@@ -142,11 +157,12 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 void    *coder_thread(void *data);
 void    *monitoring_thread(void *data);
-int     thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu);
+int     thead_luncher(t_params *param, t_mutex *dongles, t_mutex *dashboard_mu);
 
 /* mutex */
-
-mutex_t     *mutex_initialisation(size_t nb_coder);
+int clean_gmutex(t_global_mutex *mu, size_t coders);
+int mutex_initialisation(t_mutex *mu);
+int g_mutex_initialisation(t_global_mutex  *gmutex, size_t coders);
 
 /* time */
 

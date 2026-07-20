@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 20:14:24 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 20:25:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:59:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void *coder_thread(void *data)
             pthread_mutex_lock(coder->dongle_l);
             safe_print(*coder, TAKE);
             pthread_mutex_lock(coder->dongle_r);
-            safe_print(*coder, TAKE);
         }
         safe_print(*coder, COMPILE);
         /* compiling */

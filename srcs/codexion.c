@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 20:12:46 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 22:48:16 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define DISPLAY_PARAMS TRUE
 
-int destroy_mutex(mutex_t *mu, int idx)
+int destroy_mutex(t_mutex *mu, int idx)
 {
     int i;
     i = 0;
@@ -30,27 +30,23 @@ int main(int argc, char **argv)
 {
     (void) argc;
 
-    t_params    params;
-    mutex_t     *dongles;
-    mutex_t     *dashboard;
+    t_params        params;
+    t_global_mutex  global_mu;
 
 
+    memset(&params, 0, sizeof(t_params));
+    memset(&global_mu, 0, sizeof(t_global_mutex));
     if(parse_arguments(&argv[1], &params) == FALSE)
         return (1);
     if (DISPLAY_PARAMS)
         display_params(params);
-    dongles =  mutex_initialisation(params.coder);
-    if(!dongles)
-        return (write(STDERR_FILENO, "Mutex dongle initialisation error\n", strlen("Mutex dongle initialisation error\n")));
-    dashboard = mutex_initialisation(params.coder);
-    if(!dashboard)
+    if(!g_mutex_initialisation(&global_mu, params.coder))
     {
-        write(STDERR_FILENO, "Mutex dongle initialisation error\n", strlen("Mutex dongle initialisation error\n"));
-        return destroy_mutex(dongles, params.coder);
+        write(STDERR_FILENO, "Global mutex initialisation error\n", strlen("Global mutex initialisation error\n"));
+        return (1);
     }
-    thead_luncher(&params, dongles, dashboard);
-    destroy_mutex(dongles, params.coder);
-    destroy_mutex(dashboard, params.coder);
+    display_mutex_data(global_mu, params.coder);
+    clean_gmutex(&global_mu, params.coder);
     return (0);
 }
 

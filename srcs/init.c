@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 08:09:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/19 08:49:20 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/20 22:28:29 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void *destroy_coders(t_coder ***coders, int idx)
     return (NULL);
 }
 
-t_coder **init_coder(t_params *params, mutex_t *dongles, mutex_t *dashboard_mu, time_t *dashboard)
+t_coder **init_coder(t_params *params, t_mutex *dongles, t_mutex *dashboard_mu, clock_t *dashboard)
 {
     size_t  i;
     t_coder **coders;
