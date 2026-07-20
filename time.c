@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/18 22:43:13 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 08:15:37 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 
 void test_time()
 {
-    struct timespec time;
+    struct timespec time1;
+    struct timespec time2;
     int i = 100;
 
-
+    memset(&time1, 0, sizeof(struct timespec));
+    memset(&time2, 0, sizeof(struct timespec));
     while (i >= 0)
     {
-        clock_gettime(1, &time);
-        time_t t1 = time.tv_nsec;
+        clock_gettime(CLOCK_MONOTONIC, &time1);
+        time_t t1 = time1.tv_nsec;
 
-        printf("nsec %ld\n", time.tv_nsec);
+        printf("nsec %ld\n", time1.tv_nsec);
         usleep(200000);
-        clock_gettime(1, &time);
-        time_t t2 = time.tv_nsec;
-        printf("nsec %ld\n", time.tv_nsec);
-        printf("%ld\n", (t2 - t1) );
+        clock_gettime(CLOCK_MONOTONIC, &time2);
+        u_int64_t t2 = time2.tv_nsec;
+        printf("nsec %ld\n", time2.tv_nsec);
+        printf("%ld\n", (t2 - t1));
         i--;
     }
     

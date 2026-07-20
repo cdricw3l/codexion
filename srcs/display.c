@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/19 08:50:57 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/20 07:38:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,26 @@
 void safe_print(t_coder coder, int action)
 {
     mutex_t print_mutex;
-
+    struct timeval timestamp;
+    time_t now;
     memset(&print_mutex, 0, sizeof(mutex_t));
     pthread_mutex_lock(&print_mutex);
+
+    gettimeofday(&timestamp, NULL);
+    now = (timestamp.tv_usec - coder.start) / 1000;
     if (action == TAKE)
     {
-        printf(HCYN"%d has taken a dongle"CRESET"\n", coder.id);
-        printf(HCYN"%d has taken a dongle"CRESET"\n", coder.id);
+        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",now,coder.id);
+        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",now, coder.id);
     }
     if (action == COMPILE)
-        printf(HCYN"%d is compiling"CRESET"\n", coder.id);
+        printf(HCYN"%ld %d is compiling"CRESET"\n",now,coder.id);
     if (action == DEBBUG)
-        printf(HCYN"%d is debugging"CRESET"\n", coder.id);
+        printf(HCYN"%ld %d is debugging"CRESET"\n", now, coder.id);
     if (action == REFACTO)
-        printf(HCYN"%d is refactoring"CRESET"\n", coder.id);
+        printf(HCYN"%ld %d is refactoring"CRESET"\n", now, coder.id);
     pthread_mutex_unlock(&print_mutex);
+    pthread_mutex_destroy(&print_mutex);
 }
 
 void display_coder(t_coder coder)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/19 08:53:36 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/20 07:43:06 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int launch_monitoring_thread(time_t *dashboard, mutex_t *dashboard_mu, t_params 
         return(FALSE);
     }
     printf("Thread de monitoring initialisé\n");
-    usleep(10000);
     return (TRUE);
 }
 
@@ -98,7 +97,7 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     pthread_t       thread_monitoring;
     t_coder         **coders;
     time_t          *dashboard;
-    //struct          timespec time;
+    struct          timeval start;
 
     dashboard = malloc(sizeof(time_t) * param->coder);
     if(!dashboard)
@@ -118,19 +117,21 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     }
     i = 0;
 
-    // while (i < param->coder)
-    // {
-    //     pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
-    //     usleep(1000);
-    //     i++;
-    // }
-    // i = 0;
-    // while(i < param->coder)
-    // {
-    //     pthread_join(thread_coders[i], NULL);
-    //     free(coders[i]);
-    //     i++;
-    // }
+    gettimeofday(&start, NULL);
+    while (i < param->coder)
+    {
+        coders[i]->start = start.tv_usec;
+        pthread_create(&thread_coders[i], NULL, coder_thread, coders[i]);
+        usleep(100000);
+        i++;
+    }
+    i = 0;
+    while(i < param->coder)
+    {
+        pthread_join(thread_coders[i], NULL);
+        free(coders[i]);
+        i++;
+    }
     pthread_join(thread_monitoring, NULL);
     free(coders[i]);
     free(coders);
