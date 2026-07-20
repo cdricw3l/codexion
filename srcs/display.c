@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 10:28:57 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 11:53:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,22 @@ void safe_print(t_coder coder, int action)
 {
     struct timespec timestamp;
     time_t now;
-
-    
     
     pthread_mutex_lock(coder.mu_print);
     clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+
     now = time_diff(coder.start, timestamp.tv_nsec);
     if (action == TAKE)
     {
-        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",now,coder.id);
-        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",now, coder.id);
+        printf(HCYN"start:%ld now:%ld result: %ld %d has taken a dongle"CRESET"\n",coder.start, timestamp.tv_nsec,now, coder.id);
+        printf(HCYN"start:%ld now:%ld result: %ld %d has taken a dongle"CRESET"\n",coder.start, timestamp.tv_nsec,now, coder.id);
     }
     if (action == COMPILE)
-        printf(HCYN"%ld %d is compiling"CRESET"\n",now,coder.id);
+        printf(HCYN"start:%ld now:%ld result: %ld %d is compiling"CRESET"\n",coder.start, timestamp.tv_nsec,now, coder.id);
     if (action == DEBBUG)
-        printf(HCYN"%ld %d is debugging"CRESET"\n", now, coder.id);
+        printf(HCYN"start:%ld now:%ld result: %ld %d is debugging"CRESET"\n",coder.start, timestamp.tv_nsec,now, coder.id);
     if (action == REFACTO)
-        printf(HCYN"%ld %d is refactoring"CRESET"\n", now, coder.id);
+        printf(HCYN"start:%ld now:%ld result: %ld %d is refactoring"CRESET"\n",coder.start, timestamp.tv_nsec,now, coder.id);
     pthread_mutex_unlock(coder.mu_print);
 }
 

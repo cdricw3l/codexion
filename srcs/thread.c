@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 11:26:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 11:46:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     if(!dashboard)
         return (FALSE);
     memset(dashboard, 0, sizeof(time_t) * param->coder);
-
     coders = init_coder(param, dongles, dashboard_mu, dashboard);
     if(!coders)
     {
@@ -146,5 +145,6 @@ int thead_luncher(t_params *param, mutex_t *dongles, mutex_t *dashboard_mu)
     //pthread_join(thread_monitoring, NULL);
     free(coders[i]);
     free(coders);
+    free(dashboard);
     return (TRUE);
 }

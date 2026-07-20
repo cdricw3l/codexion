@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 10:29:17 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/20 11:53:51 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ time_t time_diff(time_t start, time_t end)
         elapsed =  1000000000 + end - start;
     else
         elapsed = end - start;
-    
-    return elapsed / 100000;
+    return elapsed / 1000000;
 }
