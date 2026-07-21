@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 09:21:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 09:37:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@
 
 static int launcher_monitoring(pthread_t *monitoring_t, t_monitoring *monitoring_data)   
 {
-    if (pthread_create(monitoring_data, NULL, monitoring_thread, monitoring_data))
+    printf("Start\n");
+    if (pthread_create(monitoring_t, NULL, monitoring_thread, monitoring_data))
+    {
+        perror("Monitoring Thread launcher: ");
         return (FALSE);
+    }
     return (TRUE);
 }
 
@@ -45,8 +49,8 @@ int thead_launcher(t_params *params, t_coder *coders, t_monitoring *monitoring)
 
 
     display_coders(coders, params->coder);
-
-
+    launcher_monitoring(&monitoring_t, monitoring);
+    pthread_join(monitoring_t, NULL);
     
     return (TRUE);
 }
