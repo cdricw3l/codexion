@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 08:41:06 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 09:14:15 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int main(int argc, char **argv)
         write(STDERR_FILENO, "Coders structure initialisation error\n", strlen("Coders structure initialisation error\n"));
         return (1);
     }
-    display_coders(coders, params.coder);
+
+    thead_luncher(&params, coders, &monitoring);
     clean_gmutex(&global_mu, params.coder);
     free(monitoring.timestamps_arr);
     destroy_coders(&coders, params.coder);

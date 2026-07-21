@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 00:25:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 09:13:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int     parse_arguments(char **args, t_params *params);
 /* init */
 int     init_monitoring(t_monitoring  *monitoring, t_params params, t_global_mutex *gmu);
 t_coder *init_coders(t_params *params, t_global_mutex *gmu, t_monitoring *monitoring);
-void *destroy_coders(t_coder **coders, int idx);
+void    *destroy_coders(t_coder **coders, int idx);
 
 /* display */
 void    display_mutex_data(t_global_mutex mu, size_t coders);
@@ -160,7 +160,7 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 void    *coder_thread(void *data);
 void    *monitoring_thread(void *data);
-int     thead_luncher(t_params *param, t_mutex *dongles, t_mutex *dashboard_mu);
+int     thead_luncher(t_params *param, t_coder *coders, t_monitoring *monitoring);
 
 /* mutex */
 int clean_gmutex(t_global_mutex *mu, size_t coders);
