@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 08:09:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/21 00:31:48 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 08:41:26 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 void *destroy_coders(t_coder **coders, int idx)
 {
     int i;
-
+    t_coder *c;
     i = 0;
+
+    c = *coders;
     while (i < idx)
-    {
-        free(coders[i]->coder_mutex);
-        i++;
-    }
+        free((&c[i++])->coder_mutex);
     free(*coders);
     return (NULL);
 }

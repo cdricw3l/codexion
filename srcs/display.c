@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 00:25:32 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 08:28:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static void display_coder(t_coder coder)
     printf("timestamp field %p\n", coder.timestamps);
     printf("timestamp_f mutex %p\n", coder.coder_mutex->m_timestamp_f);
     printf("timestamp data mutex %p\n", coder.coder_mutex->m_timestamp_data);
-    display_params(coder.params);
 }
 
 void display_coders(t_coder *coders, size_t coder)
