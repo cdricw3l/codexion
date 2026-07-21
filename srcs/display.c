@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 08:28:33 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 10:05:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,24 @@ void display_mutex_data(t_global_mutex mu, size_t coders)
     }
 }
 
-// void safe_print(t_coder coder, int action)
-// {
-//     clock_t timestamp;
-//     struct timespec tm;
+void safe_print(t_coder coder, int action)
+{
+    clock_t timestamp;
+    struct timespec tm;
     
-//     pthread_mutex_lock(coder.mu_print);
-//     clock_gettime(CLOCK_MONOTONIC, &tm);
-//     timestamp = time_calculation(time_diff(coder.start, tm));
-//     if (action == TAKE)
-//         printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
-//     if (action == COMPILE)
-//         printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
-//     if (action == DEBBUG)
-//         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
-//     if (action == REFACTO)
-//         printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
-//     pthread_mutex_unlock(coder.mu_print);
-// }
+    pthread_mutex_lock(coder.coder_mutex->display_f);
+    clock_gettime(CLOCK_MONOTONIC, &tm);
+    timestamp = time_calculation(time_diff(coder.start, tm));
+    if (action == TAKE)
+        printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
+    if (action == COMPILE)
+        printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
+    if (action == DEBBUG)
+        printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
+    if (action == REFACTO)
+        printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
+    pthread_mutex_unlock(coder.coder_mutex->display_f);
+}
 
 static void display_coder(t_coder coder)
 {

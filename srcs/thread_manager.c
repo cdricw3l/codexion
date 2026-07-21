@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:53:56 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 09:37:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 10:13:34 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,46 @@ static int launcher_monitoring(pthread_t *monitoring_t, t_monitoring *monitoring
     return (TRUE);
 }
 
-int thead_launcher(t_params *params, t_coder *coders, t_monitoring *monitoring)
+static int launcher_coders(size_t nb_coders, pthread_t *coders_t, t_coder *coders)   
 {
-    pthread_t monitoring_t;
+    size_t i;
+    struct timespec tm;
+    i = 0;
 
-
-    display_coders(coders, params->coder);
-    launcher_monitoring(&monitoring_t, monitoring);
-    pthread_join(monitoring_t, NULL);
+    clock_gettime(CLOCK_MONOTONIC, &tm);
+    while (i < nb_coders)
+    {
+        coders[i].start = tm;
+        if (pthread_create(&coders_t[i], NULL, coder_thread, &coders[i]))
+        {
+            perror("Monitoring Thread launcher: ");
+            return (FALSE);
+        }
+        usleep(1000);
+        i++;
+    }
     
+    return (TRUE);
+}
+
+int thead_launcher(size_t nb_coders, t_coder *coders, t_monitoring *monitoring)
+{
+    pthread_t   monitoring_t;
+    pthread_t   *coders_t;
+    size_t      i;
+
+    coders_t = malloc(sizeof(pthread_t) * nb_coders);
+    if (!coders)
+    {
+        write(STDERR_FILENO, "Coder thread allocation error\n", strlen("Coder thread allocation error\n"));
+        return (FALSE);
+    }
+    //launcher_monitoring(&monitoring_t, monitoring);
+    launcher_coders(nb_coders, coders_t, coders);
+    //pthread_join(monitoring_t, NULL);
+    i = 0;
+    while (i < nb_coders)
+        pthread_join(coders_t[i++], NULL);
+    free(coders_t);
     return (TRUE);
 }

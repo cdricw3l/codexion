@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 09:35:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 10:03:19 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
         return (1);
     }
 
-    thead_launcher(&params, coders, &monitoring);
+    thead_launcher(params.coder, coders, &monitoring);
     clean_gmutex(&global_mu, params.coder);
     free(monitoring.timestamps_arr);
     destroy_coders(&coders, params.coder);

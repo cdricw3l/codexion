@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 09:34:01 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 10:03:35 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_global_mutex
     t_mutex     display_f;
     t_mutex     timestamp_f;
     t_mutex     *dongles;
+    t_mutex     *states;
     t_mutex     *timestamp_data;
 
 } t_global_mutex;
@@ -99,6 +100,7 @@ typedef struct  s_monitoring
 typedef struct s_coder
 {
     int             id;
+    int             state;
     clock_t         *timestamps;
     t_params        params;
     timespec_t      start;
@@ -160,7 +162,7 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 void    *coder_thread(void *data);
 void    *monitoring_thread(void *data);
-int thead_launcher(t_params *params, t_coder *coders, t_monitoring *monitoring);
+int     thead_launcher(size_t nb_coders, t_coder *coders, t_monitoring *monitoring);
 /* mutex */
 int clean_gmutex(t_global_mutex *mu, size_t coders);
 int g_mutex_initialisation(t_global_mutex  *gmutex, size_t coders);

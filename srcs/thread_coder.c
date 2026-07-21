@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 20:14:24 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 20:59:45 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/21 10:15:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,27 @@ void *coder_thread(void *data)
     coder = (t_coder *)data;
     while (coder->params.ncr > 0)
     {
-        if (coder->id == 0)
+        if (coder->id == 1)
         {
-            pthread_mutex_lock(coder->dongle_r);
+            pthread_mutex_lock(coder->coder_mutex->dongles_r);
             safe_print(*coder, TAKE);
-            pthread_mutex_lock(coder->dongle_l);
+            pthread_mutex_lock(coder->coder_mutex->dongles_l);
             safe_print(*coder, TAKE);
         }
         else
         {
-            pthread_mutex_lock(coder->dongle_l);
+            pthread_mutex_lock(coder->coder_mutex->dongles_l);
             safe_print(*coder, TAKE);
-            pthread_mutex_lock(coder->dongle_r);
+            pthread_mutex_lock(coder->coder_mutex->dongles_r);
+            safe_print(*coder, TAKE);
         }
         safe_print(*coder, COMPILE);
         /* compiling */
         usleep(coder->params.ttc * 1000);
         /* cooldown */
-        usleep(coder->params.dc * 1000);
-        pthread_mutex_unlock(coder->dongle_r);
-        pthread_mutex_unlock(coder->dongle_l);
+        //usleep(coder->params.dc * 1000);
+        pthread_mutex_unlock(coder->coder_mutex->dongles_l);
+        pthread_mutex_unlock(coder->coder_mutex->dongles_r);
         /* debbuging */
         safe_print(*coder, DEBBUG);
         usleep(coder->params.ttd * 1000);
