@@ -68,4 +68,8 @@ git: fclean
 	git commit -m $(COM)
 	git push --all
 
+test:
+	$(CC) -g -pthread pthread.c -o pthread
+	valgrind --log-file="helgrind.log" --tool=helgrind  ./pthread
+
 .PHONY: codexion run valrun helrun clean fclean
