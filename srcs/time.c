@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 19:43:34 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/22 17:21:28 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ struct timespec time_diff(struct timespec start, struct timespec end)
 
     if ((end.tv_nsec - start.tv_nsec) < 0)
     {
-        temp.tv_sec = end.tv_sec + - start.tv_sec - 1;
+        temp.tv_sec = end.tv_sec  - start.tv_sec - 1;
         temp.tv_nsec =  1000000000 + end.tv_nsec - start.tv_nsec;
     }
     else

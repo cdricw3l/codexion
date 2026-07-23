@@ -6,130 +6,85 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 12:20:06 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/20 19:26:51 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/22 17:08:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "include/codexion.h"
 
-
-
-void test_time()
+long second_to_nano(long sec)
 {
-    struct timespec time1;
-    struct timespec time2;
-    int i = 100;
-    int j;
-    memset(&time1, 0, sizeof(struct timespec));
-    memset(&time2, 0, sizeof(struct timespec));
-    while (i >= 0)
-    {
-        j = clock_gettime(CLOCK_MONOTONIC_RAW, &time1);
-        time_t t1 = time1.tv_nsec;
-
-        printf("j: %d nsec %ld\n", j, time1.tv_nsec);
-        usleep(200000);
-        j = clock_gettime(CLOCK_MONOTONIC_RAW, &time2);
-        u_int64_t t2 = time2.tv_nsec;
-        printf("j: %d nsec %ld\n", j, time2.tv_nsec);
-        printf("%ld\n", (t2 - t1));
-        i--;
-    }
-    
-    
+    return (sec * 1000000000);
 }
 
-struct timespec time_diff(struct timespec start, struct timespec end)
+long ms_to_nano(long ms)
 {
-    struct timespec temp;
+    return (ms * 1000000);
+}
 
-    if ((end.tv_nsec - start.tv_nsec) < 0)
+void display_clock(struct timespec tm)
+{
+    printf("second: %ld\n", tm.tv_sec);
+    printf("nano second: %ld\n", tm.tv_nsec);
+}
+
+int schedul(struct timespec *tm, int ms)
+{
+    struct timespec now;
+
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    if(now.tv_nsec + ms_to_nano(ms) > 999999999)
     {
-        temp.tv_sec = end.tv_sec + - start.tv_sec - 1;
-        temp.tv_nsec =  1000000000 + end.tv_nsec - start.tv_nsec;
+        tm->tv_nsec = 999999999 - ms_to_nano(ms);
+        tm->tv_sec = now.tv_sec + 1;
     }
     else
     {
-        temp.tv_sec = end.tv_sec - start.tv_sec;
-        temp.tv_nsec = end.tv_nsec - start.tv_nsec;
+        tm->tv_sec = now.tv_sec;
+        tm->tv_nsec = now.tv_nsec + ms_to_nano(ms);
     }
-    return temp;
 }
 
-clock_t time_calculation(struct timespec time)
+
+
+void cool_test(pthread_cond_t *cond, pthread_mutex_t *mu)
 {
-    /* convert second to nano*/
-    clock_t n_to_sec;
+    int rt = 0;
+    struct timespec tm;
 
-    n_to_sec  = time.tv_sec * 1000000000;
-    return ((n_to_sec + time.tv_nsec) / 1000000);
-}
-
-struct s_mu
-{
-    pthread_mutex_t *mu_memset;
-    pthread_mutex_t *mu_printf;
-    struct timespec start;
-    int id;
-};
-
-
-void *thread(void *data)
-{
-    pthread_t id;
-    struct s_mu *mu; 
-    struct timespec end;
-    clock_t timestamp;
-
-    id = pthread_self();
-    
-    mu = (struct s_mu *)data;
-    printf("Start thread %p\n", &(mu->mu_memset));
-    
-    pthread_mutex_lock(mu->mu_memset);
-    printf("resultat du lock\n");
-    memset(&end, 0, sizeof(struct timespec));
-    pthread_mutex_unlock(mu->mu_memset);
-    while (1)
-    {
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        timestamp = time_calculation(time_diff(mu->start, end));
-        printf("%ld %d start sleep\n", timestamp, mu->id);
-        usleep(200000);
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        timestamp = time_calculation(time_diff(mu->start, end));
-        printf("%ld %d end sleep\n", timestamp , mu->id);
-        pthread_mutex_lock(mu->mu_printf);
-        pthread_mutex_unlock(mu->mu_printf);
+    schedul(&tm, 500);
+    pthread_mutex_lock(mu);
+    do  {
+        rt = pthread_cond_timedwait(cond, mu, &tm);
+        printf("voici rt %d\n", rt);
     }
-    return (NULL);
+    while (rt == 0);
+    pthread_mutex_unlock(mu);
 }
-
 
 int main(void)
 {
-    pthread_t t1;
-    pthread_t t2;
-    pthread_mutex_t m1;
-    pthread_mutex_t m2;
-    struct s_mu *mu;
-    struct timespec tm;
+    
+    struct timespec tm1;
+    struct timespec tm2;
+    struct timespec start;
+    struct timespec end;
 
-    mu = malloc(sizeof(struct s_mu));
-    assert(mu);
-    assert(pthread_mutex_init(&m1, NULL) == 0);
-    assert(pthread_mutex_init(&m2, NULL) == 0);
-    mu->mu_memset = &m1;
-    mu->mu_printf = &m2;
-    clock_gettime(CLOCK_MONOTONIC, &tm);
-    mu->start = tm;
-    mu->id = 1;
-    pthread_create(&t1, NULL, thread, mu);
-    //pthread_create(&t2, NULL, thread, &mu);
-    pthread_join(t1, NULL);
-    //pthread_join(t2, NULL);
-    pthread_mutex_destroy(&m1);
-    pthread_mutex_destroy(&m2);
+    pthread_mutex_t cool;
+    pthread_cond_t  cool_cond;
+
+    cool = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+    cool_cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+    
+   
+    
+   
+    clock_gettime(CLOCK_REALTIME, &start);
+    clock_gettime(CLOCK_REALTIME, &end);
+    printf("start\n");
+    display_clock(start);
+    printf("end\n");
+    display_clock(end);
 
     return (0);
 }

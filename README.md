@@ -46,6 +46,7 @@ make re
 * https://blog.gistre.epita.fr/posts/odric.roux-paris-2023-01-31/
 * https://www.guyrutenberg.com/2007/09/22/profiling-code-using-clock_gettime/
 * https://docs.dennisokeeffe.com/comp3520-os/pthread
+* https://members.loria.fr/lnussbaum/RS/CM-ch6-nup.pdf
 
 # Blocking cases handled
 
