@@ -77,7 +77,7 @@ clock_gettime
 
 
 
-# CPU time vs real-time clock
+# Time managment
 
 ...
 
@@ -112,6 +112,52 @@ Pour etablire le temps ecouler en milliseconde depuis un apelle de reference a  
 (temps_de_reference_2(en nanoseconde) - temps_de_reference_1(en nanoseconde)) / 1000000
 
 #### gettimeofday
+
+
+### Creer une structure timespec futuristique pour l'appel a la fonction pthread_cond_timewait
+
+Une stucture timespec futuristique est une structure qui prend comme reference l'instant I auquel on ajoute l'interval de temps desire.
+Admetons que nous voulions un structure qui represente ce que serais notre apelle a clock_gettime() dans 200ms :
+
+La premiere chose a faire est de creer une fonction qui converti les ms en nanosec:
+target_in_nano = ms * 10^6
+
+``` c
+long ms_to_nano(long ms)
+{
+    return (ms * 1000000);
+}
+```
+
+Ensuite il nous faut manuellement creer notre futuristique structure.
+
+``` c
+struct timespec futuristic_timespec(int ms)
+{
+    struct timespec now;
+    struct timespec futuristic;
+    
+    clock_gettime(CLOCK_REALTIME, &now);
+    if(now.tv_nsec + ms_to_nano(ms) > 999999999)
+    {
+
+        futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec);
+        futuristic.tv_sec = now.tv_sec + 1;
+    }
+    else
+    {
+        futuristic.tv_sec = now.tv_sec;
+        futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms);
+    }
+    return (futuristic);
+}
+
+```
+Ci dessus, now represente notre point de reference.
+Deux cas ce presente a nous.
+1. now.tv_nsec + ms_to_nano(ms) > 999999999 (nano max): dans ce cas futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec) et futuristic.tv_sec = now.tv_sec + 1
+2. now.tv_nsec + ms_to_nano(ms) <= 999999999 : ce cas est le plus simple, futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms) et futuristic.tv_sec = now.tv_sec
+
 
 # lldb
 
