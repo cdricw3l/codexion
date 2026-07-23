@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 13:12:02 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/23 08:08:50 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/23 08:15:11 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,26 @@ void display_time(struct timespec tm)
     printf("\n");
 }
 
-int schedul(struct timespec *tm, int ms, struct timespec now)
-{
 
+
+struct timespec futuristic_timespec(int ms)
+{
+    struct timespec now;
+    struct timespec futuristic;
+    
+    clock_gettime(CLOCK_REALTIME, &now);
     if(now.tv_nsec + ms_to_nano(ms) > 999999999)
     {
-        printf("Case 1\n");
-        printf("n1: %ld n2 %ld additio: %ld\n", now.tv_nsec, ms_to_nano(ms), now.tv_nsec + ms_to_nano(ms));
 
-        tm->tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec);
-        tm->tv_sec = now.tv_sec + 1;
+        futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec);
+        futuristic.tv_sec = now.tv_sec + 1;
     }
     else
     {
-        printf("Case 2\n");
-
-        tm->tv_sec = now.tv_sec;
-        tm->tv_nsec = now.tv_nsec + ms_to_nano(ms);
+        futuristic.tv_sec = now.tv_sec;
+        futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms);
     }
+    return (futuristic);
 }
 
 void cooldown(int ms, pthread_cond_t *cond, pthread_mutex_t *mu)
@@ -128,8 +130,8 @@ int main(void)
 
 
     
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    schedul(&future, 500, now);
+    clock_gettime(CLOCK_REALTIME, &now);
+    future = futuristic_timespec(200);
 
     printf("voici la difference %ld\n", time_calculation(time_diff(now, future)));
 
