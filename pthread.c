@@ -6,135 +6,146 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 13:12:02 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/07/23 08:15:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 15:30:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
+#include <malloc.h>
 
-typedef struct s_data
+#define FIFO 0
+#define BIGGEST 1
+
+#define NB 5
+pthread_cond_t cond[5];
+pthread_mutex_t mut[5];
+pthread_mutex_t q;
+
+typedef struct s_co t_co;
+typedef struct s_q t_q;
+
+typedef struct s_co
 {
 
-    int                 *stock;
-    pthread_mutex_t     *mu;
-    pthread_cond_t      *cond;
+    int             id;
+    pthread_cond_t  *c;
+    pthread_mutex_t *m;
+    t_q         *queue;
 
-} t_data;
+} t_co;
 
-long second_to_nano(long sec)
+typedef struct s_q
 {
-    return (sec * 1000000000);
-}
+    int size;
+    pthread_mutex_t q;
+    t_co *queue[NB];
 
-long ms_to_nano(long ms)
+} t_q;
+
+
+
+int save_ticket(t_co *data)
 {
-    return (ms * 1000000);
-}
-
-void display_time(struct timespec tm)
-{
-    printf("sec: %ld\n", tm.tv_sec);
-    printf("nsec: %ld\n", tm.tv_nsec);
-    printf("\n");
-}
-
-
-
-struct timespec futuristic_timespec(int ms)
-{
-    struct timespec now;
-    struct timespec futuristic;
+    pthread_mutex_lock(&data->queue->q);
     
-    clock_gettime(CLOCK_REALTIME, &now);
-    if(now.tv_nsec + ms_to_nano(ms) > 999999999)
+    if( data->queue->size < NB)
     {
+        printf("coder  %d  save is request\n", data->id);
+        data->queue->queue[data->queue->size] = data;
+        (data->queue->size)++;
+        printf("Queue size is %d\n", data->queue->size);
 
-        futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec);
-        futuristic.tv_sec = now.tv_sec + 1;
     }
-    else
-    {
-        futuristic.tv_sec = now.tv_sec;
-        futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms);
-    }
-    return (futuristic);
+    pthread_mutex_unlock(&data->queue->q);
+
 }
 
-void cooldown(int ms, pthread_cond_t *cond, pthread_mutex_t *mu)
+int consume(t_co *data, int methode)
 {
-    struct timespec tm;
+    pthread_mutex_lock(&data->queue->q);
+    pthread_mutex_lock(data->m);
+
+    int biggest;
+
+    biggest = 0;
+    for (int i = 0; i < data->queue->size; i++)
+    {
+        if (data->queue->queue[i]->id > biggest)
+            biggest = data->queue->queue[i]->id;
+    }
+    printf("coder %d ask for consume\n", data->id);
+    printf("id %d\n",data->queue->queue[0]->id);
+    if (data->id == biggest)
+    {
+        printf("coder %d can consume\n", data->id);
+        pthread_cond_signal(data->c);
+        pthread_mutex_unlock(data->m);
+        pthread_mutex_unlock(&data->queue->q);
+        return (TRUE);
+    }
+    pthread_mutex_unlock(data->m);
+    pthread_mutex_unlock(&data->queue->q);
+    return (FALSE);
+}
+
+
+void *routine(void *arg)
+{
+    t_co *data = (t_co *)arg;
+   
+   while (1)
+   {
+        save_ticket(data);
+        sleep(3);
+        pthread_mutex_lock(data->m);
+        pthread_cond_wait(data->c, data->m);
+
+        while (!consume(data, BIGGEST))
+        {
+            sleep(1);
+        }
+        printf("I'm the coder %d\n", data->id);
+        pthread_mutex_unlock(data->m);
+        sleep(1);
+   }
+   return (NULL);
     
-    int rt = 0;
-
-    struct timespec now;
-
-    clock_gettime(CLOCK_REALTIME, &now);
-    if(now.tv_nsec + ms > 999999999)
-    {
-        tm.tv_nsec = 999999999 - ms;
-        tm.tv_sec = now.tv_sec + 1;
-    }
-    else
-    {
-        printf("Case 2");
-        tm.tv_sec = now.tv_sec;
-        tm.tv_nsec = now.tv_nsec + ms;
-    }
-    do  {
-        rt = pthread_cond_timedwait(cond, mu, &tm);
-    }
-    while (rt == 0);
-
 }
-
-
-void *consume(void *d)
-{
-    t_data *data;
-
-    data = (t_data *)d;
-    while (1)
-    {
-        pthread_mutex_lock(data->mu);
-        pthread_mutex_unlock(data->mu);
-    }
-    return (NULL);
-}
-
-
-
-
-
-// int main(void)
-// {
-//     int stock;
-//     pthread_mutex_t mu;
-//     pthread_cond_t  cond;
-//     t_data          data;
-//     pthread_t       thread;
-
-//     mu = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-//     cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
-//     stock = 0;
-//     pthread_create(&thread, NULL, consume, &data);
-
-//     pthread_join(thread, NULL);
-
-// }
 
 int main(void)
 {
+    int i;
+    t_co co[NB];
+    pthread_t thread[NB];
+    t_q queue;
 
-    struct timespec now;
-    struct timespec future;
-
-
+    queue.q = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
     
-    clock_gettime(CLOCK_REALTIME, &now);
-    future = futuristic_timespec(200);
+    queue.size = 0;
+    memset(queue.queue, 0, sizeof(t_co) * NB);
+    for (i = 0; i < NB; i++)
+    {
+        cond[i] = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+        mut[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+        co[i].id = i;
+        co[i].c = &cond[i]; 
+        co[i].m = &mut[i];
+        co[i].queue = &queue;
+        if(pthread_create(&thread[i], NULL, routine, &co[i]))
+        {
+            printf("Thread creation error\n");
+            exit(1);
+        }
+        usleep(100000);
+    }
 
-    printf("voici la difference %ld\n", time_calculation(time_diff(now, future)));
+    for (i = 0; i < NB; i++)
+    {
+        pthread_join(thread[i], NULL);
+    }
 
     return (0);
 }
+
+
 

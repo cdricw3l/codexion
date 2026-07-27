@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 21:21:34 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/20 22:53:17 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 10:03:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,16 @@ static t_mutex	*get_arr_of_initialised_mutex(size_t coders)
 	i = 0;
 	while (i < coders)
 	{
-		if (pthread_mutex_init(&arr[i], NULL))
-			return (destroy_arr_mutex(&arr, i));
+		arr[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 		i++;
 	}
 	return (arr);
 }
 
-static int	mutex_initialisation(t_mutex *mu)
-{
-	if (pthread_mutex_init(mu, NULL))
-		return (FALSE);
-	return (TRUE);
-}
+
 
 int	clean_gmutex(t_global_mutex *mu, size_t coders)
 {
-	size_t	i;
 
 	pthread_mutex_destroy(&mu->display_f);
 	pthread_mutex_destroy(&mu->timestamp_f);
@@ -63,10 +56,8 @@ int	clean_gmutex(t_global_mutex *mu, size_t coders)
 
 int	g_mutex_initialisation(t_global_mutex *gmutex, size_t coders)
 {
-	if (!mutex_initialisation(&gmutex->display_f))
-		return (clean_gmutex(gmutex, coders));
-	if (!mutex_initialisation(&gmutex->timestamp_f))
-		return (clean_gmutex(gmutex, coders));
+	gmutex->display_f = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	gmutex->timestamp_f = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	gmutex->dongles = get_arr_of_initialised_mutex(coders);
 	if (!gmutex->dongles)
 	{
@@ -74,7 +65,6 @@ int	g_mutex_initialisation(t_global_mutex *gmutex, size_t coders)
 			strlen("Error mutex dongle initialisation\n"));
 		return (clean_gmutex(gmutex, coders));
 	}
-	gmutex->timestamp_data = NULL;
 	gmutex->timestamp_data = get_arr_of_initialised_mutex(coders);
 	if (!gmutex->timestamp_data)
 	{

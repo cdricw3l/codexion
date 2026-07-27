@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 20:14:24 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 10:15:45 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 10:05:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void *coder_thread(void *data)
     t_coder *coder;
 
     coder = (t_coder *)data;
-    while (coder->params.ncr > 0)
+    while (coder->params[number_of_compiles_required] > 0)
     {
         if (coder->id == 1)
         {
@@ -35,17 +35,17 @@ void *coder_thread(void *data)
         }
         safe_print(*coder, COMPILE);
         /* compiling */
-        usleep(coder->params.ttc * 1000);
+        usleep(coder->params[time_to_compile] * 1000);
         /* cooldown */
         //usleep(coder->params.dc * 1000);
         pthread_mutex_unlock(coder->coder_mutex->dongles_l);
         pthread_mutex_unlock(coder->coder_mutex->dongles_r);
         /* debbuging */
         safe_print(*coder, DEBBUG);
-        usleep(coder->params.ttd * 1000);
+        usleep(coder->params[time_to_debug] * 1000);
         safe_print(*coder, REFACTO);
-        usleep(coder->params.ttr * 1000);
-        coder->params.ncr--;
+        usleep(coder->params[time_to_refactor] * 1000);
+        coder->params[number_of_compiles_required]--;
     }
     return (NULL);
 }

@@ -6,14 +6,14 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:51:42 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 08:21:40 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 07:16:07 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 
-int check_args(char *arg, int idx)
+static int check_args(char *arg, int idx)
 {
     if (idx == scheduler)
     {
@@ -32,29 +32,29 @@ int check_args(char *arg, int idx)
     return (TRUE);
 }
 
-void save_param(char *arg, int idx, t_params *params)
+static void save_param(char *arg, int idx, int params[8])
 {
     if (idx == number_of_coders)
-        params->coder = atoi(arg);
+        params[number_of_coders] = atoi(arg);
     else if (idx == time_to_burnout)
-        params->ttb = atoi(arg);
+        params[time_to_burnout] = atoi(arg);
     else if (idx == time_to_compile)
-        params->ttc = atoi(arg);
+        params[time_to_compile] = atoi(arg);
     else if (idx == time_to_debug)
-        params->ttd = atoi(arg);
+        params[time_to_debug] = atoi(arg);
     else if (idx == time_to_refactor)
-        params->ttr = atoi(arg);
+        params[time_to_refactor] = atoi(arg);
     else if (idx == number_of_compiles_required)
-        params->ncr = atoi(arg);
+        params[number_of_compiles_required] = atoi(arg);
     else if (idx == dongle_cooldown)
-        params->dc = atoi(arg);
+        params[dongle_cooldown] = atoi(arg);
     else if (idx == scheduler && !strcmp("fifo", arg))
-        params->scheduler = FIFO;
+        params[scheduler] = FIFO;
     else if (idx == scheduler && !strcmp("edf", arg))
-        params->scheduler = EDF;
+        params[scheduler] = EDF;
 }
 
-int parse_arguments(char **args, t_params *params)
+int parse_arguments(char **args, int params[8])
 {
     int i;
     if (get_str_arr_len(args) != 8)

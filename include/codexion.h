@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 10:03:35 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 10:01:03 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,33 @@ typedef enum e_actions
 } t_actions;
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
-#define CODER_MAX 124441
+#define CODER_MAX 250
 
-typedef         pthread_mutex_t t_mutex;
-typedef  struct timespec        timespec_t;
+typedef         pthread_mutex_t         t_mutex;
+typedef         struct timespec         timespec_t;
 
 
-typedef struct s_params
+typedef struct s_queue
 {
-    size_t  coder;
-    size_t  ttb;
-    size_t  ttc;
-    size_t  ttd;
-    size_t  ttr;
-    size_t  dc;
-    int     ncr;
-    int     scheduler;
+    int     queue[2];
+    size_t  queue_size;     
+} t_queue;
 
-} t_params;
+typedef struct s_dongle
+{   
+    int             is_available;
+    clock_t         last_use;
+    t_mutex         *dongles;
+    pthread_cond_t  dongle_c;
+    t_queue          queue;
+
+} t_dongle;
 
 typedef struct s_global_mutex
 {
     t_mutex     display_f;
     t_mutex     timestamp_f;
     t_mutex     *dongles;
-    t_mutex     *states;
     t_mutex     *timestamp_data;
 
 } t_global_mutex;
@@ -92,17 +94,16 @@ typedef struct  s_monitoring
     int        ttb;
     int        nb_coder;
     clock_t    *timestamps_arr;
+    t_mutex    *m_timestamp_function;
     t_mutex    *m_timestamp_data;
-    t_mutex    *m_timestamp_f;
     
 } t_monitoring;
 
 typedef struct s_coder
 {
     int             id;
-    int             state;
+    int             params[8];
     clock_t         *timestamps;
-    t_params        params;
     timespec_t      start;
     t_coder_mutex   *coder_mutex;
     
@@ -137,16 +138,15 @@ int     parsing_error_msg(int code, char *arg);
 
 /* parsing */
 
-int     parse_arguments(char **args, t_params *params);
+int     parse_arguments(char **args, int params[8]);
 
 /* init */
-int     init_monitoring(t_monitoring  *monitoring, t_params params, t_global_mutex *gmu);
-t_coder *init_coders(t_params *params, t_global_mutex *gmu, t_monitoring *monitoring);
 void    *destroy_coders(t_coder **coders, int idx);
+t_queue init_queue(void);
 
 /* display */
 void    display_mutex_data(t_global_mutex mu, size_t coders);
-void    display_params(t_params param);
+void    display_params(int params[8]);
 void    display_coders(t_coder *coders, size_t coder);
 void    safe_print(t_coder coder, int action);
 void    display_monitoring_dashboard(time_t *dashboard, int coders);
@@ -169,7 +169,10 @@ int g_mutex_initialisation(t_global_mutex  *gmutex, size_t coders);
 
 /* time */
 
-struct timespec time_diff(struct timespec start, struct timespec end);
+long            second_to_nano(long sec);
+long            ms_to_nano(long ms);
 clock_t         time_calculation(struct timespec time);
+struct timespec time_diff(struct timespec start, struct timespec end);
+struct timespec futuristic_timespec(int ms);
 
 #endif

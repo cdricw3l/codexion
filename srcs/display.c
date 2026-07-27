@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/21 10:05:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/27 08:26:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void display_mutex_data(t_global_mutex mu, size_t coders)
 {
     size_t i;
-
     printf("display fonction mutex %p\n", &mu.display_f);
     printf("timestamp fonction mutex %p\n", &mu.timestamp_f);
     if (mu.dongles)
@@ -83,20 +82,20 @@ void display_coders(t_coder *coders, size_t coder)
     }
 }
 
-void display_params(t_params param)
+void display_params(int params[8])
 {
     printf(BHGRN"Program settings:\n");
-    printf(HBLU"[Number of philosopher]:"HYEL" %zu\n", param.coder);
-    printf(HBLU"[Time to burnout]:"HYEL" %zu ms\n", param.ttb);
-    printf(HBLU"[Time to compile]:"HYEL" %zu ms\n", param.ttc);
-    printf(HBLU"[Time to debug]:"HYEL" %zu ms\n", param.ttd);
-    printf(HBLU"[Time to refactor]:"HYEL" %zu ms\n", param.ttr);
-    printf(HBLU"[Number of compiles required]:"HYEL" %d\n", param.ncr);
-    printf(HBLU"[Dongle cooldown]:"HYEL" %zu ms\n", param.dc);
+    printf(HBLU"[Number of philosopher]:"HYEL" %d\n", params[number_of_coders]);
+    printf(HBLU"[Time to burnout]:"HYEL" %d ms\n", params[time_to_burnout]);
+    printf(HBLU"[Time to compile]:"HYEL" %d ms\n", params[time_to_compile]);
+    printf(HBLU"[Time to debug]:"HYEL" %d ms\n", params[time_to_debug]);
+    printf(HBLU"[Time to refactor]:"HYEL" %d ms\n", params[time_to_refactor]);
+    printf(HBLU"[Number of compiles required]:"HYEL" %d\n", params[number_of_compiles_required]);
+    printf(HBLU"[Dongle cooldown]:"HYEL" %d ms\n", params[dongle_cooldown]);
     printf(HBLU"[scheduler]: "HYEL);
-    if (param.scheduler == FIFO)
-        printf("edf"CRESET"\n");
-    else if (param.scheduler == EDF)
+    if (params[scheduler] == FIFO)
+        printf("fifo"CRESET"\n");
+    else if (params[scheduler] == EDF)
         printf("edf"CRESET"\n");
 }
 

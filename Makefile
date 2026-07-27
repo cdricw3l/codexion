@@ -10,12 +10,13 @@ SRCS= srcs/codexion.c \
 		srcs/display.c \
 		srcs/mutex.c \
 		srcs/error.c \
-		srcs/time.c \
-		srcs/init_monitoring.c \
-		srcs/init_coders.c \
- 		srcs/thread_manager.c \
- 		srcs/thread_monitoring.c \
- 		srcs/thread_coder.c \
+ 		srcs/time.c \
+ 		srcs/queue.c \
+# 		srcs/init_monitoring.c \
+# 		srcs/init_coders.c \
+#  		srcs/thread_manager.c \
+#  		srcs/thread_monitoring.c \
+#  		srcs/thread_coder.c \
 
 
 SRCS_OBJS= ${SRCS:.c=.o}
@@ -28,7 +29,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=2 400 200 100 100 10 10 fifo
+ARG=20 400 200 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)
@@ -69,7 +70,7 @@ git: fclean
 	git push --all
 
 test:
-	$(CC) -g -pthread pthread.c srcs/time.c  -o pthread
+	$(CC) -g -pthread pthread.c  -o pthread
 	valgrind --log-file="helgrind.log" --tool=helgrind  ./pthread
 
-.PHONY: codexion run valrun helrun clean fclean
+.PHONY: codexion run valrun helrun clean fclean test

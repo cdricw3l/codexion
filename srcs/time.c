@@ -6,11 +6,40 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/22 17:21:28 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/23 09:02:51 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
+long second_to_nano(long sec)
+{
+    return (sec * 1000000000);
+}
+
+long ms_to_nano(long ms)
+{
+    return (ms * 1000000);
+}
+struct timespec futuristic_timespec(int ms)
+{
+    struct timespec now;
+    struct timespec futuristic;
+    
+    clock_gettime(CLOCK_REALTIME, &now);
+    if(now.tv_nsec + ms_to_nano(ms) > 999999999)
+    {
+
+        futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec);
+        futuristic.tv_sec = now.tv_sec + 1;
+    }
+    else
+    {
+        futuristic.tv_sec = now.tv_sec;
+        futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms);
+    }
+    return (futuristic);
+}
 
 struct timespec time_diff(struct timespec start, struct timespec end)
 {

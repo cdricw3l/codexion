@@ -3,28 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   assert.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 22:48:27 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/27 10:09:35 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-int asser_utils()
-{
-    START_TEST(__func__);
-    get_str_arr_len_assert();
-    END_TEST(__func__);
-    return (0);
-}
 
-int assert_thread()
+int assert_queue()
 {
     START_TEST(__func__);
-    get_dongle_assert();
-    mutex_initialisation_assert();
+    queue_assert();
     END_TEST(__func__);
     return (0);
 }
@@ -34,6 +26,7 @@ int assert_thread()
 int main(void)
 {
     //asset_utils();
-    assert_thread();
+    //assert_thread();
+    assert_queue();
     return (0);
 }

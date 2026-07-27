@@ -91,7 +91,7 @@ time_to_refactor, dongle_cooldown sont exprimees en milliseconde.
 
 La fonction usleep elle prend en parametre des micro seconde no contrainte doivent donc etre convertie en microseconde: *contrainte* * 1000
 
-### mesure du temps
+### Mesure du temps
 
 #### clock_gettime
 
@@ -111,8 +111,14 @@ Pour etablire le temps ecouler en milliseconde depuis un apelle de reference a  
 
 (temps_de_reference_2(en nanoseconde) - temps_de_reference_1(en nanoseconde)) / 1000000
 
+Les diffentes resolution pour l'apelle a clock_gettime:
+1. CLOCK_REALTIME:
+2. CLOCK_MONOTONIC:
+
+
 #### gettimeofday
 
+gettimeofday is deprecated donc je n'aborderais pas cette fonction ici.
 
 ### Creer une structure timespec futuristique pour l'appel a la fonction pthread_cond_timewait
 
