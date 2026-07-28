@@ -6,16 +6,16 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:07:08 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 13:28:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 
-#define DISPLAY_PARAMS 	TRUE
+#define DISPLAY_PARAMS 	FALSE
 #define DISPLAY_MUTEX 	FALSE
-#define DISPLAY_CODER 	TRUE
+#define DISPLAY_CODER 	FALSE
 
 
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	t_coder			*coders;
 	t_global_mutex	global_mu;
 	t_monitoring	monitoring;
-	t_request_queue	request_queue;
+	t_request		**request_queue;
 
 	if(parse_arguments(&argv[1], params) == FALSE)
 		return (1);
@@ -41,20 +41,19 @@ int main(int argc, char **argv)
 		display_mutex_data(params[number_of_coders], global_mu);
 	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
-	request_queue.queue = queue_initialisation(params[number_of_coders]);
-	if(!request_queue.queue)
+	request_queue = queue_initialisation(params[number_of_coders]);
+	if(!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
-	request_queue.size = 0;
-	coders = coders_initialisation((int *)params, &global_mu, &monitoring, &request_queue);
+	coders = coders_initialisation((int *)params, &global_mu, &monitoring, request_queue);
 	if (!coders)
 	{
-		free(request_queue.queue);
+		free(request_queue);
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
 	if (DISPLAY_CODER)
 		display_coders(coders, params[number_of_coders]);
 	free(coders);
-	free(request_queue.queue);
+	free(request_queue);
 	clean_memory(params[number_of_coders], &global_mu, &monitoring);
 	return (0);
 }
