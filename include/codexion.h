@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 08:57:28 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 10:02:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_coder
     timespec_t      start;
     clock_t         *last_compilation;
     t_coder_mutex   *coder_mutex;
-    pthread_cond_t  *cond;
+    pthread_cond_t  cond;
     t_request       *requests;
 
 } t_coder;
@@ -145,8 +145,19 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* mutex */
 
+
+
+/* initialisation */
+
 int mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
+int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
+
+
+/* clean */
+
 int mutex_destroy(int nb_coder, t_global_mutex *global_mu);
+int clean_memory(int nb_coder, t_global_mutex *global_mu, t_monitoring *monitoring);
+
 /* time */
 
 long            second_to_nano(long sec);
