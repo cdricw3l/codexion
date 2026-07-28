@@ -6,37 +6,13 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/27 08:26:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 08:06:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-void display_mutex_data(t_global_mutex mu, size_t coders)
-{
-    size_t i;
-    printf("display fonction mutex %p\n", &mu.display_f);
-    printf("timestamp fonction mutex %p\n", &mu.timestamp_f);
-    if (mu.dongles)
-    {
-        i = 0;
-        while (i < coders)
-        {
-            printf("Dongle [%ld] %p\n", i, &mu.dongles[i]);
-            i++;
-        }
 
-    }
-    if (mu.timestamp_data)
-    {
-        i = 0;
-        while (i < coders)
-        {
-            printf("timestamp field [%ld] %p\n", i, &mu.timestamp_data[i]);
-            i++;
-        }
-    }
-}
 
 void safe_print(t_coder coder, int action)
 {
@@ -60,12 +36,12 @@ void safe_print(t_coder coder, int action)
 static void display_coder(t_coder coder)
 {
     printf("Coder: %d\n", coder.id);
-    printf("Usb left: %p\n", coder.coder_mutex->dongles_l);
-    printf("Usb right: %p\n", coder.coder_mutex->dongles_r);
+    printf("last conmpilation %ln\n", coder.last_compilation);
+    printf("Usb left: %p\n", coder.coder_mutex->dongle_l);
+    printf("Usb right: %p\n", coder.coder_mutex->dongle_r);
     printf("display mutex %p\n", coder.coder_mutex->display_f);
-    printf("timestamp field %p\n", coder.timestamps);
-    printf("timestamp_f mutex %p\n", coder.coder_mutex->m_timestamp_f);
-    printf("timestamp data mutex %p\n", coder.coder_mutex->m_timestamp_data);
+    printf("timestamp_f mutex %p\n", coder.coder_mutex->timestamp_f);
+    printf("timestamp data mutex %p\n", coder.coder_mutex->timestamp_data);
 }
 
 void display_coders(t_coder *coders, size_t coder)
@@ -97,17 +73,4 @@ void display_params(int params[8])
         printf("fifo"CRESET"\n");
     else if (params[scheduler] == EDF)
         printf("edf"CRESET"\n");
-}
-
-void display_monitoring_dashboard(time_t *dashboard, int coders)
-{
-    int i;
-
-    i = 0;
-    printf("Nombre de coder %d\n", coders);
-    while (i < coders)
-    {
-        printf("Coder %d last compilation %ld\n", i, dashboard[i]);
-        i++;
-    }
 }

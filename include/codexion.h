@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/27 10:01:03 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 08:11:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,67 +50,47 @@ typedef enum e_actions
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 #define CODER_MAX 250
 
-typedef         pthread_mutex_t         t_mutex;
 typedef         struct timespec         timespec_t;
 
-
-typedef struct s_queue
+typedef struct s_request
 {
-    int     queue[2];
-    size_t  queue_size;     
-} t_queue;
+    int             id;
+    clock_t *       last_compilation;
+    pthread_cond_t  *cond;
 
-typedef struct s_dongle
-{   
-    int             is_available;
-    clock_t         last_use;
-    t_mutex         *dongles;
-    pthread_cond_t  dongle_c;
-    t_queue          queue;
-
-} t_dongle;
-
-typedef struct s_global_mutex
-{
-    t_mutex     display_f;
-    t_mutex     timestamp_f;
-    t_mutex     *dongles;
-    t_mutex     *timestamp_data;
-
-} t_global_mutex;
+} t_request;
 
 typedef struct s_coder_mutex
 {
-    t_mutex     *display_f;
-    t_mutex     *dongles_l;
-    t_mutex     *dongles_r;
-    t_mutex     *m_timestamp_data;
-    t_mutex     *m_timestamp_f;
-
-} t_coder_mutex;
-
-typedef struct  s_monitoring
-{
-    int        ttb;
-    int        nb_coder;
-    clock_t    *timestamps_arr;
-    t_mutex    *m_timestamp_function;
-    t_mutex    *m_timestamp_data;
+    pthread_mutex_t *display_f;
+    pthread_mutex_t *timestamp_f;
+    pthread_mutex_t *timestamp_data;
+    pthread_mutex_t *dongle_l;
+    pthread_mutex_t *dongle_r;
     
-} t_monitoring;
+} t_coder_mutex;
 
 typedef struct s_coder
 {
     int             id;
     int             params[8];
-    clock_t         *timestamps;
     timespec_t      start;
+    clock_t         *last_compilation;
     t_coder_mutex   *coder_mutex;
-    
+    pthread_cond_t  *cond;
+    t_request       *requests;
+
 } t_coder;
 
 
-
+typedef struct s_monitoring
+{
+    clock_t *last_compilations;
+    pthread_mutex_t *display_f;
+    pthread_mutex_t *timestamp_f;
+    pthread_mutex_t *timestamp_data;
+    
+} t_monitoring;
 
 
 enum e_PARAMS
@@ -142,10 +122,8 @@ int     parse_arguments(char **args, int params[8]);
 
 /* init */
 void    *destroy_coders(t_coder **coders, int idx);
-t_queue init_queue(void);
 
 /* display */
-void    display_mutex_data(t_global_mutex mu, size_t coders);
 void    display_params(int params[8]);
 void    display_coders(t_coder *coders, size_t coder);
 void    safe_print(t_coder coder, int action);
@@ -160,12 +138,7 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 
-void    *coder_thread(void *data);
-void    *monitoring_thread(void *data);
-int     thead_launcher(size_t nb_coders, t_coder *coders, t_monitoring *monitoring);
 /* mutex */
-int clean_gmutex(t_global_mutex *mu, size_t coders);
-int g_mutex_initialisation(t_global_mutex  *gmutex, size_t coders);
 
 /* time */
 
