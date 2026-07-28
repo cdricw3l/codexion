@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 20:52:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 21:26:16 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,21 @@ int tree_height(t_request *root)
     return(max(left_h, right_h) + 1);
 }
 
+
+void tree_bfs(t_request *root, int level)
+{
+    int height;
+
+    if(!root)
+        return ;
+    height = tree_height(root);
+    if(height == level)
+        display_request(*root);
+    tree_bfs(root->left, level);
+    tree_bfs(root->right, level);
+}
+
 void bfs(t_request *root)
 {
-    int count_node;
-    int level;
-
-    level = 1;
-    count_node = count_tree_node(root, 0);
-   
-    printf("The size of the tree is %d\n", count_node);
-    printf("The level of the tree is %d\n",  tree_height(root));
+    tree_bfs(root, 2);
 }
