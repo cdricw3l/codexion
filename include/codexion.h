@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 08:11:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 08:57:28 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,18 @@ typedef struct s_request
 
 } t_request;
 
+typedef struct s_global_mutex
+{
+    pthread_mutex_t display_f;
+    pthread_mutex_t timestamp_f;
+    pthread_mutex_t *dongles;
+    
+} t_global_mutex;
+
 typedef struct s_coder_mutex
 {
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
-    pthread_mutex_t *timestamp_data;
     pthread_mutex_t *dongle_l;
     pthread_mutex_t *dongle_r;
     
@@ -85,10 +92,9 @@ typedef struct s_coder
 
 typedef struct s_monitoring
 {
-    clock_t *last_compilations;
+    clock_t         *last_compilations;
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
-    pthread_mutex_t *timestamp_data;
     
 } t_monitoring;
 
@@ -127,8 +133,7 @@ void    *destroy_coders(t_coder **coders, int idx);
 void    display_params(int params[8]);
 void    display_coders(t_coder *coders, size_t coder);
 void    safe_print(t_coder coder, int action);
-void    display_monitoring_dashboard(time_t *dashboard, int coders);
-
+void    display_mutex_data(int nb_coder, t_global_mutex global_mu);
 /* utils */
 
 size_t  get_str_arr_len(char **str_arr);
@@ -140,6 +145,8 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* mutex */
 
+int mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
+int mutex_destroy(int nb_coder, t_global_mutex *global_mu);
 /* time */
 
 long            second_to_nano(long sec);

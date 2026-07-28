@@ -11,6 +11,7 @@ SRCS= srcs/codexion.c \
 		srcs/error.c \
  		srcs/time.c \
  		srcs/queue.c \
+ 		srcs/mutex.c
 
 
 

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 08:06:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 08:49:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,30 @@ void safe_print(t_coder coder, int action)
     pthread_mutex_unlock(coder.coder_mutex->display_f);
 }
 
-static void display_coder(t_coder coder)
-{
-    printf("Coder: %d\n", coder.id);
-    printf("last conmpilation %ln\n", coder.last_compilation);
-    printf("Usb left: %p\n", coder.coder_mutex->dongle_l);
-    printf("Usb right: %p\n", coder.coder_mutex->dongle_r);
-    printf("display mutex %p\n", coder.coder_mutex->display_f);
-    printf("timestamp_f mutex %p\n", coder.coder_mutex->timestamp_f);
-    printf("timestamp data mutex %p\n", coder.coder_mutex->timestamp_data);
-}
+// static void display_coder(t_coder coder)
+// {
+//     printf("Coder: %d\n", coder.id);
+//     printf("last conmpilation %ln\n", coder.last_compilation);
+//     printf("Usb left: %p\n", coder.coder_mutex->dongle_l);
+//     printf("Usb right: %p\n", coder.coder_mutex->dongle_r);
+//     printf("display mutex %p\n", coder.coder_mutex->display_f);
+//     printf("timestamp_f mutex %p\n", coder.coder_mutex->timestamp_f);
+//     printf("timestamp data mutex %p\n", coder.coder_mutex->timestamp_data);
+// }
 
-void display_coders(t_coder *coders, size_t coder)
-{
-    size_t i;
+// void display_coders(t_coder *coders, size_t coder)
+// {
+//     size_t i;
 
-    i = 0;
-    printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
-    while (i < coder)
-    {
-        display_coder(coders[i]);
-        printf("\n");
-        i++;
-    }
-}
+//     i = 0;
+//     printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
+//     while (i < coder)
+//     {
+//         display_coder(coders[i]);
+//         printf("\n");
+//         i++;
+//     }
+// }
 
 void display_params(int params[8])
 {
@@ -73,4 +73,16 @@ void display_params(int params[8])
         printf("fifo"CRESET"\n");
     else if (params[scheduler] == EDF)
         printf("edf"CRESET"\n");
+}
+
+void display_mutex_data(int nb_coder, t_global_mutex global_mu)
+{
+    int i;
+
+    printf("display fonction mutex: %p\n", &global_mu.display_f);
+    printf("timestamp fonction mutex: %p\n", &global_mu.timestamp_f);
+    i = 0;
+    while (i < nb_coder)
+        printf("Dongle [%d] %p\n", i, &global_mu.dongles[i++]);
+        
 }
