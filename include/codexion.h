@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 11:19:31 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 12:24:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_dongle
 typedef struct s_request
 {
     int             id;
-    clock_t *       last_compilation;
+    clock_t         last_compilation;
     pthread_cond_t  *cond;
 
 } t_request;
@@ -138,7 +138,7 @@ int     parse_arguments(char **args, int params[8]);
 
 /* display */
 void    display_params(int params[8]);
-void    display_coders(t_coder *coders, size_t coder);
+void    display_coders(t_coder *coders, int nb_coder);
 void    safe_print(t_coder coder, int action);
 void    display_mutex_data(int nb_coder, t_global_mutex global_mu);
 /* utils */
@@ -147,7 +147,7 @@ size_t  get_str_arr_len(char **str_arr);
 int     get_dongle(int id, int number_of_coder, int type);
 int     ft_is_digit(char c);
 void    ft_memcopy(void *src, void *dst, unsigned long size);
-
+pthread_cond_t get_cond(void);
 /* thread */
 
 

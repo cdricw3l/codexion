@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 11:19:13 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 12:30:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,18 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 	return (coder_mu);
 }
 
+pthread_cond_t get_cond(void)
+{
+	pthread_cond_t  cond;
+
+	pthread_cond_init(&cond, NULL);
+	return (cond);
+}
 
 t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request *queue)
 {
 	t_coder *coders;
+	pthread_cond_t cond;
 	int 	i;
 
 
@@ -59,6 +67,7 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
 		coders[i].last_compilation = &monitor->last_compilations[i];
 		coders[i].cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+		printf("voici %p\n", &coders[i].cond);
 		coders[i].requests = queue;
 		i++;
 	}

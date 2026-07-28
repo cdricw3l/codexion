@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 11:10:36 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 12:32:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,30 @@ void safe_print(t_coder coder, int action)
     pthread_mutex_unlock(coder.coder_mutex.display_f);
 }
 
-// static void display_coder(t_coder coder)
-// {
-//     printf("Coder: %d\n", coder.id);
-//     printf("last conmpilation %ln\n", coder.last_compilation);
-//     printf("Usb left: %p\n", coder.coder_mutex->dongle_l);
-//     printf("Usb right: %p\n", coder.coder_mutex->dongle_r);
-//     printf("display mutex %p\n", coder.coder_mutex->display_f);
-//     printf("timestamp_f mutex %p\n", coder.coder_mutex->timestamp_f);
-//     printf("timestamp data mutex %p\n", coder.coder_mutex->timestamp_data);
-// }
+static void display_coder(t_coder *coder)
+{
+    printf("Coder: %d\n", coder->id);
+    printf("last compilation : %ld\n", *(coder->last_compilation));
+    printf("Usb left: %p last use %ld\n", coder->coder_mutex.dongle_l.dongle, coder->coder_mutex.dongle_l.last_use);
+    printf("Usb right: %p last use %ld\n", coder->coder_mutex.dongle_r.dongle, coder->coder_mutex.dongle_r.last_use);
+    printf("display mutex %p\n", coder->coder_mutex.display_f);
+    printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
+    printf("cond %p\n", &coder->cond);
+}
 
-// void display_coders(t_coder *coders, size_t coder)
-// {
-//     size_t i;
+void display_coders(t_coder *coders, int nb_coder)
+{
+    size_t i;
 
-//     i = 0;
-//     printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
-//     while (i < coder)
-//     {
-//         display_coder(coders[i]);
-//         printf("\n");
-//         i++;
-//     }
-// }
+    i = 0;
+    printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
+    while (i < nb_coder)
+    {
+        display_coder(&coders[i]);
+        printf("\n");
+        i++;
+    }
+}
 
 void display_params(int params[8])
 {

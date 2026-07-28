@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 11:19:03 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 12:25:47 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #define DISPLAY_PARAMS 	TRUE
 #define DISPLAY_MUTEX 	FALSE
+#define DISPLAY_CODER 	TRUE
 
 
 
@@ -24,17 +25,16 @@ int main(int argc, char **argv)
 {
 	(void) argc;
 
-	int params[8];
-	t_coder *coders;
-	t_global_mutex global_mu;
-	t_monitoring monitoring;
-	t_request *request_queue;
+	int 			params[8];
+	t_coder			*coders;
+	t_global_mutex	global_mu;
+	t_monitoring	monitoring;
+	t_request		*request_queue;
 
 	if(parse_arguments(&argv[1], params) == FALSE)
 		return (1);
 	if (DISPLAY_PARAMS)
 		display_params(params);
-
 	if(!mutex_initialisation(params[number_of_coders], &global_mu))
 		return (write(STDERR_FILENO, "Error initialisation mutex\n", strlen("Error initialisation mutex\n")));
 	if (DISPLAY_MUTEX)
@@ -50,12 +50,10 @@ int main(int argc, char **argv)
 		free(request_queue);
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
-
-
-	
+	if (DISPLAY_CODER)
+		display_coders(coders, params[number_of_coders]);
 	free(coders);
 	free(request_queue);
 	clean_memory(params[number_of_coders], &global_mu, &monitoring);
 	return (0);
 }
-
