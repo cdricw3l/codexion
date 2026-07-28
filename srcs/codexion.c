@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:28:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 13:34:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 		display_mutex_data(params[number_of_coders], global_mu);
 	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
-	request_queue = queue_initialisation(params[number_of_coders]);
+	request_queue = queue_initialisation();
 	if(!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	coders = coders_initialisation((int *)params, &global_mu, &monitoring, request_queue);

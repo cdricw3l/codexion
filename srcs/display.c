@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:27:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 13:33:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void display_coder(t_coder *coder)
 
 void display_coders(t_coder *coders, int nb_coder)
 {
-    size_t i;
+    int i;
 
     i = 0;
     printf("\n"HGRN"[ DISPLAY CODERS INFORMATIONS ]"CRESET"\n\n");
@@ -84,6 +84,9 @@ void display_mutex_data(int nb_coder, t_global_mutex global_mu)
     printf("timestamp fonction mutex: %p\n", &global_mu.timestamp_f);
     i = 0;
     while (i < nb_coder)
-        printf("Dongle [%d] %p\n", i, &global_mu.dongles[i++]);
+    {
+        printf("Dongle [%d] %p\n", i, &global_mu.dongles[i]);
+        i++;
+    }
         
 }

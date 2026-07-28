@@ -2,10 +2,10 @@
 
 
 
-int ask_dongles(t_coder *coder)
-{
+// int ask_dongles(t_coder *coder)
+// {
 
     
 
 
-}
+// }

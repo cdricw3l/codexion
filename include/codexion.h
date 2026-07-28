@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:27:53 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 13:34:48 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ pthread_cond_t get_cond(void);
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
 int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
 t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request **queue);
-t_request   **queue_initialisation(int nb_coder);
+t_request   **queue_initialisation(void);
 
 /* clean */
 

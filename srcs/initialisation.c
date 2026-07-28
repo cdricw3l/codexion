@@ -6,14 +6,14 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:28:30 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 13:36:04 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 
-t_request **queue_initialisation(int nb_coder)
+t_request **queue_initialisation(void)
 {
 	t_request **queue;
 
@@ -41,19 +41,11 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 	return (coder_mu);
 }
 
-pthread_cond_t get_cond(void)
-{
-	pthread_cond_t  cond;
-
-	pthread_cond_init(&cond, NULL);
-	return (cond);
-}
 
 t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request **queue)
 {
-	t_coder *coders;
-	pthread_cond_t cond;
 	int 	i;
+	t_coder *coders;
 
 
 	coders = malloc(sizeof(t_coder) * params[number_of_coders]);
