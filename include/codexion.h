@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 10:02:24 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 11:19:31 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@ typedef enum e_actions
 
 typedef         struct timespec         timespec_t;
 
+typedef struct s_dongle
+{
+    clock_t last_use;
+    pthread_mutex_t *dongle;
+
+} t_dongle;
+
 typedef struct s_request
 {
     int             id;
@@ -72,8 +79,8 @@ typedef struct s_coder_mutex
 {
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
-    pthread_mutex_t *dongle_l;
-    pthread_mutex_t *dongle_r;
+    t_dongle        dongle_l;
+    t_dongle        dongle_r;
     
 } t_coder_mutex;
 
@@ -83,7 +90,7 @@ typedef struct s_coder
     int             params[8];
     timespec_t      start;
     clock_t         *last_compilation;
-    t_coder_mutex   *coder_mutex;
+    t_coder_mutex   coder_mutex;
     pthread_cond_t  cond;
     t_request       *requests;
 
@@ -127,7 +134,7 @@ int     parsing_error_msg(int code, char *arg);
 int     parse_arguments(char **args, int params[8]);
 
 /* init */
-void    *destroy_coders(t_coder **coders, int idx);
+
 
 /* display */
 void    display_params(int params[8]);
@@ -143,15 +150,14 @@ void    ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* thread */
 
-/* mutex */
-
 
 
 /* initialisation */
 
-int mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
-int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
-
+int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
+int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
+t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request *queue);
+t_request   *queue_initialisation(int nb_coder);
 
 /* clean */
 

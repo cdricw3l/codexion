@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 08:49:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 11:10:36 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void safe_print(t_coder coder, int action)
     clock_t timestamp;
     struct timespec tm;
     
-    pthread_mutex_lock(coder.coder_mutex->display_f);
+    pthread_mutex_lock(coder.coder_mutex.display_f);
     clock_gettime(CLOCK_MONOTONIC, &tm);
     timestamp = time_calculation(time_diff(coder.start, tm));
     if (action == TAKE)
@@ -30,7 +30,7 @@ void safe_print(t_coder coder, int action)
         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
     if (action == REFACTO)
         printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
-    pthread_mutex_unlock(coder.coder_mutex->display_f);
+    pthread_mutex_unlock(coder.coder_mutex.display_f);
 }
 
 // static void display_coder(t_coder coder)

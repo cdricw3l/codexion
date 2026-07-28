@@ -6,11 +6,64 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 09:36:46 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 11:19:13 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
+
+t_request *queue_initialisation(int nb_coder)
+{
+	t_request *queue;
+
+	queue = malloc(sizeof(t_request) * nb_coder);
+	if (!queue)
+		return (NULL);
+	memset(queue, 0, sizeof(t_request) * nb_coder);
+	return (queue);
+}
+
+static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *global_mu)
+{
+	t_coder_mutex coder_mu;
+	t_dongle left;
+	t_dongle right;
+	
+	coder_mu.display_f = &global_mu->display_f;
+	coder_mu.timestamp_f = &global_mu->timestamp_f;
+	left.dongle = &global_mu->dongles[get_dongle(id, nb_coder, LEFT)];
+	left.last_use = 0;
+	right.dongle = &global_mu->dongles[get_dongle(id, nb_coder, RIGHT)];
+	right.last_use = 0;
+	coder_mu.dongle_l = left; 
+	coder_mu.dongle_r = right; 
+	return (coder_mu);
+}
+
+
+t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request *queue)
+{
+	t_coder *coders;
+	int 	i;
+
+
+	coders = malloc(sizeof(t_coder) * params[number_of_coders]);
+	if (!coders)
+		return (NULL);
+	i = 0;
+	while (i < params[number_of_coders])
+	{
+		coders[i].id = i + 1;
+		ft_memcopy(params, &coders[i].params, sizeof(int) * 8);
+		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
+		coders[i].last_compilation = &monitor->last_compilations[i];
+		coders[i].cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+		coders[i].requests = queue;
+		i++;
+	}
+	return (coders);
+}
 
 int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu)
 {
