@@ -47,6 +47,7 @@ make re
 * https://www.guyrutenberg.com/2007/09/22/profiling-code-using-clock_gettime/
 * https://docs.dennisokeeffe.com/comp3520-os/pthread
 * https://members.loria.fr/lnussbaum/RS/CM-ch6-nup.pdf
+* https://newsletter.francofernando.com/p/heap-use-cases-every-algorist-should
 
 # Blocking cases handled
 
@@ -163,6 +164,12 @@ Ci dessus, now represente notre point de reference.
 Deux cas ce presente a nous.
 1. now.tv_nsec + ms_to_nano(ms) > 999999999 (nano max): dans ce cas futuristic.tv_nsec = ms_to_nano(ms) - (999999999 - now.tv_nsec) et futuristic.tv_sec = now.tv_sec + 1
 2. now.tv_nsec + ms_to_nano(ms) <= 999999999 : ce cas est le plus simple, futuristic.tv_nsec = now.tv_nsec + ms_to_nano(ms) et futuristic.tv_sec = now.tv_sec
+
+
+# heap queue
+
+Une heap queue est une structure de donner qui prend la forme d'un arbre binaire trie. La valeur prioritiare a traiter est toujour le noeud root de l'arbre si bien que l'acces a la donnee a toujour une complexite O(n).
+
 
 
 # lldb

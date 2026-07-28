@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:34:48 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 20:53:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,16 @@ void    display_params(int params[8]);
 void    display_coders(t_coder *coders, int nb_coder);
 void    safe_print(t_coder coder, int action);
 void    display_mutex_data(int nb_coder, t_global_mutex global_mu);
+void    display_request(t_request request);
 /* utils */
 
 size_t  get_str_arr_len(char **str_arr);
 int     get_dongle(int id, int number_of_coder, int type);
 int     ft_is_digit(char c);
 void    ft_memcopy(void *src, void *dst, unsigned long size);
-pthread_cond_t get_cond(void);
+int     max(int a, int b);
+
+
 /* thread */
 
 
@@ -173,5 +176,14 @@ long            ms_to_nano(long ms);
 clock_t         time_calculation(struct timespec time);
 struct timespec time_diff(struct timespec start, struct timespec end);
 struct timespec futuristic_timespec(int ms);
+
+
+/* tree */
+
+void            bfs(t_request *root);
+int             tree_height(t_request *root);
+int             count_tree_node(t_request *root, int size);
+void            display_tree(t_request *root);
+
 
 #endif

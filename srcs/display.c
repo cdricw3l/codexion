@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:33:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/28 20:52:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,13 @@ void display_mutex_data(int nb_coder, t_global_mutex global_mu)
         i++;
     }
         
+}
+
+void display_request(t_request request)
+{
+    printf("\nId: %d\n",request.id);
+    printf("Last compilation: %ld\n",request.last_compilation);
+    printf("Cond adresse %p\n", request.cond);
+    printf("Children left: %p\n", request.left);
+    printf("Children right: %p\n", request.right);
 }

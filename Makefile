@@ -12,7 +12,8 @@ SRCS= srcs/codexion.c \
  		srcs/time.c \
  		srcs/queue.c \
 		srcs/initialisation.c \
-		srcs/clean.c
+		srcs/clean.c \
+		srcs/tree.c \
 
 
 
