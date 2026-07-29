@@ -14,6 +14,11 @@ $(NAME): $(SRCS_OBJS)
 	$(CC) $(CFLAGS) $(SRCS_OBJS) -o $(NAME)
 
 run: $(NAME)
+	@valgrind \
+	--log-file="valgrind.log" \
+	--leak-check=full \
+	--track-origins=yes \
+	--show-leak-kinds=all \
 	./$(NAME)
 
 clean:

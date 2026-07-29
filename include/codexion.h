@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 09:16:10 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 10:15:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ struct timespec futuristic_timespec(int ms);
 
 /* tree */
 
-void            bfs_binary_tree(t_queue *request_queue);
+void            insert_request(t_queue *request_queue, t_request *request);
 int             tree_height(t_request *root);
 int             count_tree_node(t_request *root, int size);
 void            display_tree(t_request *root);

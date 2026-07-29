@@ -72,7 +72,17 @@ int queue_assert(void)
 
     queue.size = 11;
     *queue.request_queue = &r1;
-    bfs_binary_tree(&queue);
+    
+    t_request new;
+    t_request new2;
+    new = create_request(24,-1, 10, &cond[0]);
+    new2 = create_request(24, 11, 10, &cond[0]);
+
+    printf("new request\n");
+    insert_request(&queue, &new);
+    printf("new request\n");
+    insert_request(&queue, &new2);
+
     free(queue.request_queue);
     return (TRUE);
 }

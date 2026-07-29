@@ -49,6 +49,7 @@ make re
 * https://members.loria.fr/lnussbaum/RS/CM-ch6-nup.pdf
 * https://newsletter.francofernando.com/p/heap-use-cases-every-algorist-should
 * https://stackoverflow.com/questions/6025632/bfs-in-binary-tree
+* https://www.youtube.com/watch?v=HqPJF2L5h9U
 
 # Blocking cases handled
 
