@@ -1,6 +1,7 @@
 CC=cc
 NAME=codexion_assert
-CFLAGS= -Wall -Wextra -Werror -pthread
+CFLAGS=  -pthread
+#CFLAGS= -Wall -Wextra -Werror -pthread
 
 SRCS= $(wildcard ./*.c) $(filter-out ../srcs/codexion.c , $(wildcard ../srcs/*.c))	
 

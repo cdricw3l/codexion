@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 13:07:38 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 15:28:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ static void pop(t_request **queue, int queue_size)
 
     if(!*queue)
         return ;
+    
     i = 0;
     while (i < queue_size)
     {
+        //printf("adress %p\n", &queue[i + 1]);
         queue[i] = queue[i + 1];
         i++; 
     }
@@ -92,6 +94,21 @@ void swap_request(t_request **r1, t_request **r2)
     *r2 = tmp;
 }
 
+
+void display_r_arr(t_request **r)
+{
+    int i;
+
+    i = 0;
+    printf(GRN"Display arr"CRESET"\n");
+    while (r[i])
+    {
+        printf("request id %d\n", r[i]->request_id);
+        i++;
+    }
+    
+}
+
 void insert_request(t_queue *request_queue, t_request *request)
 {
     size_t i;
@@ -108,15 +125,13 @@ void insert_request(t_queue *request_queue, t_request *request)
         return ;
     arr[request_queue->size] = request;
     i = request_queue->size;
+    
     while (i > 0)
     {
         t_request *current = arr[i];
-        if ((i / 2) > 0)
-        {
-            t_request *parent  = arr[i / 2];
-            if(current->request_id < parent->request_id)
-                swap_request(&arr[i], &arr[i / 2]);
-        }
+        t_request *parent  = arr[i / 2];
+        if(current->request_id < parent->request_id)
+            swap_request(&arr[i], &arr[i / 2]);
         i = i / 2;
     }
     i = 0;
@@ -125,13 +140,23 @@ void insert_request(t_queue *request_queue, t_request *request)
         size_t idx_left = (2 * i) + 1;
         size_t idx_right = (2 * i) + 2;
 
-        if(idx_left <= request_queue->size)
+        if(idx_left <= request_queue->size + 1)
+        {
+            printf("left %zu\n", idx_left);
             arr[i]->left = arr[idx_left]; 
-        if(idx_right <= request_queue->size)
-            arr[i]->right = arr[idx_right]; 
+        }
+        if(idx_right <= request_queue->size + 1)
+        {
+            printf("right %zu\n", idx_right);
+            arr[i]->right = arr[idx_right];
+        }
+        else
+        {
+            arr[i]->left = NULL;
+            arr[i]->right = NULL;
+        }
         i++;
     }
-    i = 0;
     *(request_queue->request_queue) = arr[0];
     free(arr);
     request_queue->size++;
