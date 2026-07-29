@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 09:12:03 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 09:13:09 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 16:48:56 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int count_tree_node(t_request *root, int size)
         return (1);
     return (count_tree_node(root->left, size + 1) + count_tree_node(root->right, size + 1)) ;
 }
-
 
 int tree_height(t_request *root)
 {

@@ -7,6 +7,6 @@
 #define START_TEST(name) printf(HYEL"Start test module: %s\n"CRESET, name)
 #define END_TEST(name) printf(HGRN"test module: %s [OK]\n"CRESET, name)
 
-int queue_assert(void);
+int create_request_assert(void);
 
 #endif

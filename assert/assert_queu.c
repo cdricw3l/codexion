@@ -1,4 +1,16 @@
-#include "../include/codexion.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   assert_queu.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
+/*   Updated: 2026/07/29 18:25:56 by cebouhad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "assert.h"
 
 
 t_request create_request(int coder_id, int request_id ,clock_t last_compile)
@@ -18,9 +30,9 @@ t_request create_request(int coder_id, int request_id ,clock_t last_compile)
 
 
 
-int queue_assert(void)
+int create_request_assert(void)
 {
-
+    START_TEST(__func__);
     t_queue   queue;
     t_request r1;
     t_request r2;
@@ -37,7 +49,7 @@ int queue_assert(void)
     t_request r13;
 
 
-    queue_initialisation(13, &queue);
+    queue_initialisation(&queue);
 
     r1 = create_request(24,0, 10);
     r2 = create_request(24,1, 100);
@@ -93,9 +105,42 @@ int queue_assert(void)
    
     insert_request(&queue, &r13);
     assert(queue.size == 13);
+    printf("STATE BEFORT POP");
     display_tree(*(queue.request_queue));
     assert((*(queue.request_queue))->request_id == -10);
     assert((*(queue.request_queue))->left->request_id == -5);
     free(queue.request_queue);
+    END_TEST(__func__);
+    return (TRUE);
+}
+
+
+int remove_request_assert(void)
+{
+    START_TEST(__func__);
+    t_queue   queue;
+    t_request r1;
+    t_request r2;
+    t_request r3;
+    t_request r4;
+    t_request r5;
+
+    r1 = create_request(24,0, 10);
+    r2 = create_request(24,1, 100);
+    r3 = create_request(24,2, 100);
+    r4 = create_request(24,3, 100);
+    r5 = create_request(24,-10, 100);
+
+    queue_initialisation(&queue);
+    insert_request(&queue, &r1);
+    insert_request(&queue, &r2);
+    insert_request(&queue, &r3);
+    insert_request(&queue, &r4);
+    insert_request(&queue, &r5);
+
+    display_tree(*queue.request_queue);
+    pop_request(&queue);
+    display_tree(*queue.request_queue);
+    END_TEST(__func__);
     return (TRUE);
 }

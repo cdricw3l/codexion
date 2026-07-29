@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 10:15:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:09:29 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ int     max(int a, int b);
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
 int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
 t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue);
-int	        queue_initialisation(int nb_coder, t_queue *request_queue);
+int         queue_initialisation(t_queue *request_queue);
 
 /* clean */
 
@@ -188,10 +188,14 @@ struct timespec futuristic_timespec(int ms);
 
 /* tree */
 
-void            insert_request(t_queue *request_queue, t_request *request);
 int             tree_height(t_request *root);
 int             count_tree_node(t_request *root, int size);
 void            display_tree(t_request *root);
 
+/* heap queue */
+
+int         insert_request(t_queue *request_queue, t_request *request);
+int	        pop_request(t_queue *request_queue);
+t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
 
 #endif

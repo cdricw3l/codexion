@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/27 10:09:35 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:11:38 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 int assert_queue()
 {
     START_TEST(__func__);
-    queue_assert();
+    create_request_assert();
+    remove_request_assert();
     END_TEST(__func__);
     return (0);
 }

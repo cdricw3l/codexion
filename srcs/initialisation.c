@@ -6,17 +6,17 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 08:13:10 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:09:15 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 
-int	queue_initialisation(int nb_coder, t_queue *request_queue)
+int	queue_initialisation(t_queue *request_queue)
 {
 
-	request_queue->request_queue = malloc(sizeof(t_request *) * nb_coder);
+	request_queue->request_queue = malloc(sizeof(t_request *));
 	if (!request_queue)
 		return (FALSE);
 	request_queue->size = 0;
