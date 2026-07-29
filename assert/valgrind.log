@@ -1,41 +1,171 @@
-==72234== Memcheck, a memory error detector
-==72234== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==72234== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==72234== Command: ./codexion_assert
-==72234== Parent PID: 72233
-==72234== 
-==72234== Invalid read of size 8
-==72234==    at 0x401D3B: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x4015F0: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==  Address 0x4a9e590 is 0 bytes after a block of size 16 alloc'd
-==72234==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72234==    by 0x4018C7: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401BD8: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x4015F0: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234== 
-==72234== Invalid read of size 8
-==72234==    at 0x401CF2: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401675: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==  Address 0x4a9e648 is 0 bytes after a block of size 24 alloc'd
-==72234==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72234==    by 0x4018C7: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401BD8: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401675: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
-==72234== 
-==72234== 
-==72234== HEAP SUMMARY:
-==72234==     in use at exit: 0 bytes in 0 blocks
-==72234==   total heap usage: 6 allocs, 6 frees, 1,208 bytes allocated
-==72234== 
-==72234== All heap blocks were freed -- no leaks are possible
-==72234== 
-==72234== For lists of detected and suppressed errors, rerun with: -s
-==72234== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==73459== Memcheck, a memory error detector
+==73459== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==73459== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==73459== Command: ./codexion_assert
+==73459== Parent PID: 73458
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x4015ED: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e590 is 0 bytes after a block of size 16 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x4015ED: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401672: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e648 is 0 bytes after a block of size 24 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401672: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x4016F7: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e710 is 0 bytes after a block of size 32 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x4016F7: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x40177C: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e7e8 is 0 bytes after a block of size 40 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x40177C: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401801: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e8d0 is 0 bytes after a block of size 48 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401801: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401886: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9e9c8 is 0 bytes after a block of size 56 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401886: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x40190B: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9ead0 is 0 bytes after a block of size 64 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x40190B: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401990: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9ebe8 is 0 bytes after a block of size 72 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401990: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401A15: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9ed10 is 0 bytes after a block of size 80 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401A15: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401A9A: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9ee48 is 0 bytes after a block of size 88 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401A9A: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x4022DB: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401B1F: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9ef90 is 0 bytes after a block of size 96 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401B1F: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== Invalid read of size 8
+==73459==    at 0x402292: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401BA4: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==  Address 0x4a9f0e8 is 0 bytes after a block of size 104 alloc'd
+==73459==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==73459==    by 0x401E67: bfs_binary_tree_as_arr (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x402178: insert_request (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401BA4: queue_assert (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401223: assert_queue (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459==    by 0x401263: main (in /home/cebouhad/Documents/core/codexion/assert/codexion_assert)
+==73459== 
+==73459== 
+==73459== HEAP SUMMARY:
+==73459==     in use at exit: 0 bytes in 0 blocks
+==73459==   total heap usage: 26 allocs, 26 frees, 2,568 bytes allocated
+==73459== 
+==73459== All heap blocks were freed -- no leaks are possible
+==73459== 
+==73459== For lists of detected and suppressed errors, rerun with: -s
+==73459== ERROR SUMMARY: 12 errors from 12 contexts (suppressed: 0 from 0)
