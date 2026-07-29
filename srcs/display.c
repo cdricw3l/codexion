@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 20:52:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 08:38:21 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static void display_coder(t_coder *coder)
     printf("display mutex %p\n", coder->coder_mutex.display_f);
     printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
     printf("cond %p\n", &coder->cond);
-    printf("Request queue %p root node:  %p\n", coder->queue, *coder->queue);
 }
 
 void display_coders(t_coder *coders, int nb_coder)
@@ -93,9 +92,10 @@ void display_mutex_data(int nb_coder, t_global_mutex global_mu)
 
 void display_request(t_request request)
 {
-    printf("\nId: %d\n",request.id);
+    printf("\nRequest Id: %d\n",request.request_id);
+    printf("Coder Id: %d\n",request.coder_id);
     printf("Last compilation: %ld\n",request.last_compilation);
-    printf("Cond adresse %p\n", request.cond);
-    printf("Children left: %p\n", request.left);
-    printf("Children right: %p\n", request.right);
+    // printf("Cond adresse %p\n", request.cond);
+    // printf("Children left: %p\n", request.left);
+    // printf("Children right: %p\n", request.right);
 }

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 20:53:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 09:16:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,22 @@ typedef struct s_dongle
 
 typedef struct s_request
 {
-    int             id;
-    clock_t         last_compilation;
-    pthread_cond_t  *cond;
-    struct s_request *left;
-    struct s_request *right;
+    int                 request_id;
+    int                 coder_id;
+    clock_t             last_compilation;
+    pthread_cond_t      *cond;
+    struct s_request    *left;
+    struct s_request    *right;
 
 } t_request;
 
+
+typedef struct s_queue
+{
+    size_t      size;
+    t_request   **request_queue;
+
+} t_queue;
 
 typedef struct s_global_mutex
 {
@@ -94,7 +102,7 @@ typedef struct s_coder
     clock_t         *last_compilation;
     t_coder_mutex   coder_mutex;
     pthread_cond_t  cond;
-    t_request       **queue;
+    t_queue         *queue;
 
 } t_coder;
 
@@ -161,8 +169,8 @@ int     max(int a, int b);
 
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
 int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
-t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request **queue);
-t_request   **queue_initialisation(void);
+t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue);
+int	        queue_initialisation(int nb_coder, t_queue *request_queue);
 
 /* clean */
 
@@ -180,7 +188,7 @@ struct timespec futuristic_timespec(int ms);
 
 /* tree */
 
-void            bfs(t_request *root);
+void            bfs_binary_tree(t_queue *request_queue);
 int             tree_height(t_request *root);
 int             count_tree_node(t_request *root, int size);
 void            display_tree(t_request *root);

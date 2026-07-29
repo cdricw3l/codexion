@@ -1,11 +1,12 @@
 #include "../include/codexion.h"
 
 
-t_request create_request(int id, clock_t last_compile, pthread_cond_t *cond)
+t_request create_request(int coder_id, int request_id ,clock_t last_compile, pthread_cond_t *cond)
 {
     t_request request;
 
-    request.id = id;
+    request.coder_id = coder_id;
+    request.request_id = request_id;
     request.last_compilation = last_compile;
     request.cond = cond;
     request.left = NULL;
@@ -21,7 +22,7 @@ t_request create_request(int id, clock_t last_compile, pthread_cond_t *cond)
 int queue_assert(void)
 {
 
-    t_request       **queue;
+    t_queue   queue;
     t_request r1;
     t_request r2;
     t_request r3;
@@ -39,19 +40,19 @@ int queue_assert(void)
     for (int i = 0; i < 11; i++)
         cond[i] = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 
-    queue = queue_initialisation();
+    queue_initialisation(11, &queue);
 
-    r1 = create_request(0, 10, &cond[0]);
-    r2 = create_request(1, 100, &cond[1]);
-    r3 = create_request(2, 100, &cond[2]);
-    r4 = create_request(3, 100, &cond[3]);
-    r5 = create_request(4, 100, &cond[4]);
-    r6 = create_request(5, 100, &cond[5]);
-    r7 = create_request(6, 100, &cond[6]);
-    r8 = create_request(7, 100, &cond[7]);
-    r9 = create_request(8, 100, &cond[8]);
-    r10 = create_request(9, 100, &cond[9]);
-    r11 = create_request(10, 100, &cond[9]);
+    r1 = create_request(24,0, 10, &cond[0]);
+    r2 = create_request(24,1, 100, &cond[1]);
+    r3 = create_request(24,2, 100, &cond[2]);
+    r4 = create_request(24,3, 100, &cond[3]);
+    r5 = create_request(24,4, 100, &cond[4]);
+    r6 = create_request(24,5, 100, &cond[5]);
+    r7 = create_request(24,6, 100, &cond[6]);
+    r8 = create_request(24,7, 100, &cond[7]);
+    r9 = create_request(24,8, 100, &cond[8]);
+    r10 = create_request(24,9, 100, &cond[9]);
+    r11 = create_request(24,10, 100, &cond[9]);
 
 
     r1.left = &r2;
@@ -69,8 +70,9 @@ int queue_assert(void)
     r5.left = &r10;
     r5.right = &r11;
 
-    bfs(&r1);
-
-    free(queue);
+    queue.size = 11;
+    *queue.request_queue = &r1;
+    bfs_binary_tree(&queue);
+    free(queue.request_queue);
     return (TRUE);
 }

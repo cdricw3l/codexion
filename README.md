@@ -48,6 +48,7 @@ make re
 * https://docs.dennisokeeffe.com/comp3520-os/pthread
 * https://members.loria.fr/lnussbaum/RS/CM-ch6-nup.pdf
 * https://newsletter.francofernando.com/p/heap-use-cases-every-algorist-should
+* https://stackoverflow.com/questions/6025632/bfs-in-binary-tree
 
 # Blocking cases handled
 

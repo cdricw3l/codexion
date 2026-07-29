@@ -6,22 +6,22 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 13:36:04 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 08:13:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
 
-t_request **queue_initialisation(void)
+int	queue_initialisation(int nb_coder, t_queue *request_queue)
 {
-	t_request **queue;
 
-	queue = malloc(sizeof(t_request *));
-	if (!queue)
-		return (NULL);
-	*queue = NULL;
-	return (queue);
+	request_queue->request_queue = malloc(sizeof(t_request *) * nb_coder);
+	if (!request_queue)
+		return (FALSE);
+	request_queue->size = 0;
+	*(request_queue->request_queue) = NULL;
+	return (TRUE);
 }
 
 static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *global_mu)
@@ -42,7 +42,7 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 }
 
 
-t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_request **queue)
+t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue)
 {
 	int 	i;
 	t_coder *coders;

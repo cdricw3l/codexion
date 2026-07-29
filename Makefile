@@ -13,7 +13,8 @@ SRCS= srcs/codexion.c \
  		srcs/queue.c \
 		srcs/initialisation.c \
 		srcs/clean.c \
-		srcs/tree.c \
+		srcs/bfs_binary_tree.c \
+		srcs/binary_tree.c \
 
 
 
