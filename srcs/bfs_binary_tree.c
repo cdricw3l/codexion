@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 12:04:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 13:07:38 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void push(t_request **queue, t_request *node)
     queue[i] = node;
 }
 
-static void pop(t_request **queue)
+static void pop(t_request **queue, int queue_size)
 {
     int i;
 
-    i = 0;
     if(!*queue)
         return ;
-    while (queue[i])
+    i = 0;
+    while (i < queue_size)
     {
         queue[i] = queue[i + 1];
         i++; 
@@ -48,12 +48,13 @@ static int queue_is_empty(t_request **queue)
 t_request **bfs_binary_tree_as_arr(t_queue *request_queue)
 {
     t_request **queue;
+    int queue_size;
     t_request **arr;
     t_request *tmp;
     
     if(!request_queue)
         return(NULL) ;
-    queue = malloc(sizeof(t_request * ) *  request_queue->size);
+    queue = malloc(sizeof(t_request * ) *  (request_queue->size + 1));
     if(!queue)
         return(NULL);
     arr = malloc(sizeof(t_request *) *  (request_queue->size + 1));
@@ -62,17 +63,21 @@ t_request **bfs_binary_tree_as_arr(t_queue *request_queue)
         free(queue);
         return (NULL);
     }
-    memset(queue, 0, sizeof(t_request * ) * request_queue->size);
+    memset(queue, 0, sizeof(t_request * ) * (request_queue->size + 1));
     memset(arr, 0, sizeof(t_request * ) * (request_queue->size + 1));
     push(queue, request_queue->request_queue[0]);
+    queue_size = 1;
     while (!queue_is_empty(queue))
     {
         tmp = queue[0];
         /* create an  bfs array representation of the binary tree */
         push(arr, tmp);
-        pop(queue);
+        pop(queue, queue_size);
+        queue_size--;
         push(queue, tmp->left);
+        queue_size++;
         push(queue, tmp->right);
+        queue_size++;
     }
     free(queue);
     return (arr);
@@ -89,11 +94,15 @@ void swap_request(t_request **r1, t_request **r2)
 
 void insert_request(t_queue *request_queue, t_request *request)
 {
-    int i;
+    size_t i;
     t_request **arr;
-    //t_request *parent;
-    //t_request *current;
 
+    if (request_queue->size == 0)
+    {
+        *(request_queue->request_queue) = request;
+        request_queue->size++;
+        return ;
+    }
     arr = bfs_binary_tree_as_arr(request_queue);
     if(!arr)
         return ;
@@ -101,13 +110,17 @@ void insert_request(t_queue *request_queue, t_request *request)
     i = request_queue->size;
     while (i > 0)
     {
-        t_request *current = arr[i]; 
-        t_request *parent  = arr[i / 2];
-        if(current->request_id < parent->request_id)
-            swap_request(&arr[i], &arr[i / 2]);
+        t_request *current = arr[i];
+        if ((i / 2) > 0)
+        {
+            t_request *parent  = arr[i / 2];
+            if(current->request_id < parent->request_id)
+                swap_request(&arr[i], &arr[i / 2]);
+        }
         i = i / 2;
     }
-    while (arr[i])
+    i = 0;
+    while (i <= request_queue->size)
     {
         size_t idx_left = (2 * i) + 1;
         size_t idx_right = (2 * i) + 2;
@@ -119,14 +132,7 @@ void insert_request(t_queue *request_queue, t_request *request)
         i++;
     }
     i = 0;
-    
-    while (arr[i])
-    {
-        printf("request id %d\n", arr[i]->request_id);
-        i++;
-    }
-    
+    *(request_queue->request_queue) = arr[0];
     free(arr);
     request_queue->size++;
-    
 }
