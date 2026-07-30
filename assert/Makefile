@@ -19,7 +19,7 @@ OS = $(shell uname)
 
 run: $(NAME)
 ifeq ($(OS), Darwin)
-	./$(NAME)
+	MallocStackLogging=1 leaks -atExit -- ./$(NAME)
 else
 	@valgrind \
 	--log-file="valgrind.log" \

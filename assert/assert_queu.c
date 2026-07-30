@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/30 19:00:38 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/30 19:10:36 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,40 +48,43 @@ void poppush_queue_assert(void)
 
     nb_request = 4;
     size_q = 0;
-    queue = malloc(sizeof(t_request *) * nb_request);
+    queue = malloc(sizeof(t_request *) * (nb_request + 1));
     assert(queue);
-    memset(queue, 0, sizeof(t_request *) * nb_request);
-
-    for (int i = 0; i < nb_request; i++)
+    memset(queue, 0, sizeof(t_request *) * (nb_request + 1));
+    int i;
+    r1 = create_request(24,0, 10);
+    r2 = create_request(24,1, 100);
+    r3 = create_request(24,2, 100);
+    r4 = create_request(24,4, 100);
+    push(queue, &r1);
+    push(queue, &r2);
+    assert(get_size_queue(queue) == 2);
+    push(queue, &r3);
+    assert(get_size_queue(queue) == 3);
+    push(queue, &r4);
+    assert(get_size_queue(queue) == 4);
+    printf("after all push\n");
+    for (i = 0; i < nb_request; i++)
     {
-        queue[i] = NULL;
         printf("queue %p\n", queue[i]);
     }
-    
-    // assert(get_size_queue(queue) == 0);
-    // r1 = create_request(24,0, 10);
-    // r2 = create_request(24,1, 100);
-    // r3 = create_request(24,2, 100);
-    // r4 = create_request(24,4, 100);
-    
-    // push(queue, &r1);
-    // printf("La taille de la queue est %d\n", get_size_queue(queue));
-    // assert(get_size_queue(queue) == 1);
-    // push(queue, &r2);
-    // assert(get_size_queue(queue) == 2);
-    // push(queue, &r3);
-    // assert(get_size_queue(queue) == 3);
-    // push(queue, &r4);
-    // printf("La taille de la queue est %d\n", get_size_queue(queue));
-    // assert(get_size_queue(queue) == 4);
-    
-
-    //pop(queue, get_size_queue(queue));
-    // for (int i = 0; queue[i]; i++)
-    //     printf("request %d\n", queue[i]->request_id);
-    // assert(get_size_queue(queue) == 3);
-
-
+    pop(queue, get_size_queue(queue));
+    assert(get_size_queue(queue) == 3);
+    printf("after one pop\n");
+    for (i = 0; i < nb_request; i++)
+    {
+        printf("queue %p\n", queue[i]);
+    }
+    pop(queue, get_size_queue(queue));
+    assert(get_size_queue(queue) == 2);
+    pop(queue, get_size_queue(queue));
+    assert(get_size_queue(queue) == 1);
+    pop(queue, get_size_queue(queue));
+    assert(get_size_queue(queue) == 0);
+  
+    push(queue, &r4);
+    assert(get_size_queue(queue) == 1);
+    free(queue);
     END_TEST(__func__);
 
 }
