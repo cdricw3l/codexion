@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 18:09:29 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/29 19:29:53 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,9 @@ int             count_tree_node(t_request *root, int size);
 void            display_tree(t_request *root);
 
 /* heap queue */
+
+void	pop(t_request **queue, int queue_size);
+void	push(t_request **queue, t_request *node);
 
 int         insert_request(t_queue *request_queue, t_request *request);
 int	        pop_request(t_queue *request_queue);

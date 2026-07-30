@@ -8,5 +8,7 @@
 #define END_TEST(name) printf(HGRN"test module: %s [OK]\n"CRESET, name)
 
 int create_request_assert(void);
+int remove_request_assert(void);
+void poppush_queue_assert(void);
 
 #endif
