@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:30:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:00:00 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,20 @@ typedef         struct timespec         timespec_t;
 
 typedef struct s_dongle
 {
-    clock_t last_use;
+    clock_t         last_use;
     pthread_mutex_t *dongle;
 
 } t_dongle;
 
 typedef struct s_request
 {
-    int                 request_id;
     int                 coder_id;
+    int                 request_id;
     clock_t             last_compilation;
-    pthread_cond_t      *cond;
+    pthread_cond_t      *coder_cond_l;
+    pthread_cond_t      *coder_cond_r;
+    pthread_mutex_t     *dongle_left;
+    pthread_mutex_t     *dongle_right;
     struct s_request    *left;
     struct s_request    *right;
 
@@ -72,8 +75,9 @@ typedef struct s_request
 
 typedef struct s_queue
 {
-    size_t      size;
-    t_request   **request_queue;
+    size_t          size;
+    t_request       **request_queue;
+    pthread_mutex_t queue_lock;
 
 } t_queue;
 
@@ -101,7 +105,8 @@ typedef struct s_coder
     timespec_t      start;
     clock_t         *last_compilation;
     t_coder_mutex   coder_mutex;
-    pthread_cond_t  cond;
+    pthread_cond_t  cond_left;
+    pthread_cond_t  cond_right;
     t_queue         *queue;
 
 } t_coder;
@@ -194,9 +199,9 @@ void            display_tree(t_request *root);
 
 /* heap queue */
 
-void	pop(t_request **queue, int queue_size);
-void	push(t_request **queue, t_request *node);
-
+void	    pop(t_request **queue, int queue_size);
+void	    push(t_request **queue, t_request *node);
+void	    swap_request(t_request **r1, t_request **r2);
 int         push_request(t_queue *request_queue, t_request *request);
 int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);

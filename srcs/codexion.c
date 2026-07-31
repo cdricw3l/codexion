@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 08:05:43 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:43:37 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define DISPLAY_PARAMS 	FALSE
 #define DISPLAY_MUTEX 	FALSE
-#define DISPLAY_CODER 	FALSE
+#define DISPLAY_CODER 	TRUE
 
 
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 		display_mutex_data(params[number_of_coders], global_mu);
 	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
-	if(!queue_initialisation(params[number_of_coders], &request_queue))
+	if(!queue_initialisation(&request_queue))
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	coders = coders_initialisation((int *)params, &global_mu, &monitoring, &request_queue);
 	if (!coders)

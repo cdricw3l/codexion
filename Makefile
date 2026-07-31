@@ -5,16 +5,17 @@ CFLAGS= -Wall -Wextra -Werror -g -pthread
 #CFLAGS=  -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
-		srcs/parsing.c \
-		srcs/utils.c \
-		srcs/display.c \
-		srcs/error.c \
- 		srcs/time.c \
- 		srcs/queue.c \
-		srcs/initialisation.c \
-		srcs/clean.c \
-		srcs/heap_bfs.c \
-		srcs/heap_queue.c \
+		srcs/parsing/parsing.c \
+		srcs/utils/utils.c \
+		srcs/display/display.c \
+		srcs/errors/error.c \
+ 		srcs/time/time.c \
+		srcs/init/initialisation.c \
+		srcs/clean/clean.c \
+		srcs/heap/heap_bfs.c \
+		srcs/heap/heap_pop_request.c \
+		srcs/heap/heap_push_request.c \
+		srcs/heap/heap_utils.c
 
 
 
@@ -28,7 +29,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=20 400 200 100 100 10 10 fifo
+ARG=2 400 200 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)
@@ -45,7 +46,7 @@ helrun: $(NAME)
 	valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)  $(ARG)
 
 clean:
-	rm -f srcs/*.o
+	rm -f $(SRCS_OBJS)
 
 fclean: clean
 	@make  -s -C  assert fclean

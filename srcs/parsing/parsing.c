@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:51:42 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 09:05:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:05:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 
 static int check_args(char *arg, int idx)

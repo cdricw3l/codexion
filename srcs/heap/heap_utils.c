@@ -6,13 +6,13 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:58:28 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:35:16 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
-static void	swap_request(t_request **r1, t_request **r2)
+void	swap_request(t_request **r1, t_request **r2)
 {
 	t_request	*tmp;
 

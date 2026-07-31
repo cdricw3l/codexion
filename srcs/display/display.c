@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 08:38:21 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:06:20 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 
 
@@ -41,7 +41,8 @@ static void display_coder(t_coder *coder)
     printf("Usb right: %p last use %ld\n", coder->coder_mutex.dongle_r.dongle, coder->coder_mutex.dongle_r.last_use);
     printf("display mutex %p\n", coder->coder_mutex.display_f);
     printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
-    printf("cond %p\n", &coder->cond);
+    printf("cond left %p\n", &coder->cond_left);
+    printf("cond left %p\n", &coder->cond_right);
 }
 
 void display_coders(t_coder *coders, int nb_coder)

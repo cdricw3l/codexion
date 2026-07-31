@@ -6,19 +6,15 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 11:57:37 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:58:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:34:57 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 static int	remove_request(t_request **arr_request, size_t size_queue)
 {
 	size_t		i;
-	size_t		idx_left;
-	size_t		idx_right;
-	t_request	*children_r;
-	t_request	*children_l;
 
 	swap_request(&arr_request[size_queue - 1], &arr_request[0]);
 	arr_request[size_queue - 1] = NULL;

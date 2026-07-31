@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:36:53 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 11:18:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:06:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 int mutex_destroy(int nb_coder, t_global_mutex *global_mu)
 {

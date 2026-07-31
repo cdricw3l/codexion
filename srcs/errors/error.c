@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:19:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/17 08:34:26 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:06:15 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 int parsing_error_msg(int code, char *arg)
 {

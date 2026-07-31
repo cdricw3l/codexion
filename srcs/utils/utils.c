@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:53:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/28 20:52:30 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:06:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 int max(int a, int b)
 {

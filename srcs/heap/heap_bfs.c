@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:53:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 12:34:25 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 void	push(t_request **queue, t_request *node)
 {

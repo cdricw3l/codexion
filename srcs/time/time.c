@@ -6,11 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/23 09:02:51 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 13:05:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "../../include/codexion.h"
 
 long second_to_nano(long sec)
 {

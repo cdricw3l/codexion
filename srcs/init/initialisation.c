@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/30 20:13:45 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 13:06:05 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
-
+#include "../../include/codexion.h"
 
 int	queue_initialisation(t_queue *request_queue)
 {
@@ -20,8 +19,8 @@ int	queue_initialisation(t_queue *request_queue)
 	if (!request_queue)
 		return (FALSE);
 	request_queue->size = 0;
-	
 	*(request_queue->request_queue) = NULL;
+	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	return (TRUE);
 }
 
@@ -59,7 +58,8 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 		ft_memcopy(params, &coders[i].params, sizeof(int) * 8);
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
 		coders[i].last_compilation = &monitor->last_compilations[i];
-		coders[i].cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+		coders[i].cond_left = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+		coders[i].cond_right = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 		coders[i].queue = queue;
 		i++;
 	}
