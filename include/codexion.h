@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 19:29:53 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 10:56:15 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,5 +200,6 @@ void	push(t_request **queue, t_request *node);
 int         insert_request(t_queue *request_queue, t_request *request);
 int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
-
+void	    add_request(t_request **arr, size_t queue_size);
+void	    plug_heap_nodes(t_request **arr, size_t queue_size);
 #endif

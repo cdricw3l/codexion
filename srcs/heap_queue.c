@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_queue.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/30 20:18:51 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 11:04:06 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ static void	swap_request(t_request **r1, t_request **r2)
 	*r2 = tmp;
 }
 
-static void	add_request(t_request **arr, size_t queue_size)
+void	add_request(t_request **arr, size_t queue_size)
 {
 	size_t		i;
 	t_request	*current;
 	t_request	*parent;
 
-	i = queue_size;
+	i = queue_size - 1;
 	while (i > 0)
 	{
+
 		current = arr[i];
 		parent = arr[i / 2];
 		if (current->request_id < parent->request_id)
@@ -38,7 +39,7 @@ static void	add_request(t_request **arr, size_t queue_size)
 	}
 }
 
-static void	plug_heap_nodes(t_request **arr, size_t queue_size)
+void	plug_heap_nodes(t_request **arr, size_t queue_size)
 {
 	size_t	i;
 	size_t	idx_left;
@@ -46,18 +47,17 @@ static void	plug_heap_nodes(t_request **arr, size_t queue_size)
 
 	i = 0;
 	while (i < queue_size)
-	{
+	{	
 		idx_left = (2 * i) + 1;
 		idx_right = (2 * i) + 2;
-		if (idx_left <= queue_size + 1)
-			arr[i]->left = arr[idx_left]; 
-		if (idx_right <= queue_size + 1)
+		if (idx_left < queue_size)
+			arr[i]->left = arr[idx_left];
+		else
+			arr[i]->left = NULL;
+		if (idx_right < queue_size)
 			arr[i]->right = arr[idx_right];
 		else
-		{
-			arr[i]->left = NULL;
 			arr[i]->right = NULL;
-		}
 		i++;
 	}
 }
@@ -73,15 +73,16 @@ int	insert_request(t_queue *request_queue, t_request *request)
 		request_queue->size++;
 		return (TRUE);
 	}
+	request_queue->size++;
 	arr = bfs_binary_tree_as_arr(request_queue);
 	if (!arr)
 		return (FALSE);
-	arr[request_queue->size] = request;
+	arr[request_queue->size - 1] = request;
+		
 	add_request(arr, request_queue->size);
 	plug_heap_nodes(arr, request_queue->size);
 	*(request_queue->request_queue) = arr[0];
-	//free(arr);
-	request_queue->size++;
+	free(arr);
 	return (TRUE);
 }
 
