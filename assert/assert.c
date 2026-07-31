@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 19:30:33 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 08:35:51 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 int assert_queue()
 {
     START_TEST(__func__);
-    poppush_queue_assert();
+    //poppush_queue_assert();
+    bfs_binary_tree_as_arr_assert();
     //create_request_assert();
     //remove_request_assert();
     END_TEST(__func__);

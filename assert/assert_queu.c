@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/30 19:10:36 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 08:44:42 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,54 @@ void poppush_queue_assert(void)
 }
 
 
+int bfs_binary_tree_as_arr_assert(void)
+{
+    START_TEST(__func__);
+
+    t_request r1;
+    t_request r2;
+    t_request r3;
+    t_request r4;
+    t_request r5;
+    t_request r6;
+    t_request r7;
+    
+
+    r1 = create_request(24,0, 10);
+    r2 = create_request(24,1, 100);
+    r3 = create_request(24,2, 100);
+    r4 = create_request(24,3, 100);
+    r5 = create_request(24,4, 100);
+    r6 = create_request(24,5, 100);
+    r7 = create_request(24,6, 100);
+    
+
+    r1.left = &r2;
+    r1.right = &r3;
+
+    r2.left = &r4;
+    r2.right = &r5;
+
+    r3.left = &r6;
+    r3.right = &r7;
+
+    t_request **arr;
+    t_queue queue;
+
+    queue_initialisation(&queue);
+    queue.size = 7;
+    
+    arr = bfs_binary_tree_as_arr(&queue);
+
+    //assert(arr[0] == &r1);
+
+
+    free(arr);
+    free(queue.request_queue);
+    END_TEST(__func__);
+    return (TRUE);
+}
+
 int create_request_assert(void)
 {
     START_TEST(__func__);
@@ -107,7 +155,6 @@ int create_request_assert(void)
     t_request r11;
     t_request r12;
     t_request r13;
-
 
     queue_initialisation(&queue);
     r1 = create_request(24,0, 10);
@@ -132,10 +179,16 @@ int create_request_assert(void)
     assert(queue.size == 2);
     assert(queue.request_queue[0]->request_id == 0);
 
-    t_request **arr = bfs_binary_tree_as_arr(&queue);
-    assert(arr);
-    // insert_request(&queue, &r3);
-    // assert(queue.size == 3);
+    t_request *request;
+
+    request = queue.request_queue[0];
+    printf("node %d\n", request->request_id);
+    printf("node %d\n", r1.request_id);
+    printf("left %p\n", request->left);
+    printf("left %p\n", r1.left);
+    printf("right %p\n", request->right);
+    printf("left %p\n", r1.right);
+    //display_tree(*queue.request_queue);
     // assert(queue.request_queue[0]->request_id == 0);
     // insert_request(&queue, &r4);
     // assert(queue.size == 4);

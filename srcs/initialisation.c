@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 18:09:15 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/30 20:13:45 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	queue_initialisation(t_queue *request_queue)
 	if (!request_queue)
 		return (FALSE);
 	request_queue->size = 0;
+	
 	*(request_queue->request_queue) = NULL;
 	return (TRUE);
 }

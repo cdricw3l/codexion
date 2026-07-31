@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_queue.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/29 18:25:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/30 20:18:51 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	insert_request(t_queue *request_queue, t_request *request)
 	add_request(arr, request_queue->size);
 	plug_heap_nodes(arr, request_queue->size);
 	*(request_queue->request_queue) = arr[0];
-	free(arr);
+	//free(arr);
 	request_queue->size++;
 	return (TRUE);
 }
