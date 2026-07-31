@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 09:44:12 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 11:53:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	push(t_request **queue, t_request *node)
 	int	i;
 
 	i = 0;
-	
 	while (queue[i])
 		i++;
 	queue[i] = node;
@@ -53,7 +52,6 @@ static t_request	**get_heap_as_arr(t_queue *request_queue, t_request **queue)
 	t_request	*tmp;
 	int			queue_size;
 
-
 	arr = malloc(sizeof(t_request *) * (request_queue->size + 1));
 	if (!arr)
 		return (NULL);
@@ -63,7 +61,6 @@ static t_request	**get_heap_as_arr(t_queue *request_queue, t_request **queue)
 	while (!queue_is_empty(queue))
 	{
 		tmp = queue[0];
-		/* create an  bfs array representation of the binary tree */ 
 		push(arr, tmp);
 		pop(queue, queue_size);
 		queue_size--;
@@ -79,7 +76,6 @@ t_request	**bfs_binary_tree_as_arr(t_queue *request_queue)
 {
 	t_request	**queue;
 	t_request	**arr;
-
 
 	if (!request_queue)
 		return (NULL);
