@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 10:56:15 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 11:30:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void            display_tree(t_request *root);
 void	pop(t_request **queue, int queue_size);
 void	push(t_request **queue, t_request *node);
 
-int         insert_request(t_queue *request_queue, t_request *request);
+int         push_request(t_queue *request_queue, t_request *request);
 int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
 void	    add_request(t_request **arr, size_t queue_size);

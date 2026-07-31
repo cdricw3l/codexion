@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:04:06 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 11:50:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	plug_heap_nodes(t_request **arr, size_t queue_size)
 	}
 }
 
-int	insert_request(t_queue *request_queue, t_request *request)
+int	push_request(t_queue *request_queue, t_request *request)
 {
 	t_request	**arr;
 	
@@ -113,7 +113,12 @@ int	pop_request(t_queue *request_queue)
 
 	if (request_queue->size <= 0)
 		return (FALSE);
-	
+	if (request_queue->size == 1)
+	{
+		*request_queue->request_queue = NULL;
+		request_queue->size = 0;
+		return (TRUE);
+	}
 	arr = bfs_binary_tree_as_arr(request_queue);
 	if (!arr)
 		return (FALSE);

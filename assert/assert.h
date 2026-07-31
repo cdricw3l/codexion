@@ -11,6 +11,6 @@ int create_request_assert(void);
 int remove_request_assert(void);
 void poppush_queue_assert(void);
 int bfs_binary_tree_as_arr_assert(void);
-int add_request_assert(void);
+int push_request_assert(void);
 
 #endif

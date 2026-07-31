@@ -36,6 +36,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f valgrind.log
 
 re: fclean $(NAME)
 
