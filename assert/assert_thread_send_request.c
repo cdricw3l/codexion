@@ -1,48 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   assert_thread.c                                    :+:      :+:    :+:   */
+/*   assert_thread_send_request.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 22:18:41 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 22:56:16 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-#define NB_REQUEST 2
+#define NB_REQUEST 10
 
-t_request *_request(int id_request, int id_coder)
-{
-    t_request *request;
-
-    request = malloc(sizeof(t_request));
-    assert(request);
-    request->request_id = id_request;
-    request->coder_id = (int)id_coder;
-    request->last_compilation = 0;
-    request->left = NULL;
-    request->right = NULL;
-    return (request);
-}
-
-int send_request(t_queue *queue)
-{
-    t_request *request;
-
-    request = _request(queue->request_counter, pthread_self());
-    if(!push_request(queue, request))
-    {
-        printf("Error creation request %d\n", request->request_id);
-        return (FALSE);
-    }
-    printf("thread %ld pushed the request %zu new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
-    queue->request_counter++;
-    return (TRUE);
-}
-void *queue_routine(void *arg)
+void *queue_routine_send_request(void *arg)
 {
     t_queue *queue;
     int i = 0;
@@ -61,14 +33,13 @@ void *queue_routine(void *arg)
     
 }
 
+#define NB_CODER 10
 
-#define NB 2
-
-int thread_request_assert(void)
+int thread_send_request_assert(void)
 {
     START_TEST(__func__);
     t_queue *queue;
-    pthread_t thread[NB];
+    pthread_t thread[NB_CODER];
     int i;
 
 
@@ -76,15 +47,16 @@ int thread_request_assert(void)
     assert(queue);
     if(!queue_initialisation(queue))
         return (FALSE);
-    for (i = 0; i < NB; i++)
-        pthread_create(&thread[i], NULL, queue_routine, queue);
-    for (i = 0; i < NB; i++)
+    for (i = 0; i < NB_CODER; i++)
+        pthread_create(&thread[i], NULL, queue_routine_send_request, queue);
+    for (i = 0; i < NB_CODER; i++)
         pthread_join(thread[i], NULL);
 
     t_request **arr;
-
     arr =  bfs_binary_tree_as_arr(queue);
-    for (int j = 0; j < queue->size - 1; j++)
+    assert(arr);    
+    printf(YELB"START CHECK"CRESET"\n");
+    for (int j = 0; j < queue->size; j++)
     {
         display_request(*(arr[j]));
         assert(arr[j]->request_id == j);

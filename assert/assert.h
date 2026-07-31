@@ -13,6 +13,10 @@ void poppush_queue_assert(void);
 int bfs_binary_tree_as_arr_assert(void);
 int push_request_assert(void);
 
-int thread_request_assert(void);
+int         send_request(t_queue *queue);
+t_request *_request(int id_request, int id_coder);
+
+int thread_send_request_assert(void);
+int thread_consume_request_assert(void);
 
 #endif
