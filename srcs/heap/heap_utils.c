@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 12:35:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 21:12:20 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	plug_heap_nodes(t_request **arr, size_t queue_size)
 	{
 		idx_left = (2 * i) + 1;
 		idx_right = (2 * i) + 2;
-		if (idx_left < queue_size)
+		if (idx_left <= queue_size - 1)
 			arr[i]->left = arr[idx_left];
 		else
 			arr[i]->left = NULL;
-		if (idx_right < queue_size)
+		if (idx_right <= queue_size - 1)
 			arr[i]->right = arr[idx_right];
 		else
 			arr[i]->right = NULL;

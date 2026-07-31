@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 12:43:37 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 15:27:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 #define DISPLAY_PARAMS 	FALSE
 #define DISPLAY_MUTEX 	FALSE
 #define DISPLAY_CODER 	TRUE
-
-
-
-
 
 int main(int argc, char **argv)
 {
@@ -51,6 +47,7 @@ int main(int argc, char **argv)
 	}
 	if (DISPLAY_CODER)
 		display_coders(coders, params[number_of_coders]);
+	thread_launcher(coders, &monitoring, params[number_of_coders]);
 	free(coders);
 	free(request_queue.request_queue);
 	clean_memory(params[number_of_coders], &global_mu, &monitoring);

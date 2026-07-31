@@ -15,7 +15,8 @@ SRCS= srcs/codexion.c \
 		srcs/heap/heap_bfs.c \
 		srcs/heap/heap_pop_request.c \
 		srcs/heap/heap_push_request.c \
-		srcs/heap/heap_utils.c
+		srcs/heap/heap_utils.c \
+		srcs/thread/thread.c \
 
 
 
@@ -57,6 +58,9 @@ re: fclean $(NAME)
 # run assertion makefile -C -> target makefile folder
 as:
 	@make  -s -C  assert run
+
+ashel:
+	@make  -s -C  assert ashel
 
 # recopile and run assertion makefile -C -> target makefile folder
 ras:

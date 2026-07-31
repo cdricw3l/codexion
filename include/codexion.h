@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:00:00 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 15:37:02 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_request
 typedef struct s_queue
 {
     size_t          size;
+    size_t          request_counter;
     t_request       **request_queue;
     pthread_mutex_t queue_lock;
 
@@ -108,6 +109,7 @@ typedef struct s_coder
     pthread_cond_t  cond_left;
     pthread_cond_t  cond_right;
     t_queue         *queue;
+    pthread_t       thread;
 
 } t_coder;
 
@@ -168,7 +170,7 @@ int     max(int a, int b);
 
 /* thread */
 
-
+int     thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder);
 
 /* initialisation */
 

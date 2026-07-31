@@ -6,13 +6,13 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:51:09 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 21:04:04 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-t_request create_request(int coder_id, int request_id ,clock_t last_compile)
+t_request assert_create_request(int coder_id, int request_id ,clock_t last_compile)
 {
     t_request request;
 
@@ -56,10 +56,10 @@ void poppush_queue_assert(void)
     assert(queue);
     memset(queue, 0, sizeof(t_request *) * (nb_request + 1));
     int i;
-    r1 = create_request(24,0, 10);
-    r2 = create_request(24,1, 100);
-    r3 = create_request(24,2, 100);
-    r4 = create_request(24,4, 100);
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 100);
+    r3 = assert_create_request(24,2, 100);
+    r4 = assert_create_request(24,4, 100);
     push(queue, &r1);
     push(queue, &r2);
     assert(get_size_queue(queue) == 2);
@@ -107,13 +107,13 @@ int bfs_binary_tree_as_arr_assert(void)
     t_request r7;
     
 
-    r1 = create_request(24,0, 10);
-    r2 = create_request(24,1, 100);
-    r3 = create_request(24,2, 100);
-    r4 = create_request(24,3, 100);
-    r5 = create_request(24,4, 100);
-    r6 = create_request(24,5, 100);
-    r7 = create_request(24,6, 100);
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 100);
+    r3 = assert_create_request(24,2, 100);
+    r4 = assert_create_request(24,3, 100);
+    r5 = assert_create_request(24,4, 100);
+    r6 = assert_create_request(24,5, 100);
+    r7 = assert_create_request(24,6, 100);
     
 
     r1.left = &r2;
@@ -162,11 +162,11 @@ int push_request_assert(void)
     t_request r4;
     t_request r5;
 
-    r1 = create_request(24,0, 10);
-    r2 = create_request(24,-1, 100);
-    r3 = create_request(24,2, 100);
-    r4 = create_request(24,-20, 100);
-    r5 = create_request(24,20, 100);
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 100);
+    r3 = assert_create_request(24,2, 100);
+    r4 = assert_create_request(24,20, 100);
+    r5 = assert_create_request(24,200, 100);
 
     arr = malloc(sizeof(t_request *) * 6);
     memset(arr, 0, sizeof(t_request * ) * 6);
@@ -239,14 +239,14 @@ int create_request_assert(void)
 
 
     queue_initialisation(&queue);
-    r1 = create_request(24,0, 10);
-    r2 = create_request(24,-1, 100);
-    r3 = create_request(24,2, 100);
-    r4 = create_request(24,3, 100);
-    r5 = create_request(24,4, 100);
-    r6 = create_request(24,5, 100);
-    r7 = create_request(24,6, 100);
-    r8 = create_request(24,-6, 100);
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 100);
+    r3 = assert_create_request(24,2, 100);
+    r4 = assert_create_request(24,3, 100);
+    r5 = assert_create_request(24,4, 100);
+    r6 = assert_create_request(24,5, 100);
+    r7 = assert_create_request(24,6, 100);
+    r8 = assert_create_request(24,7, 100);
    
 
     queue.size = 0;
@@ -255,25 +255,25 @@ int create_request_assert(void)
     assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r2);
     assert(queue.size == 2);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r3);
     assert(queue.size == 3);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r4);
     assert(queue.size == 4);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r5);
     assert(queue.size == 5);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r6);
     assert(queue.size == 6);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r7);
     assert(queue.size == 7);
-    assert(queue.request_queue[0]->request_id == -1);
+    assert(queue.request_queue[0]->request_id == 0);
     push_request(&queue, &r8);
     assert(queue.size == 8);
-    assert(queue.request_queue[0]->request_id == -6);
+    assert(queue.request_queue[0]->request_id == 0);
     free(queue.request_queue);
     END_TEST(__func__);
     return (TRUE);
@@ -291,12 +291,12 @@ int remove_request_assert(void)
     t_request r5;
     t_request r6;
 
-    r1 = create_request(24,0, 10);
-    r2 = create_request(24,1, 100);
-    r3 = create_request(24,2, 100);
-    r4 = create_request(24,3, 100);
-    r5 = create_request(24,-10, 100);
-    r6 = create_request(24,-7, 100);
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 100);
+    r3 = assert_create_request(24,2, 100);
+    r4 = assert_create_request(24,3, 100);
+    r5 = assert_create_request(24,-10, 100);
+    r6 = assert_create_request(24,-7, 100);
 
     queue_initialisation(&queue);
     push_request(&queue, &r1);

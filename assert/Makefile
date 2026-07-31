@@ -3,7 +3,7 @@ NAME=codexion_assert
 CFLAGS=  -pthread -g
 #CFLAGS= -Wall -Wextra -Werror -pthread
 
-SRCS= $(wildcard ./*.c) $(filter-out ../srcs/codexion.c , $(wildcard ../srcs/*.c))	
+SRCS= $(wildcard ./*.c) $(filter-out ../srcs/codexion.c , $(wildcard ../srcs/*/*.c))	
 
 SRCS_OBJS= $(SRCS:.c=.o)
 
@@ -30,13 +30,16 @@ else
 	./$(NAME)
 endif
 
+ashel:
+	@valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)
+
 
 clean:
 	rm -f $(SRCS_OBJS)
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f valgrind.log
+	rm -f valgrind.log helgrind.log
 
 re: fclean $(NAME)
 

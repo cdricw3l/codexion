@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:06:05 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 15:40:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	queue_initialisation(t_queue *request_queue)
 	if (!request_queue)
 		return (FALSE);
 	request_queue->size = 0;
+	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
 	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	return (TRUE);
@@ -55,7 +56,7 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 	while (i < params[number_of_coders])
 	{
 		coders[i].id = i + 1;
-		ft_memcopy(params, &coders[i].params, sizeof(int) * 8);
+		ft_memcopy(params, coders[i].params, sizeof(int) * 8);
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
 		coders[i].last_compilation = &monitor->last_compilations[i];
 		coders[i].cond_left = (pthread_cond_t)PTHREAD_COND_INITIALIZER;

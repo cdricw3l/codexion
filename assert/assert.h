@@ -13,4 +13,6 @@ void poppush_queue_assert(void);
 int bfs_binary_tree_as_arr_assert(void);
 int push_request_assert(void);
 
+int thread_request_assert(void);
+
 #endif

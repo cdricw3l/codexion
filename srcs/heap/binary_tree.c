@@ -6,21 +6,21 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 09:12:03 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 12:35:47 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 16:29:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-void display_tree(t_request *root)
-{
-    if(!root)
-        return;
+// void display_tree(t_request *root)
+// {
+//     if(!root)
+//         return;
 
-    display_request(*root);
-    display_tree(root->left);
-    display_tree(root->right);
-}
+//     display_request(*root);
+//     display_tree(root->left);
+//     display_tree(root->right);
+// }
 
 /* get_tree_size - 1  is the size of the binary tree */
 int count_tree_node(t_request *root, int size)

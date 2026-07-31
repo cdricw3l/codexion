@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:06:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 15:44:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,14 @@ void display_request(t_request request)
     // printf("Cond adresse %p\n", request.cond);
     // printf("Children left: %p\n", request.left);
     // printf("Children right: %p\n", request.right);
+}
+
+void display_tree(t_request *root)
+{
+    if(!root)
+        return;
+
+    display_request(*root);
+    display_tree(root->left);
+    display_tree(root->right);
 }
