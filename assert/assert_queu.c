@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 11:07:12 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 11:10:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,11 +236,7 @@ int create_request_assert(void)
     t_request r6;
     t_request r7;
     t_request r8;
-    t_request r9;
-    t_request r10;
-    t_request r11;
-    t_request r12;
-    t_request r13;
+
 
     queue_initialisation(&queue);
     r1 = create_request(24,0, 10);
@@ -250,6 +246,7 @@ int create_request_assert(void)
     r5 = create_request(24,4, 100);
     r6 = create_request(24,5, 100);
     r7 = create_request(24,6, 100);
+    r8 = create_request(24,-6, 100);
    
 
     queue.size = 0;
@@ -262,11 +259,22 @@ int create_request_assert(void)
     insert_request(&queue, &r3);
     assert(queue.size == 3);
     assert(queue.request_queue[0]->request_id == -1);
-
-   
+    insert_request(&queue, &r4);
+    assert(queue.size == 4);
+    assert(queue.request_queue[0]->request_id == -1);
+    insert_request(&queue, &r5);
+    assert(queue.size == 5);
+    assert(queue.request_queue[0]->request_id == -1);
+    insert_request(&queue, &r6);
+    assert(queue.size == 6);
+    assert(queue.request_queue[0]->request_id == -1);
+    insert_request(&queue, &r7);
+    assert(queue.size == 7);
+    assert(queue.request_queue[0]->request_id == -1);
+    insert_request(&queue, &r8);
+    assert(queue.size == 8);
+    assert(queue.request_queue[0]->request_id == -6);
     display_tree(*queue.request_queue);
-   
-    // assert((*(queue.request_queue))->left->request_id == -5);
     free(queue.request_queue);
     END_TEST(__func__);
     return (TRUE);
