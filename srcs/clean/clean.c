@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:36:53 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:06:24 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 00:13:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,13 @@ int clean_memory(int nb_coder, t_global_mutex *global_mu, t_monitoring *monitori
 	mutex_destroy(nb_coder, global_mu);
 	free(monitoring->last_compilations);
 	return (0);
+}
+
+int clean_queue(t_queue *queue)
+{
+    if(!queue)
+        return (FALSE);
+    free(queue->request_queue);
+    free(queue);
+    return (TRUE);
 }

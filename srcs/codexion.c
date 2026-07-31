@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 15:27:24 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 00:18:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	t_coder			*coders;
 	t_global_mutex	global_mu;
 	t_monitoring	monitoring;
-	t_queue			request_queue;
+	t_queue			*request_queue;
 
 	if(parse_arguments(&argv[1], params) == FALSE)
 		return (1);
@@ -37,19 +37,19 @@ int main(int argc, char **argv)
 		display_mutex_data(params[number_of_coders], global_mu);
 	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
-	if(!queue_initialisation(&request_queue))
+	request_queue = queue_initialisation();
+	if (!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	coders = coders_initialisation((int *)params, &global_mu, &monitoring, &request_queue);
 	if (!coders)
 	{
-		free(request_queue.request_queue);
+		clean_queue(request_queue);
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
 	if (DISPLAY_CODER)
 		display_coders(coders, params[number_of_coders]);
-	thread_launcher(coders, &monitoring, params[number_of_coders]);
 	free(coders);
-	free(request_queue.request_queue);
+	clean_queue(request_queue);
 	clean_memory(params[number_of_coders], &global_mu, &monitoring);
 	return (0);
 }

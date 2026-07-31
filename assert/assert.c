@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 23:20:58 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 00:05:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ static int assert_queue()
 
 static int asset_thread(void)
 {
-    thread_send_request_assert();
-    thread_consume_request_assert();
+    //thread_send_request_assert();
+    //thread_consume_request_assert();
+    thread_coders_assert();
     return (0);
 }
 

@@ -6,23 +6,34 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 15:40:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 00:16:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-int	queue_initialisation(t_queue *request_queue)
+t_queue	*queue_initialisation(void)
 {
+	t_queue *request_queue;
 
+	request_queue = malloc(sizeof(t_queue));
+	if(!request_queue)
+	{
+		write(STDERR_FILENO,"Error initialisation queue structure\n", strlen("Error initialisation queue structure\n"));
+		return (NULL);
+	}
 	request_queue->request_queue = malloc(sizeof(t_request *));
 	if (!request_queue)
+	{
+		write(STDERR_FILENO,"Error initialisation queue structure\n", strlen("Error initialisation queue structure\n"));
+		free(request_queue);
 		return (FALSE);
+	}
 	request_queue->size = 0;
 	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
 	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-	return (TRUE);
+	return (request_queue);
 }
 
 static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *global_mu)

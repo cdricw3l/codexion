@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 15:37:02 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 00:13:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,13 @@ int     thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder);
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
 int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
 t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue);
-int         queue_initialisation(t_queue *request_queue);
+t_queue	    *queue_initialisation(void);
 
 /* clean */
 
 int mutex_destroy(int nb_coder, t_global_mutex *global_mu);
 int clean_memory(int nb_coder, t_global_mutex *global_mu, t_monitoring *monitoring);
+int clean_queue(t_queue *queue);
 
 /* time */
 

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:07 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 22:44:36 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 23:57:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ t_request *_request(int id_request, int id_coder)
     request->left = NULL;
     request->right = NULL;
     return (request);
+}
+
+int remove_request(t_queue *queue)
+{
+    t_request *request;
+
+    request = queue->request_queue[0];
+    if(!pop_request(queue))
+    {
+        printf("Error remove request %d\n", request->request_id);
+        return (FALSE);
+    }
+    printf("thread %ld remove the request %d new len %zu\n", pthread_self(), request->request_id ,queue->size);
+    free(request);
+    return (TRUE);
 }
 
 int send_request(t_queue *queue)
