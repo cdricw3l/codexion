@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 21:04:04 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 22:59:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,17 +162,17 @@ int push_request_assert(void)
     t_request r4;
     t_request r5;
 
-    r1 = assert_create_request(24,0, 10);
-    r2 = assert_create_request(24,1, 100);
+    r1 = assert_create_request(24,-1, 10);
+    r2 = assert_create_request(24,0, 100);
     r3 = assert_create_request(24,2, 100);
-    r4 = assert_create_request(24,20, 100);
+    r4 = assert_create_request(24,-20, 100);
     r5 = assert_create_request(24,200, 100);
 
     arr = malloc(sizeof(t_request *) * 6);
     memset(arr, 0, sizeof(t_request * ) * 6);
     assert(arr);
     arr[0] = &r1;
-    assert(arr[0]->request_id == 0);
+    assert(arr[0]->request_id == -1);
     
     arr[1] = &r2;
     add_request(arr, 2);
