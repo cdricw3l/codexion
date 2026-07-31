@@ -30,7 +30,7 @@ else
 	./$(NAME)
 endif
 
-ashel:
+ashel: $(NAME)
 	@valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)
 
 

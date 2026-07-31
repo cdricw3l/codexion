@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 21:48:34 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/07/31 22:18:41 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,31 @@ t_request *_request(int id_request, int id_coder)
     return (request);
 }
 
+int send_request(t_queue *queue)
+{
+    t_request *request;
 
+    request = _request(queue->request_counter, pthread_self());
+    if(!push_request(queue, request))
+    {
+        printf("Error creation request %d\n", request->request_id);
+        return (FALSE);
+    }
+    printf("thread %ld pushed the request %zu new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
+    queue->request_counter++;
+    return (TRUE);
+}
 void *queue_routine(void *arg)
 {
     t_queue *queue;
-    t_request *request;
     int i = 0;
     int j;
     queue = (t_queue *)arg;
     while (i < NB_REQUEST)
     {
-
         pthread_mutex_lock(&queue->queue_lock);
-        request = _request(queue->request_counter, pthread_self());
-        if(!push_request(queue, request))
-        {
-            printf("Error creation request %d\n", request->request_id);
+        if (send_request(queue) == FALSE)
             return (NULL);
-        }
-        printf("thread %ld pushed the request %zu new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
-        queue->request_counter++;
         pthread_mutex_unlock(&queue->queue_lock);
         sleep(1);
         i++;
@@ -79,7 +84,7 @@ int thread_request_assert(void)
     t_request **arr;
 
     arr =  bfs_binary_tree_as_arr(queue);
-    for (int j = 0; j < queue->size; j++)
+    for (int j = 0; j < queue->size - 1; j++)
     {
         display_request(*(arr[j]));
         assert(arr[j]->request_id == j);
