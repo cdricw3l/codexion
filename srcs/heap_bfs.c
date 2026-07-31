@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_bfs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 20:49:46 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 08:44:55 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 09:44:12 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static t_request	**get_heap_as_arr(t_queue *request_queue, t_request **queue)
 	int			queue_size;
 
 
-	arr = malloc(sizeof(t_request *) * (request_queue->size));
+	arr = malloc(sizeof(t_request *) * (request_queue->size + 1));
 	if (!arr)
 		return (NULL);
-	memset(arr, 0, sizeof(t_request *) * (request_queue->size));
+	memset(arr, 0, sizeof(t_request *) * (request_queue->size + 1));
 	push(queue, request_queue->request_queue[0]);
 	queue_size = 1;
 	while (!queue_is_empty(queue))
@@ -89,6 +89,5 @@ t_request	**bfs_binary_tree_as_arr(t_queue *request_queue)
 	memset(queue, 0, sizeof(t_request *) * (request_queue->size + 1));
 	arr = get_heap_as_arr(request_queue, queue);
 	free(queue);
-	printf("id 0\n");
 	return (arr);
 }

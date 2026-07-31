@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assert_queu.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 08:44:42 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/07/31 09:48:38 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ static int get_size_queue(t_request **queue)
     return (i);    
 }
 
+/* 
+    Assertion for push and pop methode.
+    push and pop are used for the bfs array construction;
+*/
 void poppush_queue_assert(void)
 {
     START_TEST(__func__);
@@ -125,15 +129,28 @@ int bfs_binary_tree_as_arr_assert(void)
     t_queue queue;
 
     queue_initialisation(&queue);
-    queue.size = 7;
-    
+    *queue.request_queue = &r1;
+
+    queue.size = count_tree_node(*queue.request_queue, 0) - 1;
+    assert(queue.size == 7);
     arr = bfs_binary_tree_as_arr(&queue);
 
-    //assert(arr[0] == &r1);
+    assert(arr[0] == &r1);
+    assert(arr[1] == &r2);
+    assert(arr[2] == &r3);
+    assert(arr[3] == &r4);
+    assert(arr[4] == &r5);
+    assert(arr[5] == &r6);
+    assert(arr[6] == &r7);
+    assert(arr[7] == NULL);
 
 
     free(arr);
     free(queue.request_queue);
+
+
+
+
     END_TEST(__func__);
     return (TRUE);
 }
