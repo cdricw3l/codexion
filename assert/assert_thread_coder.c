@@ -6,14 +6,15 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 16:02:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 17:23:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
 #define NB_REQUEST 2
-#define NB_CODER 2
+#define NB_CODER 3
+#define NB_CR 10
 
 int set_params(int *params)
 {
@@ -22,7 +23,7 @@ int set_params(int *params)
     params[time_to_compile] = 200;
     params[time_to_debug] = 100;
     params[time_to_refactor] = 100;
-    params[number_of_compiles_required] = 10;
+    params[number_of_compiles_required] = NB_CR;
     params[dongle_cooldown] = 10;
     params[scheduler] = FIFO ;
     return (TRUE);
@@ -63,6 +64,25 @@ int create_and_send_request(t_coder *coder)
 }
 
 
+int can_compile(t_coder *coder)
+{
+    t_request *request;
+    
+    if (coder->queue->request_queue[0]->coder_id == coder->id)
+    {
+
+        request = coder->queue->request_queue[0];
+        pop_request(coder->queue);
+        free(request);
+        printf("request %d is done, coder %d can compile\n", request->request_id, coder->id);
+        pthread_cond_signal(&coder->cond_left);
+        return (TRUE);
+    }
+    return(FALSE);
+    
+}
+
+
 void *coder_asser_routine(void *data)
 {
 
@@ -73,11 +93,21 @@ void *coder_asser_routine(void *data)
     coder = (t_coder * )data;
     while (i < coder->params[number_of_compiles_required])
     {
-        printf("I'm the coder %d\n", coder->id);
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
         pthread_mutex_unlock(&coder->queue->queue_lock);
         sleep(1);
+        pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
+        pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
+        while (!can_compile(coder))
+        {
+            pthread_cond_wait(&coder->cond_left, coder->coder_mutex.dongle_l.dongle);
+        }
+        printf("Coder %d compile\n", coder->id);
+        pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+        pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
+        sleep(1);
+       
         i++;
     }
     return (NULL);

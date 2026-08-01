@@ -17,16 +17,17 @@ $(NAME): $(SRCS_OBJS)
 OS = $(shell uname)
 
 
+# 	@valgrind \
+# 	--log-file="valgrind.log" \
+# 	--leak-check=full \
+# 	--track-origins=yes \
+# 	--show-leak-kinds=all \
+
 run: $(NAME)
 ifeq ($(OS), Darwin)
 	MallocStackLogging=1 leaks -quiet -atExit -- ./$(NAME)
 #./$(NAME)
 else
-	@valgrind \
-	--log-file="valgrind.log" \
-	--leak-check=full \
-	--track-origins=yes \
-	--show-leak-kinds=all \
 	./$(NAME)
 endif
 
