@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 17:23:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:45:03 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int set_params(int *params)
 {
     params[number_of_coders] = NB_CODER;
-    params[time_to_burnout] = 400;
+    params[time_to_burnout] = 450;
     params[time_to_compile] = 200;
     params[time_to_debug] = 100;
     params[time_to_refactor] = 100;
@@ -58,8 +58,6 @@ int create_and_send_request(t_coder *coder)
         return (FALSE);
     }
     (coder->queue->request_counter)++;
-
-    printf("coder %d pushed the request %d new len %zu\n", coder->id, request->request_id , coder->queue->size);
     return (TRUE);
 }
 
@@ -68,16 +66,24 @@ int can_compile(t_coder *coder)
 {
     t_request *request;
     
+    pthread_mutex_lock(&coder->queue->queue_lock);
+    if (!*(coder->queue->request_queue))
+        return (FALSE);
     if (coder->queue->request_queue[0]->coder_id == coder->id)
     {
 
         request = coder->queue->request_queue[0];
         pop_request(coder->queue);
-        free(request);
-        printf("request %d is done, coder %d can compile\n", request->request_id, coder->id);
+        //free(request);
+        //printf("request %d is done, coder %d can compile\n", request->request_id, coder->id);
         pthread_cond_signal(&coder->cond_left);
+        pthread_mutex_unlock(&coder->queue->queue_lock);
+
         return (TRUE);
     }
+    //printf("Bad request fron coder %d next coder must be %d\n", coder->id, coder->queue->request_queue[0]->coder_id);
+    pthread_cond_signal(&coder->cond_left);
+    pthread_mutex_unlock(&coder->queue->queue_lock);
     return(FALSE);
     
 }
@@ -96,18 +102,25 @@ void *coder_asser_routine(void *data)
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
         pthread_mutex_unlock(&coder->queue->queue_lock);
-        sleep(1);
+
         pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
         pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
-        while (!can_compile(coder))
+
+        while (can_compile(coder) == FALSE)
         {
             pthread_cond_wait(&coder->cond_left, coder->coder_mutex.dongle_l.dongle);
         }
-        printf("Coder %d compile\n", coder->id);
+        safe_print(*coder, TAKE);
+        safe_print(*coder, COMPILE);
+        usleep(coder->params[time_to_compile] * 1000);
+
         pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
         pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
-        sleep(1);
-       
+        
+        safe_print(*coder, DEBBUG);
+        usleep(coder->params[time_to_debug] * 1000);
+        safe_print(*coder, REFACTO);
+        usleep(coder->params[time_to_refactor] * 1000);
         i++;
     }
     return (NULL);
@@ -119,13 +132,15 @@ int launch_coder_assert(t_coder *coders, int nb_coder)
 {
     int i;
     pthread_t *thread;
-
+    timespec_t now;
 
     thread = malloc(sizeof(pthread_t) * nb_coder);
     assert(thread);
     i = 0;
+    clock_gettime(CLOCK_MONOTONIC, &now);
     while (i < nb_coder)
     {
+        coders[i].start = now;
         pthread_create(&thread[i], NULL, coder_asser_routine, &coders[i]);
         usleep(100000);
         i++;

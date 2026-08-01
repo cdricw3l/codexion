@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:18:42 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:01:43 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	request_queue = queue_initialisation();
 	if (!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
-	coders = coders_initialisation((int *)params, &global_mu, &monitoring, &request_queue);
+	coders = coders_initialisation((int *)params, &global_mu, &monitoring, request_queue);
 	if (!coders)
 	{
 		clean_queue(request_queue);
