@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:53:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:06:45 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 15:06:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@ int max(int a, int b)
     return (a);
 }
 
-void set_timestamp(int *dashboard)
-{
-    struct timespec time;
+// void set_timestamp(int *dashboard)
+// {
+//     struct timespec time;
 
-    clock_gettime(CLOCK_REALTIME, &time);
-    *dashboard = time.tv_nsec;
-}
+//     clock_gettime(CLOCK_REALTIME, &time);
+//     *dashboard = time.tv_nsec;
+// }
 
-void update_timestamps(int *dashboard)
-{
-    pthread_mutex_t mu;
-    pthread_mutex_lock(&mu);
-    set_timestamp(dashboard);
-    pthread_mutex_unlock(&mu);
+// void update_timestamps(int *dashboard)
+// {
+//     pthread_mutex_t mu;
+//     pthread_mutex_lock(&mu);
+//     set_timestamp(dashboard);
+//     pthread_mutex_unlock(&mu);
 
-}
+// }
 
 size_t get_str_arr_len(char **str_arr)
 {

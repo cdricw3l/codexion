@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:07 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 23:57:24 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 15:59:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int send_request(t_queue *queue)
         printf("Error creation request %d\n", request->request_id);
         return (FALSE);
     }
-    printf("thread %ld pushed the request %zu new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
+    printf("thread %ld pushed the request %d new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
     queue->request_counter++;
     return (TRUE);
 }

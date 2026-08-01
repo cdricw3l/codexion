@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:20:15 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 16:02:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,88 @@ int set_params(int *params)
     return (TRUE);
 }
 
+
+void set_timestamp(t_coder *coder, clock_t timestamp)
+{
+    
+    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
+    
+    *coder->last_compilation = timestamp;
+    
+    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+    
+}
+
+int create_and_send_request(t_coder *coder)
+{
+    t_request *request;
+
+    request = create_request(coder);
+    if(!request)
+    {
+        set_timestamp(coder, -1);
+        return(FALSE);
+    }
+    if(!push_request(coder->queue , request))
+    {
+        printf("Error creation request %d\n", request->request_id);
+        set_timestamp(coder, -1);
+        return (FALSE);
+    }
+    (coder->queue->request_counter)++;
+
+    printf("coder %d pushed the request %d new len %zu\n", coder->id, request->request_id , coder->queue->size);
+    return (TRUE);
+}
+
+
+void *coder_asser_routine(void *data)
+{
+
+    t_coder *coder;
+    int i;
+
+    i = 0;
+    coder = (t_coder * )data;
+    while (i < coder->params[number_of_compiles_required])
+    {
+        printf("I'm the coder %d\n", coder->id);
+        pthread_mutex_lock(&coder->queue->queue_lock);
+        create_and_send_request(coder);
+        pthread_mutex_unlock(&coder->queue->queue_lock);
+        sleep(1);
+        i++;
+    }
+    return (NULL);
+}   
+
+
+
+int launch_coder_assert(t_coder *coders, int nb_coder)
+{
+    int i;
+    pthread_t *thread;
+
+
+    thread = malloc(sizeof(pthread_t) * nb_coder);
+    assert(thread);
+    i = 0;
+    while (i < nb_coder)
+    {
+        pthread_create(&thread[i], NULL, coder_asser_routine, &coders[i]);
+        usleep(100000);
+        i++;
+    }
+    i = 0;
+    while (i < nb_coder)
+    {
+        pthread_join(thread[i], NULL);
+        i++;
+    }
+    return (TRUE);
+    
+}
+
 int thread_coders_assert(void)
 {
     START_TEST(__func__);
@@ -42,7 +124,7 @@ int thread_coders_assert(void)
     if(!mutex_initialisation(params[number_of_coders], &global_mu))
 		return (write(STDERR_FILENO, "Error initialisation mutex\n", strlen("Error initialisation mutex\n")));
 	
-	display_mutex_data(params[number_of_coders], global_mu);
+	//display_mutex_data(params[number_of_coders], global_mu);
 	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
 	request_queue = queue_initialisation();
@@ -57,9 +139,15 @@ int thread_coders_assert(void)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
 	display_coders(coders, params[number_of_coders]);
-    clean_memory(params[number_of_coders], &global_mu, &monitoring);
+    launch_coder_assert(coders, params[number_of_coders]);
     clean_queue(request_queue);
+    clean_memory(params[number_of_coders], &global_mu, &monitoring);
     free(coders);
+
+
+
+
+
     END_TEST(__func__);
     return (TRUE);
 }

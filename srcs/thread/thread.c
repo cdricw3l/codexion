@@ -6,28 +6,14 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 15:58:51 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 14:55:16 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
 
-t_request create_request(t_coder *coder)
-{
-    t_request request;
 
-    request.coder_id = coder->id;
-    request.request_id = coder->queue->request_counter;
-    request.coder_cond_l = &coder->cond_left;
-    request.coder_cond_r = &coder->cond_right;
-    request.dongle_left = coder->coder_mutex.dongle_l.dongle;
-    request.dongle_right = coder->coder_mutex.dongle_r.dongle;
-    request.last_compilation = *coder->last_compilation;
-    request.left = NULL;
-    request.right = NULL;
-    return (request);
-}
 
 void *coder_routine(void *data)
 {
@@ -41,7 +27,6 @@ void *coder_routine(void *data)
     {
         pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
         pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
-        request = create_request(coder);
         printf("coder : %d, loop: %d\n", coder->id, i);
         push_request(coder->queue, &request);
         coder->queue->request_counter++;

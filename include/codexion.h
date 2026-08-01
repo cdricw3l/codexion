@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:13:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 15:58:51 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_request
 typedef struct s_queue
 {
     size_t          size;
-    size_t          request_counter;
+    int             request_counter;
     t_request       **request_queue;
     pthread_mutex_t queue_lock;
 
@@ -159,8 +159,8 @@ void    display_coders(t_coder *coders, int nb_coder);
 void    safe_print(t_coder coder, int action);
 void    display_mutex_data(int nb_coder, t_global_mutex global_mu);
 void    display_request(t_request request);
-/* utils */
 
+/* utils */
 size_t  get_str_arr_len(char **str_arr);
 int     get_dongle(int id, int number_of_coder, int type);
 int     ft_is_digit(char c);
@@ -210,4 +210,10 @@ int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
 void	    add_request(t_request **arr, size_t queue_size);
 void	    plug_heap_nodes(t_request **arr, size_t queue_size);
+
+
+/* request */
+
+t_request   *create_request(t_coder *coder);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 22:59:33 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 14:34:13 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,15 @@ int bfs_binary_tree_as_arr_assert(void)
     r3.right = &r7;
 
     t_request **arr;
-    t_queue queue;
+    t_queue *queue;
 
-    queue_initialisation(&queue);
-    *queue.request_queue = &r1;
+    queue = queue_initialisation();
+    assert(queue);
+    *queue->request_queue = &r1;
 
-    queue.size = count_tree_node(*queue.request_queue, 0) - 1;
-    assert(queue.size == 7);
-    arr = bfs_binary_tree_as_arr(&queue);
+    queue->size = count_tree_node(*queue->request_queue, 0) - 1;
+    assert(queue->size == 7);
+    arr = bfs_binary_tree_as_arr(queue);
 
     assert(arr[0] == &r1);
     assert(arr[1] == &r2);
@@ -145,7 +146,8 @@ int bfs_binary_tree_as_arr_assert(void)
     assert(arr[7] == NULL);
     assert(bfs_binary_tree_as_arr(NULL) == NULL);
     free(arr);
-    free(queue.request_queue);
+    free(queue->request_queue);
+    free(queue);
     END_TEST(__func__);
     return (TRUE);
 }
@@ -227,7 +229,7 @@ int push_request_assert(void)
 int create_request_assert(void)
 {
     START_TEST(__func__);
-    t_queue   queue;
+    t_queue   *queue;
     t_request r1;
     t_request r2;
     t_request r3;
@@ -238,7 +240,8 @@ int create_request_assert(void)
     t_request r8;
 
 
-    queue_initialisation(&queue);
+    queue =  queue_initialisation();
+    assert(queue);
     r1 = assert_create_request(24,0, 10);
     r2 = assert_create_request(24,1, 100);
     r3 = assert_create_request(24,2, 100);
@@ -249,32 +252,33 @@ int create_request_assert(void)
     r8 = assert_create_request(24,7, 100);
    
 
-    queue.size = 0;
-    push_request(&queue, &r1);
-    assert(queue.size == 1);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r2);
-    assert(queue.size == 2);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r3);
-    assert(queue.size == 3);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r4);
-    assert(queue.size == 4);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r5);
-    assert(queue.size == 5);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r6);
-    assert(queue.size == 6);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r7);
-    assert(queue.size == 7);
-    assert(queue.request_queue[0]->request_id == 0);
-    push_request(&queue, &r8);
-    assert(queue.size == 8);
-    assert(queue.request_queue[0]->request_id == 0);
-    free(queue.request_queue);
+    queue->size = 0;
+    push_request(queue, &r1);
+    assert(queue->size == 1);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r2);
+    assert(queue->size == 2);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r3);
+    assert(queue->size == 3);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r4);
+    assert(queue->size == 4);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r5);
+    assert(queue->size == 5);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r6);
+    assert(queue->size == 6);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r7);
+    assert(queue->size == 7);
+    assert(queue->request_queue[0]->request_id == 0);
+    push_request(queue, &r8);
+    assert(queue->size == 8);
+    assert(queue->request_queue[0]->request_id == 0);
+    free(queue->request_queue);
+    free(queue);
     END_TEST(__func__);
     return (TRUE);
 }
@@ -283,7 +287,7 @@ int create_request_assert(void)
 int remove_request_assert(void)
 {
     START_TEST(__func__);
-    t_queue   queue;
+    t_queue   *queue;
     t_request r1;
     t_request r2;
     t_request r3;
@@ -298,32 +302,33 @@ int remove_request_assert(void)
     r5 = assert_create_request(24,-10, 100);
     r6 = assert_create_request(24,-7, 100);
 
-    queue_initialisation(&queue);
-    push_request(&queue, &r1);
-    push_request(&queue, &r2);
-    push_request(&queue, &r3);
-    push_request(&queue, &r4);
-    push_request(&queue, &r5);
-    push_request(&queue, &r6);
+    queue = queue_initialisation();
+    push_request(queue, &r1);
+    push_request(queue, &r2);
+    push_request(queue, &r3);
+    push_request(queue, &r4);
+    push_request(queue, &r5);
+    push_request(queue, &r6);
 
-    pop_request(&queue);
-    assert(queue.size == 5);
-    assert(queue.request_queue[0]->request_id == -7);
-    pop_request(&queue);
-    assert(queue.size == 4);
-    assert(queue.request_queue[0]->request_id == 0);
-    pop_request(&queue);
-    assert(queue.size == 3);
-    assert(queue.request_queue[0]->request_id == 1);
-    pop_request(&queue);
-    assert(queue.size == 2);
-    assert(queue.request_queue[0]->request_id == 2);
-    pop_request(&queue);
-    assert(queue.size == 1);
-    assert(queue.request_queue[0]->request_id == 3);
-    pop_request(&queue);
-    assert(queue.size == 0);
-    free(queue.request_queue);
+    pop_request(queue);
+    assert(queue->size == 5);
+    assert(queue->request_queue[0]->request_id == -7);
+    pop_request(queue);
+    assert(queue->size == 4);
+    assert(queue->request_queue[0]->request_id == 0);
+    pop_request(queue);
+    assert(queue->size == 3);
+    assert(queue->request_queue[0]->request_id == 1);
+    pop_request(queue);
+    assert(queue->size == 2);
+    assert(queue->request_queue[0]->request_id == 2);
+    pop_request(queue);
+    assert(queue->size == 1);
+    assert(queue->request_queue[0]->request_id == 3);
+    pop_request(queue);
+    assert(queue->size == 0);
+    free(queue->request_queue);
+    free(queue);
     END_TEST(__func__);
     return (TRUE);
 }

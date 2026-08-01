@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 11:56:40 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 22:17:15 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 16:01:53 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int	push_request(t_queue *request_queue, t_request *request)
 	plug_heap_nodes(arr, request_queue->size);
 	*(request_queue->request_queue) = arr[0];
 	free(arr);
+
 	return (TRUE);
 }

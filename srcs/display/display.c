@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 15:44:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 16:00:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void display_coder(t_coder *coder)
     printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
     printf("cond left %p\n", &coder->cond_left);
     printf("cond left %p\n", &coder->cond_right);
+    printf("number of request %d\n", coder->queue->request_counter);
 }
 
 void display_coders(t_coder *coders, int nb_coder)

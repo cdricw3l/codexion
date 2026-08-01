@@ -14,6 +14,7 @@ SRCS= srcs/codexion.c \
 		srcs/clean/clean.c \
 		srcs/heap/heap_bfs.c \
 		srcs/heap/heap_pop_request.c \
+		srcs/heap/request.c \
 		srcs/heap/heap_push_request.c \
 		srcs/heap/heap_utils.c \
 		srcs/thread/thread.c \

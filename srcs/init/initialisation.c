@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:16:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 15:58:47 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_queue	*queue_initialisation(void)
 {
 	t_queue *request_queue;
-
+	
 	request_queue = malloc(sizeof(t_queue));
 	if(!request_queue)
 	{

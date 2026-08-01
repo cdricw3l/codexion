@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 23:57:19 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/01 14:31:34 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ int thread_consume_request_assert(void)
     int i;
 
 
-    queue = malloc(sizeof(t_queue));
+    queue = queue_initialisation();
     assert(queue);
-    if(!queue_initialisation(queue))
-        return (FALSE);
     for (i = 0; i < NB_CODER; i++)
         pthread_create(&thread[i], NULL, queue_routine_remove_request, queue);
     for (i = 0; i < NB_CODER; i++)
