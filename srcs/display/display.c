@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 18:12:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 15:06:32 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void safe_print(t_coder coder, int action)
 static void display_coder(t_coder *coder)
 {
     printf("Coder: %d\n", coder->id);
-    printf("last compilation : %ld\n", *(coder->last_compilation));
+    printf("last compilation : %p\n", coder->last_compilation);
     printf("Usb left: %p last use %ld\n", coder->coder_mutex.dongle_l.dongle, coder->coder_mutex.dongle_l.last_use);
     printf("Usb right: %p last use %ld\n", coder->coder_mutex.dongle_r.dongle, coder->coder_mutex.dongle_r.last_use);
     printf("display mutex %p\n", coder->coder_mutex.display_f);
     printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
-    printf("cond left %p\n", &coder->cond_left);
-    printf("cond left %p\n", &coder->cond_right);
+    printf("cond %p\n", &coder->cond);
+    printf("coder mutex %p\n", coder->coder_mutex.coder_mutex);
     printf("number of request %d\n", coder->queue->request_counter);
 }
 
@@ -99,7 +99,6 @@ void display_request(t_request request)
 {
     printf("\nRequest Id: %d\n",request.request_id);
     printf("Coder Id: %d\n",request.coder_id);
-    printf("Last compilation: %ld\n",request.last_compilation);
     // printf("Cond adresse %p\n", request.cond);
     // printf("Children left: %p\n", request.left);
     // printf("Children right: %p\n", request.right);

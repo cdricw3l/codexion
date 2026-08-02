@@ -62,6 +62,8 @@ as:
 
 ashel:
 	@make  -s -C  assert ashel
+asval:
+	@make  -s -C  assert asval
 
 # recopile and run assertion makefile -C -> target makefile folder
 ras:

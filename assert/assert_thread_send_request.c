@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:11:49 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 13:48:08 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void *queue_routine_send_request(void *arg)
 {
     t_queue *queue;
     int i = 0;
-    int j;
+
     queue = (t_queue *)arg;
     while (i < NB_REQUEST)
     {
@@ -56,7 +56,7 @@ int thread_send_request_assert(void)
     arr =  bfs_binary_tree_as_arr(queue);
     assert(arr);    
     printf(YELB"START CHECK"CRESET"\n");
-    for (int j = 0; j < queue->size; j++)
+    for (int j = 0; j < (int)queue->size; j++)
     {
         display_request(*(arr[j]));
         assert(arr[j]->request_id == j);

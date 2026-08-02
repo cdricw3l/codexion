@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 18:44:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 15:07:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,9 @@ typedef struct s_request
 {
     int                 coder_id;
     int                 request_id;
-    clock_t             last_compilation;
-    pthread_cond_t      *coder_cond_l;
-    pthread_cond_t      *coder_cond_r;
-    pthread_mutex_t     *dongle_left;
-    pthread_mutex_t     *dongle_right;
+    timespec_t             *last_compilation;
+    pthread_cond_t      *cond;
+    pthread_mutex_t     *mu;
     struct s_request    *left;
     struct s_request    *right;
 
@@ -87,6 +85,8 @@ typedef struct s_global_mutex
     pthread_mutex_t display_f;
     pthread_mutex_t timestamp_f;
     pthread_mutex_t *dongles;
+    pthread_mutex_t *coder_mutex;
+
     
 } t_global_mutex;
 
@@ -96,6 +96,7 @@ typedef struct s_coder_mutex
     pthread_mutex_t *timestamp_f;
     t_dongle        dongle_l;
     t_dongle        dongle_r;
+    pthread_mutex_t *coder_mutex;
     
 } t_coder_mutex;
 
@@ -104,22 +105,21 @@ typedef struct s_coder
     int             id;
     int             params[8];
     timespec_t      start;
-    clock_t         *last_compilation;
-    t_coder_mutex   coder_mutex;
-    pthread_cond_t  cond_left;
-    pthread_cond_t  cond_right;
+    timespec_t      *last_compilation;
+    pthread_cond_t  cond;
     t_queue         *queue;
     pthread_t       thread;
-
+    t_coder_mutex   coder_mutex;
 } t_coder;
 
 
 typedef struct s_monitoring
 {
-    clock_t         *last_compilations;
+    timespec_t      **last_compilations;
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
-    
+    int             nb_coder;
+    int             ttb;
 } t_monitoring;
 
 

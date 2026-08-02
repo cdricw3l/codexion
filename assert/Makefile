@@ -31,6 +31,14 @@ else
 	./$(NAME)
 endif
 
+asval:$(NAME)
+	@valgrind \
+ 	--log-file="valgrind.log" \
+ 	--leak-check=full \
+ 	--track-origins=yes \
+ 	--show-leak-kinds=all \
+	./$(NAME)
+
 ashel: $(NAME)
 	@valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)
 

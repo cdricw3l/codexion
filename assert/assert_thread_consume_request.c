@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 14:31:34 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 13:46:55 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void *queue_routine_remove_request(void *arg)
 {
     t_queue *queue;
     int i = 0;
-    int j;
+
     queue = (t_queue *)arg;
     while (i < NB_REQUEST)
     {
@@ -57,7 +57,7 @@ int thread_consume_request_assert(void)
 
     t_request **arr;
     arr =  bfs_binary_tree_as_arr(queue);
-    for (int j = 0; j < queue->size; j++)
+    for (int j = 0; j < (int)queue->size; j++)
     {
         printf(YELB"START CHECK"CRESET"\n");
         display_request(*(arr[j]));

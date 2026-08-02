@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 14:34:13 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 15:07:25 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_request assert_create_request(int coder_id, int request_id ,clock_t last_compi
 
     request.coder_id = coder_id;
     request.request_id = request_id;
-    request.last_compilation = last_compile;
+    request.last_compilation = NULL;
     request.left = NULL;
     request.right = NULL;
     return (request);
@@ -55,7 +55,6 @@ void poppush_queue_assert(void)
     queue = malloc(sizeof(t_request *) * (nb_request + 1));
     assert(queue);
     memset(queue, 0, sizeof(t_request *) * (nb_request + 1));
-    int i;
     r1 = assert_create_request(24,0, 10);
     r2 = assert_create_request(24,1, 100);
     r3 = assert_create_request(24,2, 100);
