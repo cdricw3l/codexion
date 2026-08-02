@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assert_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:07 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 15:59:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 19:36:39 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int remove_request(t_queue *queue)
         printf("Error remove request %d\n", request->request_id);
         return (FALSE);
     }
-    printf("thread %ld remove the request %d new len %zu\n", pthread_self(), request->request_id ,queue->size);
+    //printf("thread %d remove the request %d new len %zu\n", pthread_self(), request->request_id ,queue->size);
     free(request);
     return (TRUE);
 }
@@ -45,13 +45,13 @@ int send_request(t_queue *queue)
 {
     t_request *request;
 
-    request = _request(queue->request_counter, pthread_self());
+    request = _request(queue->request_counter, 0);
     if(!push_request(queue, request))
     {
         printf("Error creation request %d\n", request->request_id);
         return (FALSE);
     }
-    printf("thread %ld pushed the request %d new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
+    //printf("thread %ld pushed the request %d new len %zu\n", pthread_self(), queue->request_counter ,queue->size);
     queue->request_counter++;
     return (TRUE);
 }

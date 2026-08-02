@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 15:06:32 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 20:20:44 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void display_coder(t_coder *coder)
     printf("Usb right: %p last use %ld\n", coder->coder_mutex.dongle_r.dongle, coder->coder_mutex.dongle_r.last_use);
     printf("display mutex %p\n", coder->coder_mutex.display_f);
     printf("timestamp_f mutex %p\n", coder->coder_mutex.timestamp_f);
-    printf("cond %p\n", &coder->cond);
+    printf("cond %p\n", coder->cond);
     printf("coder mutex %p\n", coder->coder_mutex.coder_mutex);
     printf("number of request %d\n", coder->queue->request_counter);
 }

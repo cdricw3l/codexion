@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 15:04:19 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 20:27:07 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 {
 	int 	i;
 	t_coder *coders;
+	pthread_cond_t cond;
 
-
+	cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 	coders = malloc(sizeof(t_coder) * params[number_of_coders]);
 	if (!coders)
 		return (NULL);
@@ -70,7 +71,7 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 		coders[i].id = i + 1;
 		ft_memcopy(params, coders[i].params, sizeof(int) * 8);
 		coders[i].last_compilation = monitor->last_compilations[i];
-		coders[i].cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+		coders[i].cond = &cond;
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
 		coders[i].queue = queue;
 		i++;

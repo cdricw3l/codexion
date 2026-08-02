@@ -25,8 +25,8 @@ OS = $(shell uname)
 
 run: $(NAME)
 ifeq ($(OS), Darwin)
-	MallocStackLogging=1 leaks -quiet -atExit -- ./$(NAME)
-#./$(NAME)
+#MallocStackLogging=1 leaks -quiet -atExit -- ./$(NAME)
+	./$(NAME)
 else
 	./$(NAME)
 endif

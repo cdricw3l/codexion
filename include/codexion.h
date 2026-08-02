@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 15:07:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 20:17:37 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ typedef struct s_coder
     int             params[8];
     timespec_t      start;
     timespec_t      *last_compilation;
-    pthread_cond_t  cond;
+    pthread_cond_t  *cond;
     t_queue         *queue;
     pthread_t       thread;
     t_coder_mutex   coder_mutex;

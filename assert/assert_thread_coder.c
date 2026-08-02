@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   assert_thread_coder.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 15:08:47 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/02 20:31:24 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
 #define NB_REQUEST 2
-#define NB_CODER 4
+#define NB_CODER 2
 #define NB_CR 10
 
 int set_params(int *params)
@@ -64,28 +64,11 @@ int create_and_send_request(t_coder *coder)
 
 int can_compile(t_coder *coder)
 {
-    t_request *request;
 
-    pthread_mutex_lock(&coder->queue->queue_lock);
     if (!*(coder->queue->request_queue))
-    {
-        pthread_mutex_unlock(&coder->queue->queue_lock);
         return (FALSE);
-    }
     if (coder->queue->request_queue[0]->coder_id == coder->id)
-    {
-
-        request = coder->queue->request_queue[0];
-        pop_request(coder->queue);
-        free(request);
-        //printf("request %d is done, coder %d can compile\n", request->request_id, coder->id);
-        pthread_cond_signal(&coder->cond);
-        pthread_mutex_unlock(&coder->queue->queue_lock);
         return (TRUE);
-    }
-    //printf("Bad request from coder %d next coder must be %d\n", coder->id, coder->queue->request_queue[0]->coder_id);
-    pthread_cond_signal(&coder->cond);
-    pthread_mutex_unlock(&coder->queue->queue_lock);
     return(FALSE);
     
 }
@@ -94,8 +77,9 @@ int can_compile(t_coder *coder)
 void *coder_asser_routine(void *data)
 {
 
-    t_coder *coder;
     int i;
+    t_coder *coder;
+    t_request *request;
 
     i = 0;
     coder = (t_coder * )data;
@@ -103,13 +87,21 @@ void *coder_asser_routine(void *data)
     {
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
-        pthread_mutex_unlock(&coder->queue->queue_lock);
 
-        printf("coder %d send is request\n", coder->id);
+        pthread_cond_broadcast(coder->cond);
         while (!can_compile(coder))
         {
-            pthread_cond_wait(&coder->cond, &coder->queue->queue_lock);
+            pthread_cond_wait(coder->cond, &coder->queue->queue_lock);
         }
+        if(*coder->queue->request_queue)
+        {
+            request = coder->queue->request_queue[0];
+            pop_request(coder->queue);
+            free(request);
+        }
+        pthread_cond_broadcast(coder->cond);
+        pthread_mutex_unlock(&coder->queue->queue_lock);
+
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
         {
             pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
@@ -204,22 +196,21 @@ int launch_coder_assert(t_coder *coders, int nb_coder, t_monitoring *monitor)
     assert(thread);
     i = 0;
     clock_gettime(CLOCK_MONOTONIC, &now);
-    pthread_create(&mo, NULL, thread_monitoring, monitor);
-    // while (i < nb_coder)
-    // {
-    //     coders[i].start = now;
-    //     coders->last_compilation = &now;
-    //     pthread_create(&thread[i], NULL, coder_asser_routine, &coders[i]);
-    //     usleep(100000);
-    //     i++;
-    // }
-    // i = 0;
-    // while (i < nb_coder)
-    // {
-    //     pthread_join(thread[i], NULL);
-    //     i++;
-    // }
-    pthread_join(mo, NULL);
+    //pthread_create(&mo, NULL, thread_monitoring, monitor);
+    while (i < nb_coder)
+    {
+        coders[i].start = now;
+        coders[i].last_compilation = &now;
+        pthread_create(&thread[i], NULL, coder_asser_routine, &coders[i]);
+        i++;
+    }
+    i = 0;
+    while (i < nb_coder)
+    {
+        pthread_join(thread[i], NULL);
+        i++;
+    }
+    //pthread_join(mo, NULL);
     free(thread);
     return (TRUE);
     
