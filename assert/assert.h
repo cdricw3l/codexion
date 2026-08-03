@@ -35,5 +35,6 @@ int thread_consume_request_assert(void);
 int thread_coders_assert(void);
 int remove_request(t_queue *queue);
 int send_request(t_queue *queue);
+int thread_coders_and_monitor_assert(void);
 
 #endif

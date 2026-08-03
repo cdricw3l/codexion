@@ -6,19 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:58:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:03:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
-
-
-
-
-
-
-
-
 
 
 int launch_coder_assert(t_coder *coders, int nb_coder, t_monitoring *monitor)
@@ -62,25 +54,23 @@ int thread_coders_assert(void)
 		return (write(STDERR_FILENO, "Error initialisation mutex\n", strlen("Error initialisation mutex\n")));
 	
 	//display_mutex_data(params[number_of_coders], global_mu);
-	if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu))
-		return (mutex_destroy(params[number_of_coders], &global_mu));
 	request_queue = queue_initialisation();
     assert(request_queue);
 	if (!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
-	coders = coders_initialisation((int *)params, &global_mu, &monitoring, request_queue);
+	coders = coders_initialisation((int *)params, &global_mu, request_queue);
 	assert(coders);
     if (!coders)
 	{
 		clean_queue(request_queue);
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
-	display_coders(coders, params[number_of_coders]);
+    if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu, coders))
+		return (mutex_destroy(params[number_of_coders], &global_mu));
     launch_coder_assert(coders, params[number_of_coders], &monitoring);
     clean_queue(request_queue);
     clean_memory(params[number_of_coders], &global_mu, &monitoring);
     free(coders);
-
 
     END_TEST(__func__);
     return (TRUE);

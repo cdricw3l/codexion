@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:01:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 10:33:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static int assert_thread(void)
 {
     //thread_send_request_assert();
     //thread_consume_request_assert();
-    thread_coders_assert();
+    //thread_coders_assert();
+    thread_coders_and_monitor_assert();
     return (0);
 }
 

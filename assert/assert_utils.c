@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:07 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 08:52:55 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:04:03 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int set_params(int *params)
 {
     params[number_of_coders] = NB_CODER;
-    params[time_to_burnout] = 450;
+    params[time_to_burnout] = 50;
     params[time_to_compile] = 200;
     params[time_to_debug] = 100;
     params[time_to_refactor] = 100;

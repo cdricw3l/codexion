@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:59:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:00:02 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_coder_mutex
 typedef struct s_coder
 {
     int             id;
+    int             nb_of_compil;
     int             params[8];
     timespec_t      start;
     clock_t         *last_compilation;
@@ -115,6 +116,7 @@ typedef struct s_coder
 
 typedef struct s_monitoring
 {
+    t_coder         *coder;
     clock_t         *last_compilations;
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
@@ -177,8 +179,8 @@ void    *coder_routine(void *data);
 /* initialisation */
 
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
-int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu);
-t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue);
+int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder);
+t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *queue);
 t_queue	    *queue_initialisation(void);
 
 /* clean */

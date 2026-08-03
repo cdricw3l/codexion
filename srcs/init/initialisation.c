@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:53:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 10:59:31 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 }
 
 
-t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitoring *monitor, t_queue *queue)
+t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *queue)
 {
 	int 	i;
 	t_coder *coders;
@@ -69,15 +69,15 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 	{
 		coders[i].id = i + 1;
 		ft_memcopy(params, coders[i].params, sizeof(int) * 8);
-		coders[i].last_compilation = &monitor->last_compilations[i];
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
+		coders[i].nb_of_compil = 0;
 		coders[i].queue = queue;
 		i++;
 	}
 	return (coders);
 }
 
-int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu)
+int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder)
 {
 	monitoring->last_compilations = malloc(sizeof(clock_t) * nb_coder);
 	if(!monitoring->last_compilations)
@@ -86,6 +86,7 @@ int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_m
 	monitoring->display_f =  &global_mu->display_f;
 	monitoring->timestamp_f = &global_mu->timestamp_f;
 	monitoring->nb_coder = nb_coder;
+	monitoring->coder = coder;
 	return (TRUE);
 }
 
