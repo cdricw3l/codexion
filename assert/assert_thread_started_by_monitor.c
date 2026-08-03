@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 10:25:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 14:42:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 15:50:11 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int check_timestamp(t_coder *coder ,clock_t last_c, int time_to_burnout)
     clock_t     now_in_nano;
     int         diff;
 
-    clock_gettime(CLOCK_MONOTONIC, &now);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &now);
     now_in_nano = (now.tv_nsec + second_to_nano(now.tv_sec));
     diff = nano_to_ms(now_in_nano - last_c);
     if(diff > time_to_burnout && coder->nb_of_compil > 0)
@@ -45,20 +45,10 @@ void *monitor_assert(void *data)
 {
     int i;
     t_monitoring *monitor;
-    timespec_t start;
     
     monitor = (t_monitoring *)data;
     i = 0;
-    clock_gettime(CLOCK_MONOTONIC, &start);
-    while (i < monitor->nb_coder)
-    {
-        
-        pthread_mutex_lock(monitor->coder[i].coder_mutex.state);
-        pthread_mutex_unlock(monitor->coder[i].coder_mutex.state);
-
-        monitor->last_compilations[i] = 0;
-        i++;
-    }
+    
     while (1)
     {
         i = 0;
@@ -72,15 +62,15 @@ void *monitor_assert(void *data)
                 int j = 0;
                 while (j < monitor->nb_coder)
                 {
-                    pthread_mutex_lock(monitor->coder[i].coder_mutex.state);
+                    pthread_mutex_lock(monitor->coder[j].coder_mutex.state);
                     monitor->coder[i].coder_mutex.state = FALSE;
-                    pthread_mutex_unlock(monitor->coder[i].coder_mutex.state);
                     j++;
                     return (NULL);
                 }
             }
-            pthread_mutex_unlock(monitor->display_f);
             i++;
+            pthread_mutex_unlock(monitor->display_f);
+
         }
         pthread_mutex_unlock(monitor->timestamp_f);
         usleep(30000);
@@ -185,10 +175,10 @@ int launch_coder_and_monitoring_assert(t_coder *coders, int nb_coder, t_monitori
         i++;
     }
     pthread_create(&thread_monitor, NULL, monitor_assert, monitor);
+    pthread_join(thread_monitor, NULL);
     i = 0;
     while (i < nb_coder)
         pthread_join(thread_coder[i++], NULL);
-    pthread_join(thread_monitor, NULL);
     free(thread_coder);
     return (TRUE);
     
@@ -223,9 +213,9 @@ int thread_coders_and_monitor_assert(void)
     if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu, coders))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
     launch_coder_and_monitoring_assert(coders, params[number_of_coders], &monitoring);
-    clean_queue(request_queue);
-    clean_memory(params[number_of_coders], &global_mu, &monitoring);
-    free(coders);
+    // clean_queue(request_queue);
+    // clean_memory(params[number_of_coders], &global_mu, &monitoring);
+    // free(coders);
 
     END_TEST(__func__);
     return (TRUE);
