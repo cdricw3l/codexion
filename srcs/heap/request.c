@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 14:51:52 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 08:31:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:55:31 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_request *create_request(t_coder *coder)
     request->coder_id = coder->id;
     request->request_id = coder->queue->request_counter;
     request->last_compilation = coder->last_compilation;
-    request->cond = coder->cond;
+    request->cond = &coder->queue->cond;
     request->mu = &coder->queue->queue_lock;
     request->left = NULL;
     request->right = NULL;

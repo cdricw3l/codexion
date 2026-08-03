@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:21:12 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:59:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_queue
     size_t          size;
     int             request_counter;
     t_request       **request_queue;
+    pthread_cond_t  cond;
     pthread_mutex_t queue_lock;
 
 } t_queue;
@@ -106,7 +107,6 @@ typedef struct s_coder
     int             params[8];
     timespec_t      start;
     clock_t         *last_compilation;
-    pthread_cond_t  *cond;
     t_queue         *queue;
     pthread_t       thread;
     t_coder_mutex   coder_mutex;
@@ -171,6 +171,8 @@ int     max(int a, int b);
 /* thread */
 
 int     thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder);
+void    *coder_routine(void *data);
+
 
 /* initialisation */
 
@@ -210,10 +212,11 @@ int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
 void	    add_request(t_request **arr, size_t queue_size);
 void	    plug_heap_nodes(t_request **arr, size_t queue_size);
-
+int         can_compile(t_coder *coder);
 
 /* request */
 
+int         create_and_send_request(t_coder *coder);
 t_request   *create_request(t_coder *coder);
 
 #endif

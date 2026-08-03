@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:19:19 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:53:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_queue	*queue_initialisation(void)
 {
 	t_queue *request_queue;
-	
+
 	request_queue = malloc(sizeof(t_queue));
 	if(!request_queue)
 	{
@@ -32,7 +32,9 @@ t_queue	*queue_initialisation(void)
 	request_queue->size = 0;
 	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
+	
 	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	request_queue->cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 	return (request_queue);
 }
 
@@ -58,9 +60,7 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 {
 	int 	i;
 	t_coder *coders;
-	pthread_cond_t cond;
-
-	cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+	
 	coders = malloc(sizeof(t_coder) * params[number_of_coders]);
 	if (!coders)
 		return (NULL);
@@ -70,7 +70,6 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_monitor
 		coders[i].id = i + 1;
 		ft_memcopy(params, coders[i].params, sizeof(int) * 8);
 		coders[i].last_compilation = &monitor->last_compilations[i];
-		coders[i].cond = &cond;
 		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
 		coders[i].queue = queue;
 		i++;
@@ -83,7 +82,7 @@ int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_m
 	monitoring->last_compilations = malloc(sizeof(clock_t) * nb_coder);
 	if(!monitoring->last_compilations)
 		return (FALSE);
-	memset(monitoring->last_compilations, 0, sizeof(clock_t) * nb_coder);
+	memset(monitoring->last_compilations, -1, sizeof(clock_t) * nb_coder);
 	monitoring->display_f =  &global_mu->display_f;
 	monitoring->timestamp_f = &global_mu->timestamp_f;
 	monitoring->nb_coder = nb_coder;

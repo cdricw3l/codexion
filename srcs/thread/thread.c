@@ -6,40 +6,12 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 14:55:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 10:00:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-
-
-
-void *coder_routine(void *data)
-{
-    t_coder *coder;
-    t_request request;
-    int i;
-
-    i = 0;
-    coder = (t_coder *)data;
-    while (i < 5)
-    {
-        pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
-        pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
-        printf("coder : %d, loop: %d\n", coder->id, i);
-        push_request(coder->queue, &request);
-        coder->queue->request_counter++;
-        display_tree(*coder->queue->request_queue);
-        printf("\n");
-        sleep(1);
-        pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
-        pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
-        i++;
-        sleep(1);
-    }
-    return (NULL);
-}
 
 int thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder)
 {
