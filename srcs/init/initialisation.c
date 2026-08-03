@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 15:22:48 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 16:19:40 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,17 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *
 	return (coders);
 }
 
-int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder)
+int monitoring_initialisation(int *params, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder)
 {
-	monitoring->last_compilations = malloc(sizeof(clock_t) * nb_coder);
+	monitoring->last_compilations = malloc(sizeof(clock_t) * params[number_of_coders]);
 	if(!monitoring->last_compilations)
 		return (FALSE);
-	memset(monitoring->last_compilations, -1, sizeof(clock_t) * nb_coder);
+	memset(monitoring->last_compilations, -1, sizeof(clock_t) * params[number_of_coders]);
 	monitoring->display_f =  &global_mu->display_f;
 	monitoring->timestamp_f = &global_mu->timestamp_f;
-	monitoring->nb_coder = nb_coder;
+	monitoring->nb_coder = params[number_of_coders];
 	monitoring->coder = coder;
-	monitoring->ttb = coder[0].params[time_to_burnout];
+	ft_memcopy(params, monitoring->params, sizeof(int) * 8);
 	monitoring->state = global_mu->state;
 	return (TRUE);
 }

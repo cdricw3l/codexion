@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 10:25:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 15:50:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 17:00:14 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,40 @@ int can_start(t_coder *coder)
     return (start);
 }
 
-int check_timestamp(t_coder *coder ,clock_t last_c, int time_to_burnout)
+int check_end(t_coder *coder)
+{
+    int i;
+    int check;
+    int compilation_nedeed;
+    int nb_coder;
+
+    i = 0;
+    check = 0;
+    compilation_nedeed = coder[0].params[number_of_compiles_required];
+    nb_coder = coder[0].params[number_of_coders];
+    while (i < nb_coder)
+    {
+        if(coder[i].nb_of_compil == compilation_nedeed)
+            check++;
+        i++;
+    }
+    if(check == nb_coder)
+        return (TRUE);
+    return (FALSE);
+}
+
+int check_timestamp(t_coder *coder ,clock_t last_c, int *params)
 {
     timespec_t  now;
     clock_t     now_in_nano;
     int         diff;
 
-    clock_gettime(CLOCK_MONOTONIC_RAW, &now);
+    clock_gettime(CLOCK_MONOTONIC, &now);
     now_in_nano = (now.tv_nsec + second_to_nano(now.tv_sec));
     diff = nano_to_ms(now_in_nano - last_c);
-    if(diff > time_to_burnout && coder->nb_of_compil > 0)
+    if(diff > time_to_burnout && coder->nb_of_compil > 0 && coder->nb_of_compil < params[number_of_compiles_required])
     {
-        printf("%ld coder %d is dead diff: %d\n", time_calculation(time_diff(coder->start, now)), coder->id, diff);
+        //printf("%ld coder %d is nb compile: %d, reuqueired: %d\n", time_calculation(time_diff(coder->start, now)),coder->id, coder->nb_of_compil, params[number_of_compiles_required]);
         return (FALSE);
     }
     return (TRUE);
@@ -56,7 +78,7 @@ void *monitor_assert(void *data)
         while (i < monitor->nb_coder)
         {
             pthread_mutex_lock(monitor->display_f);
-            if(!check_timestamp(&monitor->coder[i], monitor->last_compilations[i], monitor->ttb))
+            if(!check_timestamp(&monitor->coder[i], monitor->last_compilations[i], monitor->params))
             {
                 pthread_mutex_unlock(monitor->display_f);
                 int j = 0;
@@ -70,9 +92,13 @@ void *monitor_assert(void *data)
             }
             i++;
             pthread_mutex_unlock(monitor->display_f);
-
         }
         pthread_mutex_unlock(monitor->timestamp_f);
+        if (check_end(monitor->coder))
+        {
+            printf("check end ok\n");
+            break;
+        }
         usleep(30000);
     }
     return (NULL);
@@ -100,13 +126,13 @@ void *wait_coder_routine(void *data)
     i = 0;
     coder = (t_coder * )data;
    
-    while (i < coder->params[number_of_compiles_required]  && check_state(coder) )
+    while (i < coder->params[number_of_compiles_required]  /*&& check_state(coder)*/)
     {
         
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
 
-        //pthread_cond_broadcast(&coder->queue->cond);
+        pthread_cond_broadcast(&coder->queue->cond);
         while (!can_compile(coder))
         {
             pthread_cond_wait(&coder->queue->cond, &coder->queue->queue_lock);
@@ -117,7 +143,7 @@ void *wait_coder_routine(void *data)
             pop_request(coder->queue);
             free(request);
         }
-        //pthread_cond_broadcast(&coder->queue->cond);
+        pthread_cond_broadcast(&coder->queue->cond);
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
@@ -137,6 +163,7 @@ void *wait_coder_routine(void *data)
         {
             pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
             pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+            
         }
         else
         {
@@ -150,6 +177,8 @@ void *wait_coder_routine(void *data)
         usleep(coder->params[time_to_refactor] * 1000);
         i++;
     }
+    printf("coder %d is here\n", coder->id);
+    assert(coder->nb_of_compil != coder->params[number_of_compiles_required]);
     return (NULL);
 }
 
@@ -210,7 +239,7 @@ int thread_coders_and_monitor_assert(void)
 		clean_queue(request_queue);
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
 	}
-    if (!monitoring_initialisation(params[number_of_coders], &monitoring , &global_mu, coders))
+    if (!monitoring_initialisation((int *)params, &monitoring , &global_mu, coders))
 		return (mutex_destroy(params[number_of_coders], &global_mu));
     launch_coder_and_monitoring_assert(coders, params[number_of_coders], &monitoring);
     // clean_queue(request_queue);

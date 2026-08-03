@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 12:43:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 16:19:51 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct s_monitoring
     pthread_mutex_t *timestamp_f;
     pthread_mutex_t *state;
     int             nb_coder;
-    int             ttb;
+    int             params[8];
 } t_monitoring;
 
 
@@ -183,7 +183,7 @@ void    *coder_routine(void *data);
 /* initialisation */
 
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
-int         monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder);
+int         monitoring_initialisation(int *params, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder);
 t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *queue);
 t_queue	    *queue_initialisation(void);
 
