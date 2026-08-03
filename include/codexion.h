@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 11:00:02 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:24:26 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef enum e_actions
     RELEASE,
     COMPILE,
     DEBBUG,
-    REFACTO
+    REFACTO,
+    TIME_DATA
 
 } t_actions;
 

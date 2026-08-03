@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 10:25:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 11:01:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:43:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ int can_start(t_coder *coder)
 
 int check_timestamp(clock_t last_c, int time_to_burnout)
 {
-    timespec_t now;
-    
+    timespec_t  now;
+    clock_t     now_in_nano;
+    int         diff;
+
     clock_gettime(CLOCK_MONOTONIC, &now);
-    if(nano_to_ms((now.tv_nsec + second_to_nano(now.tv_sec)) - last_c) > time_to_burnout)
+    now_in_nano = (now.tv_nsec + second_to_nano(now.tv_sec));
+    diff = nano_to_ms(now_in_nano - last_c);
+    printf("last/ttb : %d/%d\n", diff, time_to_burnout); 
+    if(diff > time_to_burnout)
         return (FALSE);
     return (TRUE);
 }
@@ -57,10 +62,14 @@ void *monitor_assert(void *data)
     {
         i = 0;
         pthread_mutex_lock(monitor->timestamp_f);
-        while (i < number_of_coders)
+        while (i < monitor->nb_coder)
         {
+            printf("here\n");
+
+            pthread_mutex_lock(monitor->display_f);
             if(!check_timestamp(monitor->last_compilations[i], monitor->ttb))
                 printf("The coder %d is dead \n", i+1);
+            pthread_mutex_unlock(monitor->display_f);
             i++;
         }
         pthread_mutex_unlock(monitor->timestamp_f);
@@ -159,6 +168,7 @@ int launch_coder_and_monitoring_assert(t_coder *coders, int nb_coder, t_monitori
     i = 0;
     while (i < nb_coder)
         pthread_join(thread_coder[i++], NULL);
+    pthread_join(thread_monitor, NULL);
     free(thread_coder);
     return (TRUE);
     

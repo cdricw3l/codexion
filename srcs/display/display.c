@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:55:01 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 11:24:35 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void safe_print(t_coder coder, int action)
     if (action == DEBBUG)
         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
     if (action == REFACTO)
+        printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
+    if (action == TIME_DATA)
         printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
     pthread_mutex_unlock(coder.coder_mutex.display_f);
 }
