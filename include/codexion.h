@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 20:17:37 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/03 09:19:05 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 #define FALSE 0
 #define TRUE 1
+#define ERR -1
 #define FIFO 0
 #define EDF 1
 #define LEFT 0
@@ -62,7 +63,7 @@ typedef struct s_request
 {
     int                 coder_id;
     int                 request_id;
-    timespec_t             *last_compilation;
+    clock_t             *last_compilation;
     pthread_cond_t      *cond;
     pthread_mutex_t     *mu;
     struct s_request    *left;
@@ -96,7 +97,6 @@ typedef struct s_coder_mutex
     pthread_mutex_t *timestamp_f;
     t_dongle        dongle_l;
     t_dongle        dongle_r;
-    pthread_mutex_t *coder_mutex;
     
 } t_coder_mutex;
 
@@ -105,7 +105,7 @@ typedef struct s_coder
     int             id;
     int             params[8];
     timespec_t      start;
-    timespec_t      *last_compilation;
+    clock_t         *last_compilation;
     pthread_cond_t  *cond;
     t_queue         *queue;
     pthread_t       thread;
@@ -115,7 +115,7 @@ typedef struct s_coder
 
 typedef struct s_monitoring
 {
-    timespec_t      **last_compilations;
+    clock_t         *last_compilations;
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
     int             nb_coder;
@@ -192,7 +192,7 @@ long            ms_to_nano(long ms);
 clock_t         time_calculation(struct timespec time);
 struct timespec time_diff(struct timespec start, struct timespec end);
 struct timespec futuristic_timespec(int ms);
-
+long            nano_to_ms(long nano);
 
 /* tree */
 

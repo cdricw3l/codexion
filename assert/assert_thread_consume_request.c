@@ -6,14 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 13:46:55 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 08:56:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
-
-#define NB_REQUEST 10
-
 
 
 void *queue_routine_remove_request(void *arg)

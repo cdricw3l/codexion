@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/01 00:05:30 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:01:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int choose_assertion(char **assertion_name)
             return (2);
         else if(!strcmp(buffer,"3\n"))
             return (3);
+        else if(!strcmp(buffer,"4\n"))
+            return (4);
         else
             printf(REDB"Wrong input. Choose 1 or 2"CRESET"\n");
     }
@@ -59,7 +61,7 @@ static int assert_queue()
     return (0);
 }
 
-static int asset_thread(void)
+static int assert_thread(void)
 {
     //thread_send_request_assert();
     //thread_consume_request_assert();
@@ -67,21 +69,30 @@ static int asset_thread(void)
     return (0);
 }
 
+static int assert_time(void)
+{
+    time_assertion();
+    return (TRUE);
+}
+
 int main(void)
 {
     int assertion;
-    char *assertion_name[] = {"assert_queue [1]", "asset_thread [2]", "All [3]", NULL};
+    char *assertion_name[] = {"assert_queue [1]", "asset_thread [2]", "assert_time [3]" ,"All [4]", NULL};
 
     assertion = choose_assertion(assertion_name);
 
     if (assertion == 1)
         assert_queue();
     else if (assertion == 2)
-        asset_thread();
+        assert_thread();
     else if (assertion == 3)
+        assert_time();
+    else if (assertion == 4)
     {
         assert_queue();
-        asset_thread();
+        assert_thread();
+        assert_time();
     }
     return (0);
 }

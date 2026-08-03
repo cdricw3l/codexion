@@ -6,13 +6,11 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 13:48:08 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 08:56:57 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
-
-#define NB_REQUEST 10
 
 void *queue_routine_send_request(void *arg)
 {
@@ -32,8 +30,6 @@ void *queue_routine_send_request(void *arg)
     return (NULL);
     
 }
-
-#define NB_CODER 10
 
 int thread_send_request_assert(void)
 {

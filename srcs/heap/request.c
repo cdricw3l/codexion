@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   request.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 14:51:52 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 20:21:34 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/03 08:31:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_request *create_request(t_coder *coder)
     request->request_id = coder->queue->request_counter;
     request->last_compilation = coder->last_compilation;
     request->cond = coder->cond;
-    request->mu = coder->coder_mutex.coder_mutex;
+    request->mu = &coder->queue->queue_lock;
     request->left = NULL;
     request->right = NULL;
     return (request);

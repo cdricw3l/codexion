@@ -3,39 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   assert_thread_coder.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 20:31:24 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/03 09:18:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-#define NB_REQUEST 2
-#define NB_CODER 2
-#define NB_CR 10
 
-int set_params(int *params)
-{
-    params[number_of_coders] = NB_CODER;
-    params[time_to_burnout] = 450;
-    params[time_to_compile] = 200;
-    params[time_to_debug] = 100;
-    params[time_to_refactor] = 100;
-    params[number_of_compiles_required] = NB_CR;
-    params[dongle_cooldown] = 10;
-    params[scheduler] = FIFO ;
-    return (TRUE);
-}
-
-
-void set_timestamp(t_coder *coder, timespec_t *timestamp)
+void set_timestamp(t_coder *coder)
 {
     
+    timespec_t now;
+
     pthread_mutex_lock(coder->coder_mutex.timestamp_f);
     
-    coder->last_compilation = timestamp;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
     
     pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
     
@@ -47,14 +33,10 @@ int create_and_send_request(t_coder *coder)
 
     request = create_request(coder);
     if(!request)
-    {
-        set_timestamp(coder, NULL);
         return(FALSE);
-    }
     if(!push_request(coder->queue , request))
     {
         printf("Error creation request %d\n", request->request_id);
-        set_timestamp(coder, NULL);
         return (FALSE);
     }
     (coder->queue->request_counter)++;
@@ -88,7 +70,7 @@ void *coder_asser_routine(void *data)
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
 
-        pthread_cond_broadcast(coder->cond);
+        //pthread_cond_broadcast(coder->cond);
         while (!can_compile(coder))
         {
             pthread_cond_wait(coder->cond, &coder->queue->queue_lock);
@@ -99,7 +81,7 @@ void *coder_asser_routine(void *data)
             pop_request(coder->queue);
             free(request);
         }
-        pthread_cond_broadcast(coder->cond);
+        //pthread_cond_broadcast(coder->cond);
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
@@ -115,7 +97,6 @@ void *coder_asser_routine(void *data)
         safe_print(*coder, TAKE);
         safe_print(*coder, COMPILE);
         usleep(coder->params[time_to_compile] * 1000);
-
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
         {
             pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
@@ -126,7 +107,7 @@ void *coder_asser_routine(void *data)
             pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
             pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
         }
-        
+        set_timestamp(coder);
         safe_print(*coder, DEBBUG);
         usleep(coder->params[time_to_debug] * 1000);
         safe_print(*coder, REFACTO);
@@ -137,80 +118,26 @@ void *coder_asser_routine(void *data)
 }   
 
 
-int check_last_compilation(t_monitoring *monitor)
-{
-    int i;
-    int j;
-    timespec_t timestamp;
-
-    i = 0;
-    pthread_mutex_lock(monitor->timestamp_f);
-
-    while (i < monitor->nb_coder)
-    {
-        clock_gettime(CLOCK_REALTIME, &timestamp);
-        if(time_calculation(time_diff(*(monitor->last_compilations[i]), timestamp)) > monitor->ttb)
-        {
-            j = 0;
-            while (j < monitor->nb_coder)
-            {
-                monitor->last_compilations[j] = NULL;
-                j++;
-            }
-            pthread_mutex_unlock(monitor->timestamp_f);
-            return (i + 1);
-        }
-    }
-    pthread_mutex_unlock(monitor->timestamp_f);
-    return (0);
-}
-
-void *thread_monitoring(void *data)
-{
-
-    t_monitoring *monitor;
-    int dead_coder;
-    
-    monitor = (t_monitoring *)data;
-    while (1)
-    {
-        dead_coder = check_last_compilation(monitor);
-        if(dead_coder)
-        {
-            printf("coder %d is dead\n", dead_coder);
-            return (NULL);
-        }
-    }
-    return (NULL);
-}
-
-
 int launch_coder_assert(t_coder *coders, int nb_coder, t_monitoring *monitor)
 {
-    int i;
-    pthread_t *thread;
-    pthread_t mo;
-    timespec_t now;
+    int         i;
+    pthread_t   *thread;
+    timespec_t  now;
 
     thread = malloc(sizeof(pthread_t) * nb_coder);
     assert(thread);
     i = 0;
     clock_gettime(CLOCK_MONOTONIC, &now);
-    //pthread_create(&mo, NULL, thread_monitoring, monitor);
     while (i < nb_coder)
     {
         coders[i].start = now;
-        coders[i].last_compilation = &now;
         pthread_create(&thread[i], NULL, coder_asser_routine, &coders[i]);
+        usleep(50000);
         i++;
     }
     i = 0;
     while (i < nb_coder)
-    {
-        pthread_join(thread[i], NULL);
-        i++;
-    }
-    //pthread_join(mo, NULL);
+        pthread_join(thread[i++], NULL);
     free(thread);
     return (TRUE);
     
@@ -249,9 +176,6 @@ int thread_coders_assert(void)
     clean_queue(request_queue);
     clean_memory(params[number_of_coders], &global_mu, &monitoring);
     free(coders);
-
-
-
 
 
     END_TEST(__func__);

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:05:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:12:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ long second_to_nano(long sec)
 long ms_to_nano(long ms)
 {
     return (ms * 1000000);
+}
+
+long nano_to_ms(long nano)
+{
+    return (nano / 1000000);
 }
 struct timespec futuristic_timespec(int ms)
 {

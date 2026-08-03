@@ -7,6 +7,20 @@
 #define START_TEST(name) printf(HYEL"Start test module: %s\n"CRESET, name)
 #define END_TEST(name) printf(HGRN"test module: %s [OK]\n"CRESET, name)
 
+
+#define NB_REQUEST 2
+#define NB_CODER 2
+#define NB_CR 2
+
+
+/* time */
+
+int time_assertion(void);
+
+/* utils */
+
+int set_params(int *params);
+
 /* queue assertion */
 int create_request_assert(void);
 int remove_request_assert(void);

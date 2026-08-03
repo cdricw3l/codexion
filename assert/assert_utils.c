@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   assert_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:07 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 19:36:39 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/03 08:52:55 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
+
+int set_params(int *params)
+{
+    params[number_of_coders] = NB_CODER;
+    params[time_to_burnout] = 450;
+    params[time_to_compile] = 200;
+    params[time_to_debug] = 100;
+    params[time_to_refactor] = 100;
+    params[number_of_compiles_required] = NB_CR;
+    params[dongle_cooldown] = 10;
+    params[scheduler] = FIFO ;
+    return (TRUE);
+}
 
 t_request *_request(int id_request, int id_coder)
 {
