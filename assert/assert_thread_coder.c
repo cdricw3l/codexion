@@ -6,26 +6,14 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:18:01 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:20:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
 
-void set_timestamp(t_coder *coder)
-{
-    
-    timespec_t now;
 
-    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
-    
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
-    
-    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
-    
-}
 
 int create_and_send_request(t_coder *coder)
 {

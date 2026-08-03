@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:12:45 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:20:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,18 @@ clock_t time_calculation(struct timespec time)
 
     n_to_sec  = time.tv_sec * 1000000000;
     return ((n_to_sec + time.tv_nsec) / 1000000);
+}
+
+void set_timestamp(t_coder *coder)
+{
+    
+    timespec_t now;
+
+    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
+    
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
+    
+    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+    
 }

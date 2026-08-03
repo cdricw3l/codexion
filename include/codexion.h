@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:19:05 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 09:21:12 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ clock_t         time_calculation(struct timespec time);
 struct timespec time_diff(struct timespec start, struct timespec end);
 struct timespec futuristic_timespec(int ms);
 long            nano_to_ms(long nano);
-
+void            set_timestamp(t_coder *coder);
 /* tree */
 
 int             tree_height(t_request *root);
