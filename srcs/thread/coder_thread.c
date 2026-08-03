@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:58:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:32:42 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int can_compile(t_coder *coder)
 
     if (!*(coder->queue->request_queue))
         return (FALSE);
-    if (coder->queue->request_queue[0]->coder_id == coder->id)
-        return (TRUE);
-    return(FALSE);
+    return(coder->queue->request_queue[0]->coder_id == coder->id);
     
 }
 

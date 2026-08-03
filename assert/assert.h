@@ -10,7 +10,7 @@
 
 #define NB_REQUEST 2
 #define NB_CODER 2
-#define NB_CR 2
+#define NB_CR 1
 
 
 /* time */

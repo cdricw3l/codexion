@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 11:24:35 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 12:52:56 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void safe_print(t_coder coder, int action)
         printf(HCYN"%ld %d has taken a dongle"CRESET"\n",timestamp, coder.id);
     }
     if (action == COMPILE)
+    {
         printf(HCYN"%ld %d is compiling"CRESET"\n",timestamp, coder.id);
+        coder.nb_of_compil++;
+    }
     if (action == DEBBUG)
         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
     if (action == REFACTO)

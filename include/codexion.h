@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 11:24:26 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 12:43:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_global_mutex
     pthread_mutex_t display_f;
     pthread_mutex_t timestamp_f;
     pthread_mutex_t *dongles;
-    pthread_mutex_t *coder_mutex;
+    pthread_mutex_t *state;
 
     
 } t_global_mutex;
@@ -96,6 +96,7 @@ typedef struct s_global_mutex
 typedef struct s_coder_mutex
 {
     pthread_mutex_t *display_f;
+    pthread_mutex_t *state;
     pthread_mutex_t *timestamp_f;
     t_dongle        dongle_l;
     t_dongle        dongle_r;
@@ -105,6 +106,7 @@ typedef struct s_coder_mutex
 typedef struct s_coder
 {
     int             id;
+    int             state;
     int             nb_of_compil;
     int             params[8];
     timespec_t      start;
@@ -121,6 +123,7 @@ typedef struct s_monitoring
     clock_t         *last_compilations;
     pthread_mutex_t *display_f;
     pthread_mutex_t *timestamp_f;
+    pthread_mutex_t *state;
     int             nb_coder;
     int             ttb;
 } t_monitoring;

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 10:59:31 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 12:51:19 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 	
 	coder_mu.display_f = &global_mu->display_f;
 	coder_mu.timestamp_f = &global_mu->timestamp_f;
+	coder_mu.state = &global_mu->state[id];
 	left.dongle = &global_mu->dongles[get_dongle(id, nb_coder, LEFT)];
 	left.last_use = 0;
 	right.dongle = &global_mu->dongles[get_dongle(id, nb_coder, RIGHT)];
@@ -87,6 +88,8 @@ int monitoring_initialisation(int nb_coder, t_monitoring *monitoring, t_global_m
 	monitoring->timestamp_f = &global_mu->timestamp_f;
 	monitoring->nb_coder = nb_coder;
 	monitoring->coder = coder;
+	monitoring->ttb = coder[0].params[time_to_burnout];
+	monitoring->state = global_mu->state;
 	return (TRUE);
 }
 
@@ -97,8 +100,8 @@ int mutex_initialisation(int nb_coder, t_global_mutex *global_mu)
 	global_mu->dongles = malloc(sizeof(pthread_mutex_t) * nb_coder);
 	if(!global_mu->dongles)
 		return (FALSE);
-	global_mu->coder_mutex = malloc(sizeof(pthread_mutex_t) * nb_coder);
-	if(!global_mu->coder_mutex)
+	global_mu->state = malloc(sizeof(pthread_mutex_t) * nb_coder);
+	if(!global_mu->state)
 	{
 		free(global_mu->dongles);
 		return (FALSE);
@@ -107,7 +110,7 @@ int mutex_initialisation(int nb_coder, t_global_mutex *global_mu)
 	while (i < nb_coder)
 	{
 		global_mu->dongles[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-		global_mu->coder_mutex[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+		global_mu->state[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 		i++;
 	}
 	global_mu->display_f = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;

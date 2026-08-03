@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:36:53 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 13:39:31 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/03 13:04:49 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int mutex_destroy(int nb_coder, t_global_mutex *global_mu)
     while (i < nb_coder)
     {
         pthread_mutex_destroy(&global_mu->dongles[i]);
-        pthread_mutex_destroy(&global_mu->coder_mutex[i++]);
+        pthread_mutex_destroy(&global_mu->state[i++]);
 
     }
     free(global_mu->dongles);
-    free(global_mu->coder_mutex);
+    free(global_mu->state);
     return (TRUE);    
 }
 
