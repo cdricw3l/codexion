@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 20:50:01 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 21:29:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,24 @@ clock_t time_calculation(struct timespec time)
     return ((n_to_sec + time.tv_nsec) / 1000000);
 }
 
-void set_timestamp(t_coder *coder)
+
+
+void set_timestamp(t_coder *coder, int type)
 {
     
     timespec_t now;
 
-    
     clock_gettime(CLOCK_MONOTONIC, &now);
-    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
-    *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
-    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
-    coder->nb_of_compil++;
-    
+    if(type == TIMESTAMP_COMPILATION)
+    {
+        pthread_mutex_lock(coder->coder_mutex.timestamp_f);
+        *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
+        coder->nb_of_compil++;
+        pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+    }    
+    else if(type == TIMESTAMP_DONGLE)
+    {   
+        coder->coder_mutex.dongle_l.last_use = now.tv_nsec + second_to_nano(now.tv_sec);
+        coder->coder_mutex.dongle_r.last_use = now.tv_nsec + second_to_nano(now.tv_sec);
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:48:24 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 21:50:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,26 @@
 #define EDF 1
 #define LEFT 0
 #define RIGHT 1
+#define TIMESTAMP_DONGLE 0
+#define TIMESTAMP_COMPILATION 1
 
-/* action */
+enum e_PARAMS
+{
+    number_of_coders,
+    time_to_burnout,
+    time_to_compile,
+    time_to_debug,
+    time_to_refactor,
+    number_of_compiles_required,
+    dongle_cooldown,
+    scheduler
+};
 
+enum e_PARSING_ERROR
+{
+    NB_ARG,
+    BAD_ARG
+};
 
 typedef enum e_actions
 {
@@ -129,23 +146,7 @@ typedef struct s_monitoring
 } t_monitoring;
 
 
-enum e_PARAMS
-{
-    number_of_coders,
-    time_to_burnout,
-    time_to_compile,
-    time_to_debug,
-    time_to_refactor,
-    number_of_compiles_required,
-    dongle_cooldown,
-    scheduler
-};
 
-enum e_PARSING_ERROR
-{
-    NB_ARG,
-    BAD_ARG
-};
 
 /* error */
 
@@ -175,10 +176,13 @@ int     max(int a, int b);
 
 
 /* thread */
-
 int     thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder);
-void    *coder_routine(void *data);
 void    *monitor_routine(void *data);
+    /* coder */
+void    *coder_routine(void *data);
+void	compile(t_coder *coder);
+void	debbug(t_coder *coder);
+void	refactor(t_coder *coder);
 
 /* initialisation */
 
@@ -201,7 +205,7 @@ clock_t         time_calculation(struct timespec time);
 struct timespec time_diff(struct timespec start, struct timespec end);
 struct timespec futuristic_timespec(int ms);
 long            nano_to_ms(long nano);
-void            set_timestamp(t_coder *coder);
+void            set_timestamp(t_coder *coder, int type);
 /* tree */
 
 int             tree_height(t_request *root);
