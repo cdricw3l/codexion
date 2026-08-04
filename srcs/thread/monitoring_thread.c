@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:49 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:23:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:48:26 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int check_timestamp(t_coder *coder ,clock_t last_c, int *params)
 
     if(diff > params[time_to_burnout] && coder->nb_of_compil > 0 && coder->nb_of_compil < params[number_of_compiles_required])
     {
-        printf("coder %d: last compilation: %ld now: %ld diff in nano: %ld diff in ms %ld \n", coder->id, last_c, now_in_nano, now_in_nano - last_c, nano_to_ms(now_in_nano - last_c));
-
-        //printf("%ld coder %d is nb compile: %d, reuqueired: %d\n", time_calculation(time_diff(coder->start, now)),coder->id, coder->nb_of_compil, params[number_of_compiles_required]);
+        //printf("coder %d: last compilation: %ld now: %ld diff in nano: %ld diff in ms %ld \n", coder->id, last_c, now_in_nano, now_in_nano - last_c, nano_to_ms(now_in_nano - last_c));
         return (FALSE);
     }
     return (TRUE);
@@ -70,9 +68,7 @@ void *monitor_routine(void *data)
         {
             if(!check_timestamp(&monitor->coder[i], monitor->last_compilations[i], monitor->params))
             {
-                pthread_mutex_lock(monitor->display_f);
-                printf("coder %d is dead\n", monitor->coder[i].id);
-                pthread_mutex_unlock(monitor->display_f);
+                safe_print(monitor->coder[i], DEAD, monitor->display_f);
                 int j = 0;
                 while (j < monitor->nb_coder)
                 {
@@ -81,7 +77,6 @@ void *monitor_routine(void *data)
                     pthread_mutex_unlock(&monitor->state[j]);
                     j++;
                 }
-                printf("end monitoring\n");
                 return (NULL);
 
             }
@@ -92,10 +87,7 @@ void *monitor_routine(void *data)
         usleep(200000);
 
         if (check_end(monitor->coder))
-        {
-            printf("check end ok\n");
             break;
-        }
     }
     return (NULL);
 }

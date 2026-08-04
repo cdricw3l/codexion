@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 12:52:56 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:51:41 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 
 
-void safe_print(t_coder coder, int action)
+void safe_print(t_coder coder, int action, pthread_mutex_t *lock)
 {
     clock_t timestamp;
     struct timespec tm;
     
-    pthread_mutex_lock(coder.coder_mutex.display_f);
+    if (coder.state == FALSE)
+        return;
+    pthread_mutex_lock(lock);
     clock_gettime(CLOCK_MONOTONIC, &tm);
     timestamp = time_calculation(time_diff(coder.start, tm));
     if (action == TAKE)
@@ -36,9 +38,9 @@ void safe_print(t_coder coder, int action)
         printf(HCYN"%ld %d is debugging"CRESET"\n",timestamp, coder.id);
     if (action == REFACTO)
         printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
-    if (action == TIME_DATA)
-        printf(HCYN"%ld %d is refactoring"CRESET"\n",timestamp, coder.id);
-    pthread_mutex_unlock(coder.coder_mutex.display_f);
+    if (action == DEAD)
+        printf(HCYN"%ld %d burned out"CRESET"\n", timestamp, coder.id);
+    pthread_mutex_unlock(lock);
 }
 
 static void display_coder(t_coder *coder)

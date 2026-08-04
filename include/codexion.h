@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 09:06:29 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:48:24 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef enum e_actions
     COMPILE,
     DEBBUG,
     REFACTO,
-    TIME_DATA
+    DEAD
 
 } t_actions;
 
@@ -162,7 +162,7 @@ int     parse_arguments(char **args, int params[8]);
 /* display */
 void    display_params(int params[8]);
 void    display_coders(t_coder *coders, int nb_coder);
-void    safe_print(t_coder coder, int action);
+void    safe_print(t_coder coder, int action, pthread_mutex_t *lock);
 void    display_mutex_data(int nb_coder, t_global_mutex global_mu);
 void    display_request(t_request request);
 

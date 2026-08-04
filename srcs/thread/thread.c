@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:05:16 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:45:18 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,19 @@ int thread_launcher(t_coder *coders,t_monitoring *monitor, int nb_coder)
         coders[i].start = now;
         coders[i].state = TRUE;
         pthread_create(&thread_coder[i], NULL, coder_routine, &coders[i]);
-        //usleep(50000);
+        usleep(50000);
         i++;
     }
     pthread_create(&thread_monitor, NULL, monitor_routine, monitor);
-    while (i < nb_coder)
-        pthread_join(thread_coder[i++], NULL);
     pthread_join(thread_monitor, NULL);
     i = 0;
+    while (i < nb_coder)
+    {
+        if(pthread_join(thread_coder[i], NULL))
+            printf("Error join\n");
+        assert(coders[i].nb_of_compil == coders->params[number_of_compiles_required]);
+        i++;
+    }
     
     free(thread_coder);
     return (TRUE);

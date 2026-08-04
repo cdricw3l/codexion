@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:16:23 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:51:12 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,19 @@ void *coder_routine(void *data)
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
 
-        pthread_cond_broadcast(&coder->queue->cond);
+        //pthread_cond_broadcast(&coder->queue->cond);
         while (!can_compile(coder))
         {
             pthread_cond_wait(&coder->queue->cond, &coder->queue->queue_lock);
         }
         if(*coder->queue->request_queue)
         {
-            printf("coder %d pop queue\n", coder->id);
-
             request = coder->queue->request_queue[0];
             pop_request(coder->queue);
             free(request);
         }
-        pthread_cond_broadcast(&coder->queue->cond);
+
+        //pthread_cond_broadcast(&coder->queue->cond);
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
         
@@ -92,8 +91,8 @@ void *coder_routine(void *data)
             pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
             pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
         }
-        safe_print(*coder, TAKE);
-        safe_print(*coder, COMPILE);
+        safe_print(*coder, TAKE,coder->coder_mutex.display_f);
+        safe_print(*coder, COMPILE,coder->coder_mutex.display_f);
         usleep(coder->params[time_to_compile] * 1000);
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
         {
@@ -109,14 +108,15 @@ void *coder_routine(void *data)
         pthread_mutex_lock(coder->coder_mutex.timestamp_f);
         set_timestamp(coder);
         pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
-        
-        safe_print(*coder, DEBBUG);
+        safe_print(*coder, DEBBUG, coder->coder_mutex.display_f);
         usleep(coder->params[time_to_debug] * 1000);
-        safe_print(*coder, REFACTO);
+        safe_print(*coder, REFACTO, coder->coder_mutex.display_f);
         usleep(coder->params[time_to_refactor] * 1000);
         i++;
     }
-    printf("coder %d compile: %d/%d\n", coder->id, coder->nb_of_compil , coder->params[number_of_compiles_required]);
-    assert(coder->nb_of_compil == coder->params[number_of_compiles_required]);
+    // pthread_mutex_lock(coder->coder_mutex.display_f);
+    // printf("from thread %ld: coder %d compile: %d/%d\n", pthread_self() , coder->id, coder->nb_of_compil , coder->params[number_of_compiles_required]);
+    // pthread_mutex_unlock(coder->coder_mutex.display_f);
+    //assert(coder->nb_of_compil == coder->params[number_of_compiles_required]);
     return (NULL);
 }
