@@ -18,6 +18,8 @@ SRCS= srcs/codexion.c \
 		srcs/heap/heap_push_request.c \
 		srcs/heap/heap_utils.c \
 		srcs/thread/thread.c \
+		srcs/thread/coder_thread.c \
+		srcs/thread/monitoring_thread.c \
 
 
 

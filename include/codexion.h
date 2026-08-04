@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 16:19:51 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 09:06:29 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ int     max(int a, int b);
 
 int     thread_launcher(t_coder *coder, t_monitoring *monitor, int nb_coder);
 void    *coder_routine(void *data);
-
+void    *monitor_routine(void *data);
 
 /* initialisation */
 

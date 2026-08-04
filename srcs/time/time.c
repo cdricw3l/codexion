@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 16:59:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 08:52:38 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,9 @@ void set_timestamp(t_coder *coder)
     
     timespec_t now;
 
-    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
     
     clock_gettime(CLOCK_MONOTONIC, &now);
     *(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
     coder->nb_of_compil++;
-    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
     
 }

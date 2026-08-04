@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 10:25:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 17:00:14 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 08:56:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void *monitor_assert(void *data)
                 while (j < monitor->nb_coder)
                 {
                     pthread_mutex_lock(monitor->coder[j].coder_mutex.state);
-                    monitor->coder[i].coder_mutex.state = FALSE;
+                    monitor->coder[j].coder_mutex.state = FALSE;
+                    printf("coder is dead\n", monitor->coder[j].id);
                     j++;
                     return (NULL);
                 }
@@ -94,12 +95,13 @@ void *monitor_assert(void *data)
             pthread_mutex_unlock(monitor->display_f);
         }
         pthread_mutex_unlock(monitor->timestamp_f);
+        usleep(200000);
+
         if (check_end(monitor->coder))
         {
             printf("check end ok\n");
             break;
         }
-        usleep(30000);
     }
     return (NULL);
 }
@@ -126,7 +128,7 @@ void *wait_coder_routine(void *data)
     i = 0;
     coder = (t_coder * )data;
    
-    while (i < coder->params[number_of_compiles_required]  /*&& check_state(coder)*/)
+    while (i < coder->params[number_of_compiles_required]  && check_state(coder))
     {
         
         pthread_mutex_lock(&coder->queue->queue_lock);
@@ -144,6 +146,7 @@ void *wait_coder_routine(void *data)
             free(request);
         }
         pthread_cond_broadcast(&coder->queue->cond);
+        
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
@@ -170,15 +173,18 @@ void *wait_coder_routine(void *data)
             pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
             pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
         }
+        pthread_mutex_lock(coder->coder_mutex.timestamp_f);
         set_timestamp(coder);
+        pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+        
         safe_print(*coder, DEBBUG);
         usleep(coder->params[time_to_debug] * 1000);
         safe_print(*coder, REFACTO);
         usleep(coder->params[time_to_refactor] * 1000);
         i++;
     }
-    printf("coder %d is here\n", coder->id);
-    assert(coder->nb_of_compil != coder->params[number_of_compiles_required]);
+    printf("coder %d compile: %d/%d\n", coder->id, coder->nb_of_compil , coder->params[number_of_compiles_required]);
+    assert(coder->nb_of_compil == coder->params[number_of_compiles_required]);
     return (NULL);
 }
 
