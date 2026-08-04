@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:45:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 13:10:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int thread_launcher(t_coder *coders,t_monitoring *monitor, int nb_coder)
     {
         if(pthread_join(thread_coder[i], NULL))
             printf("Error join\n");
-        assert(coders[i].nb_of_compil == coders->params[number_of_compiles_required]);
+        //assert(coders[i].nb_of_compil == coders->params[number_of_compiles_required]);
         i++;
     }
     

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:51:12 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 13:15:17 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void *coder_routine(void *data)
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
 
-        //pthread_cond_broadcast(&coder->queue->cond);
+        pthread_cond_broadcast(&coder->queue->cond);
         while (!can_compile(coder))
         {
             pthread_cond_wait(&coder->queue->cond, &coder->queue->queue_lock);
@@ -77,7 +77,7 @@ void *coder_routine(void *data)
             free(request);
         }
 
-        //pthread_cond_broadcast(&coder->queue->cond);
+        pthread_cond_broadcast(&coder->queue->cond);
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
         
@@ -91,23 +91,32 @@ void *coder_routine(void *data)
             pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
             pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
         }
+        
         safe_print(*coder, TAKE,coder->coder_mutex.display_f);
         safe_print(*coder, COMPILE,coder->coder_mutex.display_f);
+        pthread_mutex_lock(coder->coder_mutex.timestamp_f);
+        set_timestamp(coder);
+        pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
         usleep(coder->params[time_to_compile] * 1000);
+        
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
         {
-            pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
-            pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+            if (coder->state)
+            {
+                pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
+                pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+            }
             
         }
         else
         {
-            pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
-            pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
+            if (coder->state)
+            {
+                pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+                pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
+            }
         }
-        pthread_mutex_lock(coder->coder_mutex.timestamp_f);
-        set_timestamp(coder);
-        pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+        
         safe_print(*coder, DEBBUG, coder->coder_mutex.display_f);
         usleep(coder->params[time_to_debug] * 1000);
         safe_print(*coder, REFACTO, coder->coder_mutex.display_f);
