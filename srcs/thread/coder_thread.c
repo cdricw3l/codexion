@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 08:59:42 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:16:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ void *coder_routine(void *data)
         }
         if(*coder->queue->request_queue)
         {
+            printf("coder %d pop queue\n", coder->id);
+
             request = coder->queue->request_queue[0];
             pop_request(coder->queue);
             free(request);
         }
         pthread_cond_broadcast(&coder->queue->cond);
-        
         pthread_mutex_unlock(&coder->queue->queue_lock);
 
+        
         if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
         {
             pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);

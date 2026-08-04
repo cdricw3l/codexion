@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:49 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 09:07:02 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 12:23:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ int check_timestamp(t_coder *coder ,clock_t last_c, int *params)
     clock_gettime(CLOCK_MONOTONIC, &now);
     now_in_nano = (now.tv_nsec + second_to_nano(now.tv_sec));
     diff = nano_to_ms(now_in_nano - last_c);
-    if(diff > time_to_burnout && coder->nb_of_compil > 0 && coder->nb_of_compil < params[number_of_compiles_required])
+
+    if(diff > params[time_to_burnout] && coder->nb_of_compil > 0 && coder->nb_of_compil < params[number_of_compiles_required])
     {
+        printf("coder %d: last compilation: %ld now: %ld diff in nano: %ld diff in ms %ld \n", coder->id, last_c, now_in_nano, now_in_nano - last_c, nano_to_ms(now_in_nano - last_c));
+
         //printf("%ld coder %d is nb compile: %d, reuqueired: %d\n", time_calculation(time_diff(coder->start, now)),coder->id, coder->nb_of_compil, params[number_of_compiles_required]);
         return (FALSE);
     }
@@ -65,19 +68,22 @@ void *monitor_routine(void *data)
         pthread_mutex_lock(monitor->timestamp_f);
         while (i < monitor->nb_coder)
         {
-            pthread_mutex_lock(monitor->display_f);
             if(!check_timestamp(&monitor->coder[i], monitor->last_compilations[i], monitor->params))
             {
+                pthread_mutex_lock(monitor->display_f);
+                printf("coder %d is dead\n", monitor->coder[i].id);
                 pthread_mutex_unlock(monitor->display_f);
                 int j = 0;
                 while (j < monitor->nb_coder)
                 {
-                    pthread_mutex_lock(monitor->coder[j].coder_mutex.state);
-                    monitor->coder[j].coder_mutex.state = FALSE;
-                    printf("coder %d is dead\n", monitor->coder[j].id);
+                    pthread_mutex_lock(&monitor->state[j]);
+                    monitor->coder[j].state = FALSE;
+                    pthread_mutex_unlock(&monitor->state[j]);
                     j++;
-                    return (NULL);
                 }
+                printf("end monitoring\n");
+                return (NULL);
+
             }
             i++;
             pthread_mutex_unlock(monitor->display_f);
