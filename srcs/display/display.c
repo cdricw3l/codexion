@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 12:51:41 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 13:36:19 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void display_request(t_request request)
 
 void display_tree(t_request *root)
 {
+    printf("display tree\n");
     if(!root)
         return;
 

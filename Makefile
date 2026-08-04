@@ -33,7 +33,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=3 400 200 100 100 10 10 fifo
+ARG=20 500 200 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)
