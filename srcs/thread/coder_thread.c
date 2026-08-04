@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 20:25:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 20:59:28 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int check_state(t_coder *coder)
 }
 
 
-void compile(t_coder *coder)
+void lock_dongle(t_coder *coder)
 {
     if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
     {
@@ -62,12 +62,9 @@ void compile(t_coder *coder)
         pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
         pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
     }
-    safe_print(*coder, TAKE,coder->coder_mutex.display_f);
-    safe_print(*coder, COMPILE,coder->coder_mutex.display_f);
-    pthread_mutex_lock(coder->coder_mutex.timestamp_f);
-    set_timestamp(coder);
-    pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
-    usleep(coder->params[time_to_compile] * 1000);
+}
+void unlock_dongle(t_coder *coder)
+{
     if(coder->id == 1 ||  coder->id == coder->params[number_of_coders])
     {
         if (coder->state)
@@ -84,6 +81,20 @@ void compile(t_coder *coder)
             pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
         }
     }
+}
+
+
+void compile(t_coder *coder)
+{
+
+    lock_dongle(coder);
+    set_timestamp(coder);
+    safe_print(*coder, TAKE,coder->coder_mutex.display_f);
+    safe_print(*coder, COMPILE,coder->coder_mutex.display_f);
+    usleep(coder->params[time_to_compile] * 1000);
+    unlock_dongle(coder);
+    
+    assert(coder->params[time_to_compile] == 300);
 }
 
 void debbug(t_coder *coder)
@@ -105,19 +116,17 @@ void *coder_routine(void *data)
     t_coder *coder;
     t_request *request;
 
+
     i = 0;
     coder = (t_coder * )data;
    
     while (i < coder->params[number_of_compiles_required]  && check_state(coder))
     {
-        
         pthread_mutex_lock(&coder->queue->queue_lock);
         create_and_send_request(coder);
-        //pthread_cond_broadcast(&coder->queue->cond);
+        pthread_cond_broadcast(&coder->queue->cond);
         while (!can_compile(coder))
-        {
             pthread_cond_wait(&coder->queue->cond, &coder->queue->queue_lock);
-        }
         if(*coder->queue->request_queue)
         {
             request = coder->queue->request_queue[0];
@@ -126,6 +135,7 @@ void *coder_routine(void *data)
         }
         pthread_mutex_unlock(&coder->queue->queue_lock);
         pthread_cond_broadcast(&coder->queue->cond);
+        
         compile(coder);
         debbug(coder);
         refactor(coder);
