@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines":["__USE_POSIX199309"],
+            "defines": [],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "gnu99",
             "cppStandard": "c++14",

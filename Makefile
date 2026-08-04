@@ -1,7 +1,6 @@
 CC=gcc
 NAME=codexion
 CFLAGS= -Wall -Wextra -Werror -g -pthread
-#CFLAGS= -Wextra -Werror -Wall  -g -pthread
 #CFLAGS=  -g -pthread
 SHELL=/bin/bash
 SRCS= srcs/codexion.c \
@@ -18,8 +17,9 @@ SRCS= srcs/codexion.c \
 		srcs/heap/heap_push_request.c \
 		srcs/heap/heap_utils.c \
 		srcs/thread/thread.c \
-		srcs/thread/coder_thread.c \
-		srcs/thread/monitoring_thread.c \
+		srcs/thread/coders/coder_thread.c \
+		srcs/thread/coders/coder_actions.c \
+		srcs/thread/monitoring/monitoring_thread.c \
 
 
 
@@ -33,7 +33,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=2 1000 300 200 200 2 10 fifo
+ARG=4 500 300 100 100 2 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)
@@ -53,24 +53,9 @@ clean:
 	rm -f $(SRCS_OBJS)
 
 fclean: clean
-	@make  -s -C  assert fclean
 	rm -f $(NAME) *.log
 
 re: fclean $(NAME)
-
-# run assertion makefile -C -> target makefile folder
-as:
-	@make  -s -C  assert run
-
-ashel:
-	@make  -s -C  assert ashel
-asval:
-	@make  -s -C  assert asval
-
-# recopile and run assertion makefile -C -> target makefile folder
-ras:
-	@make  -s -C  assert re
-	@make  -s -C  assert run
 
 COM="generic comment"
 git: fclean
@@ -78,8 +63,5 @@ git: fclean
 	git commit -m $(COM)
 	git push --all
 
-test:
-	$(CC) -g -pthread pthread.c  -o pthread
-	valgrind --log-file="helgrind.log" --tool=helgrind  ./pthread
 
 .PHONY: codexion run valrun helrun clean fclean test
