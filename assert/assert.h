@@ -27,6 +27,7 @@ int remove_request_assert(void);
 void poppush_queue_assert(void);
 int bfs_binary_tree_as_arr_assert(void);
 int push_request_assert(void);
+int efd_assert(void);
 
 /* thread assertion */
 t_request *_request(int id_request, int id_coder);

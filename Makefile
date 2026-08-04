@@ -18,8 +18,9 @@ SRCS= srcs/codexion.c \
 		srcs/heap/heap_push_request.c \
 		srcs/heap/heap_utils.c \
 		srcs/thread/thread.c \
-		srcs/thread/coder_thread.c \
-		srcs/thread/monitoring_thread.c \
+		srcs/thread/monitoring/monitoring_thread.c \
+		srcs/thread/coders/coder_actions.c \
+		srcs/thread/coders/coder_thread.c \
 
 
 
@@ -33,7 +34,7 @@ all= $(NAME)
 $(NAME): $(SRCS_OBJS)
 	@$(CC) $(CFLAG) $(SRCS_OBJS) -o $(NAME) -lpthread
 
-ARG=2 1000 300 200 200 2 10 fifo
+ARG=20 500 200 100 100 10 10 fifo
 
 run: $(NAME)
 	./$(NAME) $(ARG)

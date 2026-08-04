@@ -6,11 +6,34 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 23:17:25 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 00:20:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/codexion.h"
+
+int check_cooldown(t_coder *coder)
+{
+	clock_t last_release_l;
+	clock_t last_release_r;
+	timespec_t now;
+	clock_t now_ms;
+
+	pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
+	pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
+	last_release_l = nano_to_ms(coder->coder_mutex.dongle_l.last_use);
+	last_release_r = nano_to_ms(coder->coder_mutex.dongle_r.last_use);
+	pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+	pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
+	printf("Last release left %ld\n", last_release_l);
+	printf("Last release right %ld\n", last_release_r);
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	now_ms = nano_to_ms(now.tv_nsec + second_to_nano(now.tv_sec));
+	if(now_ms - nano_to_ms(last_release_l) < coder->params[dongle_cooldown]
+		|| now_ms - nano_to_ms(last_release_r) < coder->params[dongle_cooldown])
+		return (FALSE);
+	return (TRUE);
+}
 
 int	can_compile(t_coder *coder)
 {
@@ -19,7 +42,8 @@ int	can_compile(t_coder *coder)
 	if (!*(coder->queue->request_queue))
 		return (FALSE);
 	request = coder->queue->request_queue[0];
-	
+	// if(!check_cooldown(coder))
+	// 	return (FALSE);
 	//printf("coder %d ask for compilation\n", coder->id);
 	if (coder->queue->request_queue[0]->coder_id == coder->id)
 	{

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 09:05:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:49:12 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 		return (write(STDERR_FILENO, "Error initialisation mutex\n", strlen("Error initialisation mutex\n")));
 	
 	//display_mutex_data(params[number_of_coders], global_mu);
-	request_queue = queue_initialisation();
+	request_queue = queue_initialisation(params[scheduler], params[time_to_burnout]);
     assert(request_queue);
 	if (!request_queue)
 		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));

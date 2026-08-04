@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 16:16:36 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 08:56:01 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:48:33 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int thread_consume_request_assert(void)
     int i;
 
 
-    queue = queue_initialisation();
+    queue = queue_initialisation(FIFO, 0);
     assert(queue);
     for (i = 0; i < NB_CODER; i++)
         pthread_create(&thread[i], NULL, queue_routine_remove_request, queue);

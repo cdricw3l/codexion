@@ -3,7 +3,7 @@ NAME=codexion_assert
 CFLAGS=  -pthread -g
 #CFLAGS= -Wall -Wextra -Werror -pthread
 
-SRCS= $(wildcard ./*.c) $(filter-out ../srcs/codexion.c , $(wildcard ../srcs/*/*.c))	
+SRCS= $(wildcard ./*.c) $(filter-out ../srcs/codexion.c , $(wildcard ../srcs/*/*.c))	$(wildcard ../srcs/*/*/*.c)
 
 SRCS_OBJS= $(SRCS:.c=.o)
 

@@ -6,19 +6,19 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 18:12:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/02 15:07:25 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:50:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-t_request assert_create_request(int coder_id, int request_id ,clock_t last_compile)
+t_request assert_create_request(int coder_id, int request_id , clock_t last_compile)
 {
     t_request request;
 
     request.coder_id = coder_id;
     request.request_id = request_id;
-    request.last_compilation = NULL;
+    request.last_compilation = last_compile;
     request.left = NULL;
     request.right = NULL;
     return (request);
@@ -127,7 +127,7 @@ int bfs_binary_tree_as_arr_assert(void)
     t_request **arr;
     t_queue *queue;
 
-    queue = queue_initialisation();
+    queue = queue_initialisation(FIFO, 0);
     assert(queue);
     *queue->request_queue = &r1;
 
@@ -176,17 +176,17 @@ int push_request_assert(void)
     assert(arr[0]->request_id == -1);
     
     arr[1] = &r2;
-    add_request(arr, 2);
+    add_request(arr, 2, FIFO);
     assert(arr[0]->request_id == -1);
     assert(arr[1]->request_id == 0);
     arr[2] = &r3;
-    add_request(arr, 3);
+    add_request(arr, 3, FIFO);
     assert(arr[0]->request_id == -1);
     assert(arr[1]->request_id == 0);
     assert(arr[2]->request_id == 2);
     arr[3] = &r4;
     
-    add_request(arr, 4);
+    add_request(arr, 4, FIFO);
    
     assert(arr[0]->request_id == -20);
     assert(arr[1]->request_id == -1);
@@ -206,7 +206,7 @@ int push_request_assert(void)
     assert(arr[3]->right == NULL);
 
     arr[4] = &r5;
-    add_request(arr, 5);
+    add_request(arr, 5, FIFO);
     plug_heap_nodes(arr, 5);
     assert(arr[0]->left == arr[1]);
     assert(arr[0]->right == arr[2]);
@@ -239,7 +239,7 @@ int create_request_assert(void)
     t_request r8;
 
 
-    queue =  queue_initialisation();
+    queue =  queue_initialisation(FIFO, 0);
     assert(queue);
     r1 = assert_create_request(24,0, 10);
     r2 = assert_create_request(24,1, 100);
@@ -301,7 +301,7 @@ int remove_request_assert(void)
     r5 = assert_create_request(24,-10, 100);
     r6 = assert_create_request(24,-7, 100);
 
-    queue = queue_initialisation();
+    queue = queue_initialisation(FIFO, 0);
     push_request(queue, &r1);
     push_request(queue, &r2);
     push_request(queue, &r3);
@@ -326,6 +326,58 @@ int remove_request_assert(void)
     assert(queue->request_queue[0]->request_id == 3);
     pop_request(queue);
     assert(queue->size == 0);
+    free(queue->request_queue);
+    free(queue);
+    END_TEST(__func__);
+    return (TRUE);
+}
+
+int efd_assert(void)
+{
+    START_TEST(__func__);
+    t_queue   *queue;
+    t_request r1;
+    t_request r2;
+    t_request r3;
+    t_request r4;
+    t_request r5;
+    t_request r6;
+    int i;
+
+    r1 = assert_create_request(24,0, 10);
+    r2 = assert_create_request(24,1, 20);
+    r3 = assert_create_request(24,2, 30);
+    r4 = assert_create_request(24,3, 40);
+    r5 = assert_create_request(24,-10, 50);
+    r6 = assert_create_request(24,-7, 60);
+
+    queue = queue_initialisation(EDF , 300);
+    push_request(queue, &r1);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)10);
+    push_request(queue, &r2);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)20);
+    push_request(queue, &r3);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)30);
+    push_request(queue, &r4);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)40);
+    push_request(queue, &r5);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)50);
+    push_request(queue, &r6);
+    assert(queue->request_queue[0]->last_compilation == (clock_t)60);
+
+    pop_request(queue);
+    assert(queue->request_queue[0]->last_compilation == 50);
+    pop_request(queue);
+    assert(queue->request_queue[0]->last_compilation == 40);
+    pop_request(queue);
+    assert(queue->request_queue[0]->last_compilation == 30);
+    pop_request(queue);
+    assert(queue->request_queue[0]->last_compilation == 20);
+    pop_request(queue);
+    assert(queue->request_queue[0]->last_compilation == 10);
+    pop_request(queue);
+    assert(queue->request_queue[0] == NULL);
+    
     free(queue->request_queue);
     free(queue);
     END_TEST(__func__);

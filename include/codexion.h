@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 21:50:30 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:51:15 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ typedef struct s_request
 {
     int                 coder_id;
     int                 request_id;
-    clock_t             *last_compilation;
+    int                 ttb;
+    clock_t             last_compilation;
     pthread_cond_t      *cond;
     pthread_mutex_t     *mu;
     struct s_request    *left;
@@ -92,8 +93,10 @@ typedef struct s_request
 
 typedef struct s_queue
 {
-    size_t          size;
     int             request_counter;
+    int             queue_type;
+    int             ttb;
+    size_t          size;
     t_request       **request_queue;
     pthread_cond_t  cond;
     pthread_mutex_t queue_lock;
@@ -189,7 +192,7 @@ void	refactor(t_coder *coder);
 int         mutex_initialisation(int nb_coder, t_global_mutex *global_mu);
 int         monitoring_initialisation(int *params, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder);
 t_coder     *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *queue);
-t_queue	    *queue_initialisation(void);
+t_queue	    *queue_initialisation(int type, int ttb);
 
 /* clean */
 
@@ -220,7 +223,7 @@ void	    swap_request(t_request **r1, t_request **r2);
 int         push_request(t_queue *request_queue, t_request *request);
 int	        pop_request(t_queue *request_queue);
 t_request   **bfs_binary_tree_as_arr(t_queue *request_queue);
-void	    add_request(t_request **arr, size_t queue_size);
+void	    add_request(t_request **arr, size_t queue_size, int queue_type);
 void	    plug_heap_nodes(t_request **arr, size_t queue_size);
 int         can_compile(t_coder *coder);
 

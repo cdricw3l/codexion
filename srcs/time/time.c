@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 21:29:44 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/04 23:47:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,11 @@ void set_timestamp(t_coder *coder, int type)
     }    
     else if(type == TIMESTAMP_DONGLE)
     {   
+        pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
+	    pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
         coder->coder_mutex.dongle_l.last_use = now.tv_nsec + second_to_nano(now.tv_sec);
         coder->coder_mutex.dongle_r.last_use = now.tv_nsec + second_to_nano(now.tv_sec);
+        pthread_mutex_unlock(coder->coder_mutex.dongle_l.dongle);
+	    pthread_mutex_unlock(coder->coder_mutex.dongle_r.dongle);
     }
 }

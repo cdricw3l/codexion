@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:56:58 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 10:33:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 00:40:10 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int assert_queue()
     push_request_assert();
     create_request_assert();
     remove_request_assert();
+    efd_assert();
     return (0);
 }
 

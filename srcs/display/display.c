@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 13:36:19 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:06:40 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void display_request(t_request request)
 {
     printf("\nRequest Id: %d\n",request.request_id);
     printf("Coder Id: %d\n",request.coder_id);
+    printf("Last compile %ld\n", request.last_compilation);
     // printf("Cond adresse %p\n", request.cond);
     // printf("Children left: %p\n", request.left);
     // printf("Children right: %p\n", request.right);
