@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 14:51:52 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 09:55:31 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:51:47 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_request *create_request(t_coder *coder)
         return (NULL);
     request->coder_id = coder->id;
     request->request_id = coder->queue->request_counter;
-    request->last_compilation = coder->last_compilation;
+    request->ttb = coder->params[time_to_burnout];
+    request->last_compilation = *coder->last_compilation;
     request->cond = &coder->queue->cond;
     request->mu = &coder->queue->queue_lock;
     request->left = NULL;

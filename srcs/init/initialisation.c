@@ -6,13 +6,13 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 16:19:40 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 01:47:46 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-t_queue	*queue_initialisation(void)
+t_queue	*queue_initialisation(int type, int ttb)
 {
 	t_queue *request_queue;
 
@@ -29,10 +29,11 @@ t_queue	*queue_initialisation(void)
 		free(request_queue);
 		return (FALSE);
 	}
+	request_queue->queue_type = type;
+	request_queue->ttb = ttb;
 	request_queue->size = 0;
 	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
-	
 	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	request_queue->cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 	return (request_queue);
