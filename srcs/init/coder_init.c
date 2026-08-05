@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:53:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 16:16:47 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:24:05 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_coder	*coders_init(int *params, t_global_mutex *global_mu, t_queue *queue, t_s
 	if (!coders)
 		return (NULL);
 	i = 0;
-	assert(params[nbc] == 4);
 	while (i < params[nbc])
 	{
 		coders[i].id = i + 1;

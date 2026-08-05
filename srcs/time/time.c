@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:07:31 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 03:40:03 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:26:46 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ void	set_timestamp(t_coder *coder, int type)
 {
 	t_timespec	now;
 
+	pthread_mutex_lock(coder->coder_mutex.timestamp_f);
 	clock_gettime(CLOCK_MONOTONIC, &now);
 	if (type == TIMESTAMP_COMPILATION)
 	{
-		pthread_mutex_lock(coder->coder_mutex.timestamp_f);
 		*(coder->last_compilation) = now.tv_nsec + second_to_nano(now.tv_sec);
 		coder->nb_of_compil++;
-		pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
 	}
 	else if (type == TIMESTAMP_DONGLE)
 	{
@@ -75,4 +74,6 @@ void	set_timestamp(t_coder *coder, int type)
 		coder->coder_mutex.dongle_r.last_use = now.tv_nsec
 			+ second_to_nano(now.tv_sec);
 	}
+	pthread_mutex_unlock(coder->coder_mutex.timestamp_f);
+
 }

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:18:50 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:27:41 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,15 @@ void	*coder_routine(void *data)
 	{
 		pthread_mutex_lock(&coder->queue->queue_lock);
 		create_and_send_request(coder);
+		pthread_mutex_lock(coder->coder_mutex.display_f);
+		printf("coder %d send is request\n", coder->id);
+		pthread_mutex_unlock(coder->coder_mutex.display_f);
 		pthread_mutex_unlock(&coder->queue->queue_lock);
 
 		pthread_mutex_lock(coder->coder_mutex.can_compile_mu);
 		while (*coder->can_compile == FALSE)
 		{
-			pthread_mutex_lock(coder->coder_mutex.display_f);
-			printf("coder %d can compile \n", coder->id);
-			pthread_mutex_unlock(coder->coder_mutex.display_f);
+			
 
 			pthread_cond_wait(coder->can_compile_cond, coder->coder_mutex.can_compile_mu);
 		}
