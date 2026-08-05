@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:49 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 03:40:03 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:58:43 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static	void	*set_coder_on(t_monitoring *monitor)
 		monitor->coder[j].start = now;
 		monitor->coder[j].state = TRUE;
 		pthread_mutex_unlock(&monitor->state[j]);
-		usleep(5000);
 		j++;
 	}
 	return (NULL);

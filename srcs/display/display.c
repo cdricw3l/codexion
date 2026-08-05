@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 17:56:20 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:28:38 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:56:35 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	safe_print(t_coder coder, int action, pthread_mutex_t *lock)
 	struct timespec	tm;
 	clock_t			timestamp;
 
-	// if (coder.state == FALSE)
-	// {
-	// 	return ;
-	// }
+	if (coder.state == FALSE)
+	{
+		return ;
+	}
 	pthread_mutex_lock(lock);
 	clock_gettime(CLOCK_MONOTONIC, &tm);
 	timestamp = time_calculation(time_diff(coder.start, tm));

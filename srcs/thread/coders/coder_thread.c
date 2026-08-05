@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:27:41 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 18:02:54 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,14 @@ int	check_state(t_coder *coder)
 	int	status;
 
 	status = TRUE;
-	pthread_mutex_lock(coder->coder_mutex.state);
 	if (coder->state == FALSE)
 		status = FALSE;
-	pthread_mutex_unlock(coder->coder_mutex.state);
 	return (status);
 }
 
 void	action(t_coder *coder)
 {
-	
+	compile(coder);
 	debbug(coder);
 	refactor(coder);
 }
@@ -79,18 +77,19 @@ void	*coder_routine(void *data)
 	assert(coder->nb_of_compil == 0 && coder->params[number_of_compiles_required] == 2);
 	while (coder->nb_of_compil < coder->params[number_of_compiles_required])
 	{
+		pthread_mutex_lock(coder->coder_mutex.state);
+		if(check_state(coder))
+			break;
+		pthread_mutex_unlock(coder->coder_mutex.state);
+
+		
 		pthread_mutex_lock(&coder->queue->queue_lock);
 		create_and_send_request(coder);
-		pthread_mutex_lock(coder->coder_mutex.display_f);
-		printf("coder %d send is request\n", coder->id);
-		pthread_mutex_unlock(coder->coder_mutex.display_f);
 		pthread_mutex_unlock(&coder->queue->queue_lock);
 
 		pthread_mutex_lock(coder->coder_mutex.can_compile_mu);
 		while (*coder->can_compile == FALSE)
 		{
-			
-
 			pthread_cond_wait(coder->can_compile_cond, coder->coder_mutex.can_compile_mu);
 		}
 		pthread_mutex_unlock(coder->coder_mutex.can_compile_mu);
@@ -98,6 +97,5 @@ void	*coder_routine(void *data)
 		debbug(coder);
 		refactor(coder);
 	}
-	
 	return (NULL);
 }
