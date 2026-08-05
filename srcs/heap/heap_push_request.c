@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 11:56:40 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 01:52:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:20:28 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	add_request(t_request **arr, size_t queue_size, int queue_type)
 		parent = arr[i / 2];
 		if (queue_type == FIFO && current->request_id < parent->request_id)
 			swap_request(&arr[i], &arr[i / 2]);
-		else if (queue_type == EDF && current->last_compilation + current->ttb > parent->last_compilation + parent->ttb)
+		else if (queue_type == EDF
+			&& current->last_compilation + current->ttb
+			> parent->last_compilation + parent->ttb)
 			swap_request(&arr[i], &arr[i / 2]);
 		i = i / 2;
 	}
@@ -50,6 +52,5 @@ int	push_request(t_queue *request_queue, t_request *request)
 	plug_heap_nodes(arr, request_queue->size);
 	*(request_queue->request_queue) = arr[0];
 	free(arr);
-
 	return (TRUE);
 }

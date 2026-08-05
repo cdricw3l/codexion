@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 23:17:25 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:33:17 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 int	can_compile(t_coder *coder)
 {
 	t_request	*request;
-	
+
 	if (!*(coder->queue->request_queue))
 		return (FALSE);
 	request = coder->queue->request_queue[0];
-	
 	//printf("coder %d ask for compilation\n", coder->id);
 	if (coder->queue->request_queue[0]->coder_id == coder->id)
 	{

@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 16:49:12 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 21:12:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:20:53 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,14 @@ void	plug_heap_nodes(t_request **arr, size_t queue_size)
 			arr[i]->right = NULL;
 		i++;
 	}
+}
+
+void	display_tree(t_request *root)
+{
+	printf("display tree\n");
+	if (!root)
+		return ;
+	display_request(*root);
+	display_tree(root->left);
+	display_tree(root->right);
 }

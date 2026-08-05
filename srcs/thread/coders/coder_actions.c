@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 21:41:48 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 21:51:08 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 02:53:09 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	lock_dongle(t_coder *coder)
 {
-	if (coder->id == 1 || coder->id == coder->params[number_of_coders])
+	if (coder->id == 1 || coder->id == coder->params[nbc])
 	{
 		pthread_mutex_lock(coder->coder_mutex.dongle_r.dongle);
 		pthread_mutex_lock(coder->coder_mutex.dongle_l.dongle);
@@ -28,7 +28,7 @@ static void	lock_dongle(t_coder *coder)
 
 static void	unlock_dongle(t_coder *coder)
 {
-	if (coder->id == 1 || coder->id == coder->params[number_of_coders])
+	if (coder->id == 1 || coder->id == coder->params[nbc])
 	{
 		if (coder->state)
 		{

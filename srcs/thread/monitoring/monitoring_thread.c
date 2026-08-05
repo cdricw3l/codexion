@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:49 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/04 22:44:41 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:40:03 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	check_timestamp(t_coder *coder, clock_t last_c, int *params)
 {
 	int			diff;
-	timespec_t	now;
+	t_timespec	now;
 	clock_t		now_in_nano;
 
 	clock_gettime(CLOCK_MONOTONIC, &now);
@@ -38,7 +38,7 @@ static int	check_end(t_coder *coder)
 	i = 0;
 	check = 0;
 	compilation_nedeed = coder[0].params[number_of_compiles_required];
-	nb_coder = coder[0].params[number_of_coders];
+	nb_coder = coder[0].params[nbc];
 	while (i < nb_coder)
 		if (coder[i++].nb_of_compil == compilation_nedeed)
 			check++;
@@ -61,10 +61,11 @@ static	void	*set_coder_off(t_monitoring *monitor)
 	}
 	return (NULL);
 }
+
 static	void	*set_coder_on(t_monitoring *monitor)
 {
-	int	j;
-	timespec_t	now;
+	int			j;
+	t_timespec	now;
 
 	clock_gettime(CLOCK_MONOTONIC, &now);
 	j = 0;

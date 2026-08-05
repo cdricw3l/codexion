@@ -6,42 +6,49 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:36:53 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/03 13:04:49 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:06:39 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-int mutex_destroy(int nb_coder, t_global_mutex *global_mu)
+int	mutex_destroy(int nb_coder, t_global_mutex *global_mu)
 {
-    int i;
+	int	i;
 
-    pthread_mutex_destroy(&global_mu->display_f);
-    pthread_mutex_destroy(&global_mu->timestamp_f);
-    i = 0;
-    while (i < nb_coder)
-    {
-        pthread_mutex_destroy(&global_mu->dongles[i]);
-        pthread_mutex_destroy(&global_mu->state[i++]);
-
-    }
-    free(global_mu->dongles);
-    free(global_mu->state);
-    return (TRUE);    
+	pthread_mutex_destroy(&global_mu->display_f);
+	pthread_mutex_destroy(&global_mu->timestamp_f);
+	i = 0;
+	while (i < nb_coder)
+	{
+		pthread_mutex_destroy(&global_mu->dongles[i]);
+		pthread_mutex_destroy(&global_mu->state[i++]);
+	}
+	free(global_mu->dongles);
+	free(global_mu->state);
+	return (TRUE);
 }
 
-int clean_memory(int nb_coder, t_global_mutex *global_mu, t_monitoring *monitoring)
+int	clean_queue(t_queue *queue)
+{
+	if (!queue)
+		return (FALSE);
+	free(queue->request_queue);
+	free(queue);
+	return (TRUE);
+}
+
+int	clean(int nb_coder, t_coder *coders, t_global_mutex *global_mu, t_monitoring *monitoring, t_queue *queue)
 {
 	mutex_destroy(nb_coder, global_mu);
-	free(monitoring->last_compilations);
+	if (coders)
+		free(coders);
+	if (queue)
+		clean_queue(queue);
+	if (monitoring)
+	{
+		free(monitoring->last_compilations);
+		free(monitoring);
+	}
 	return (0);
-}
-
-int clean_queue(t_queue *queue)
-{
-    if(!queue)
-        return (FALSE);
-    free(queue->request_queue);
-    free(queue);
-    return (TRUE);
 }

@@ -6,51 +6,34 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 01:55:53 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 02:57:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-
-#define DISPLAY_PARAMS 	FALSE
-#define DISPLAY_MUTEX 	FALSE
-#define DISPLAY_CODER 	TRUE
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	(void) argc;
-
-	int 			params[8];
+	int				params[8];
 	t_coder			*coders;
 	t_global_mutex	global_mu;
-	t_monitoring	monitoring;
+	t_monitoring	*monitoring;
 	t_queue			*request_queue;
 
-    
-    if(parse_arguments(&argv[1], params) == FALSE)
+	if (parse_arguments(argc, &argv[1], params) == FALSE)
 		return (1);
-    if(!mutex_initialisation(params[number_of_coders], &global_mu))
-		return (write(STDERR_FILENO, "Error initialisation mutex\n", strlen("Error initialisation mutex\n")));
-	
-	//display_mutex_data(params[number_of_coders], global_mu);
-	request_queue = queue_initialisation(params[scheduler], params[time_to_burnout]);
-    assert(request_queue);
+	if (!mutex_init(params[nbc], &global_mu))
+		return (error_msg(MUTEX_ERR, NULL));
+	request_queue = queue_init(params[scheduler], params[time_to_burnout]);
 	if (!request_queue)
-		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
-	coders = coders_initialisation((int *)params, &global_mu, request_queue);
-	assert(coders);
-    if (!coders)
-	{
-		clean_queue(request_queue);
-		return (clean_memory(params[number_of_coders], &global_mu, &monitoring));
-	}
-    if (!monitoring_initialisation((int *)params, &monitoring , &global_mu, coders))
-		return (mutex_destroy(params[number_of_coders], &global_mu));
-    thread_launcher(coders, &monitoring, params[number_of_coders]);
-    // clean_queue(request_queue);
-    // clean_memory(params[number_of_coders], &global_mu, &monitoring);
-    // free(coders);
+		return (clean(params[nbc], NULL, &global_mu, NULL, NULL));
+	coders = coders_init((int *)params, &global_mu, request_queue);
+	if (!coders)
+		return (clean(params[nbc], NULL, &global_mu, NULL, request_queue));
+	monitoring = monitoring_init((int *)params, &global_mu, coders);
+	if (!monitoring)
+		return (clean(params[nbc], coders, &global_mu, NULL, request_queue));
+	thread_launcher(coders, monitoring, params[nbc]);
+	clean(params[nbc], coders, &global_mu, monitoring, request_queue);
 	return (0);
 }
-

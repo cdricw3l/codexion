@@ -6,15 +6,16 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 11:57:37 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 01:53:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:20:01 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-static int	remove_request(t_request **arr_request, size_t size_queue, int queue_type)
+static int	remove_request(t_request **arr_request,
+	size_t size_queue, int queue_type)
 {
-	size_t		i;
+	size_t	i;
 
 	swap_request(&arr_request[size_queue - 1], &arr_request[0]);
 	arr_request[size_queue - 1] = NULL;
@@ -22,11 +23,12 @@ static int	remove_request(t_request **arr_request, size_t size_queue, int queue_
 	i = 0;
 	while (i < size_queue - 1)
 	{
-		if (queue_type == FIFO && arr_request[i]->request_id > arr_request[i + 1]->request_id)
+		if (queue_type == FIFO
+			&& arr_request[i]->request_id > arr_request[i + 1]->request_id)
 			swap_request(&arr_request[i], &arr_request[i + 1]);
-		else if (queue_type == EDF &&
-			arr_request[i]->last_compilation + arr_request[i]->ttb <
-			arr_request[i + 1]->last_compilation + arr_request[i]->ttb)
+		else if (queue_type == EDF
+			&& arr_request[i]->last_compilation + arr_request[i]->ttb
+			< arr_request[i + 1]->last_compilation + arr_request[i]->ttb)
 			swap_request(&arr_request[i], &arr_request[i + 1]);
 		i++;
 	}

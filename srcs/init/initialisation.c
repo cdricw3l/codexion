@@ -6,26 +6,26 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 01:47:46 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 03:24:25 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-t_queue	*queue_initialisation(int type, int ttb)
+t_queue	*queue_init(int type, int ttb)
 {
-	t_queue *request_queue;
+	t_queue	*request_queue;
 
 	request_queue = malloc(sizeof(t_queue));
-	if(!request_queue)
+	if (!request_queue)
 	{
-		write(STDERR_FILENO,"Error initialisation queue structure\n", strlen("Error initialisation queue structure\n"));
+		write(STDERR_FILENO, "Error init queue\n", strlen("Error init queue\n"));
 		return (NULL);
 	}
 	request_queue->request_queue = malloc(sizeof(t_request *));
 	if (!request_queue)
 	{
-		write(STDERR_FILENO,"Error initialisation queue structure\n", strlen("Error initialisation queue structure\n"));
+		write(STDERR_FILENO, "Error init queue\n", strlen("Error init queue\n"));
 		free(request_queue);
 		return (FALSE);
 	}
@@ -39,12 +39,13 @@ t_queue	*queue_initialisation(int type, int ttb)
 	return (request_queue);
 }
 
-static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *global_mu)
+static t_coder_mutex	get_coder_mutex(int id,
+	int nb_coder, t_global_mutex *global_mu)
 {
-	t_coder_mutex coder_mu;
-	t_dongle left;
-	t_dongle right;
-	
+	t_dongle		left;
+	t_dongle		right;
+	t_coder_mutex	coder_mu;
+
 	coder_mu.display_f = &global_mu->display_f;
 	coder_mu.timestamp_f = &global_mu->timestamp_f;
 	coder_mu.state = &global_mu->state[id];
@@ -57,21 +58,20 @@ static t_coder_mutex get_coder_mutex(int id, int nb_coder, t_global_mutex *globa
 	return (coder_mu);
 }
 
-
-t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *queue)
+t_coder	*coders_init(int *params, t_global_mutex *global_mu, t_queue *queue)
 {
-	int 	i;
-	t_coder *coders;
-	
-	coders = malloc(sizeof(t_coder) * params[number_of_coders]);
+	int		i;
+	t_coder	*coders;
+
+	coders = malloc(sizeof(t_coder) * params[nbc]);
 	if (!coders)
 		return (NULL);
 	i = 0;
-	while (i < params[number_of_coders])
+	while (i < params[nbc])
 	{
 		coders[i].id = i + 1;
 		ft_memcopy(params, coders[i].params, sizeof(int) * 8);
-		coders[i].coder_mutex = get_coder_mutex(i, params[number_of_coders], global_mu);
+		coders[i].coder_mutex = get_coder_mutex(i, params[nbc], global_mu);
 		coders[i].nb_of_compil = 0;
 		coders[i].queue = queue;
 		i++;
@@ -79,30 +79,39 @@ t_coder *coders_initialisation(int *params, t_global_mutex *global_mu, t_queue *
 	return (coders);
 }
 
-int monitoring_initialisation(int *params, t_monitoring *monitoring, t_global_mutex *global_mu, t_coder *coder)
+t_monitoring	*monitoring_init(int *params,
+	t_global_mutex *global_mu, t_coder *coder)
 {
-	monitoring->last_compilations = malloc(sizeof(clock_t) * params[number_of_coders]);
-	if(!monitoring->last_compilations)
-		return (FALSE);
-	memset(monitoring->last_compilations, -1, sizeof(clock_t) * params[number_of_coders]);
-	monitoring->display_f =  &global_mu->display_f;
+	t_monitoring	*monitoring;
+
+	monitoring = malloc(sizeof(t_monitoring));
+	if (!monitoring)
+		return (NULL);
+	monitoring->last_compilations = malloc(sizeof(clock_t) * params[nbc]);
+	if (!monitoring->last_compilations)
+	{
+		free(monitoring);
+		return (NULL);
+	}
+	memset(monitoring->last_compilations, -1, sizeof(clock_t) * params[nbc]);
+	monitoring->display_f = &global_mu->display_f;
 	monitoring->timestamp_f = &global_mu->timestamp_f;
-	monitoring->nb_coder = params[number_of_coders];
+	monitoring->nb_coder = params[nbc];
 	monitoring->coder = coder;
 	ft_memcopy(params, monitoring->params, sizeof(int) * 8);
 	monitoring->state = global_mu->state;
-	return (TRUE);
+	return (monitoring);
 }
 
-int mutex_initialisation(int nb_coder, t_global_mutex *global_mu)
+int	mutex_init(int nb_coder, t_global_mutex *global_mu)
 {
 	int	i;
 
 	global_mu->dongles = malloc(sizeof(pthread_mutex_t) * nb_coder);
-	if(!global_mu->dongles)
+	if (!global_mu->dongles)
 		return (FALSE);
 	global_mu->state = malloc(sizeof(pthread_mutex_t) * nb_coder);
-	if(!global_mu->state)
+	if (!global_mu->state)
 	{
 		free(global_mu->dongles);
 		return (FALSE);
