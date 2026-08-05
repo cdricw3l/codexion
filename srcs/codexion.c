@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:10:59 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 19:32:23 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ int	main(int argc, char **argv)
 	coders = coders_init((int *)params, &global_mu, request_queue, schedul);
 	if (!coders)
 		return (clean(params[nbc], NULL, &global_mu, request_queue));
+	
 	monitoring = monitoring_init((int *)params, &global_mu, coders);
 	if (!monitoring)
 		return (clean(params[nbc], coders, &global_mu, request_queue));
+	schedul->state = monitoring->state;
+	schedul->coder = coders;
 	thread_launcher(schedul, coders, monitoring, params[nbc]);
 	clean(params[nbc], coders, &global_mu, request_queue);
 	free(monitoring->last_compilations);

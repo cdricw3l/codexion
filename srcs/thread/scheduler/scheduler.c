@@ -6,12 +6,18 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 15:17:45 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:21:51 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:30:03 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/codexion.h"
 
+int is_on(t_scheduler *scheduler)
+{
+    if(scheduler->on_off == OFF)
+        return(FALSE);
+    return (TRUE);
+}
 
 void *scheduler_routine(void *data)
 {
@@ -37,6 +43,17 @@ void *scheduler_routine(void *data)
             usleep(5000);
             i++;
         }
+        if(!is_on(scheduler))
+        {
+            i = 0;
+            while (i < scheduler->nb_coder)
+            {
+                pthread_cond_signal(&scheduler->can_compile_co[i++]);
+                pthread_mutex_unlock(&scheduler->can_compile_mu[i]);
+            }
+        }
+        
+        
     }
     return (NULL);
 }

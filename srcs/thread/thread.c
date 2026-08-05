@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:26:18 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:33:30 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,27 @@ static int launch_scheduler(t_scheduler *scheduler, pthread_t *thread_scheduler)
 }	
 
 static void	joint_thread(pthread_t *thread_coder,
-	pthread_t thread_monitor, pthread_t thread_schedule, int nb_coder)
+	pthread_t thread_monitor, pthread_t thread_schedule, int nb_coder, t_scheduler *scheduler)
 {
 	int	i;
 
 	if (pthread_join(thread_monitor, NULL))
 		error_msg(THREAD_JOINT_ERR, NULL);
+
+	scheduler->on_off = OFF;
 	if (pthread_join(thread_schedule, NULL))
 		error_msg(THREAD_JOINT_ERR, NULL);
-	i = 0;
-	while (i < nb_coder)
+
+	for (i = 0; i < nb_coder; i++)
 	{
-		if (pthread_join(thread_coder[i], NULL))
-			error_msg(THREAD_JOINT_ERR, NULL);
-		i++;
+		assert(!pthread_join(thread_coder[i], NULL));
 	}
+	printf("coder %d is join\n", i);
+	
+	
+	
+	
+	
 }
 
 int	thread_launcher(t_scheduler *scheduler, t_coder *coders, t_monitoring *monitor, int nb_coder)
@@ -68,6 +74,7 @@ int	thread_launcher(t_scheduler *scheduler, t_coder *coders, t_monitoring *monit
 	pthread_t	thread_scheduler;
 
 	thread_coder = malloc(sizeof(pthread_t) * nb_coder);
+	memset(thread_coder, 0, sizeof(pthread_t) * nb_coder);
 	if (!thread_coder)
 		return (FALSE);
 	if (!launch_coders(coders, monitor, nb_coder, thread_coder)
@@ -77,7 +84,7 @@ int	thread_launcher(t_scheduler *scheduler, t_coder *coders, t_monitoring *monit
 		free(thread_coder);
 		return (FALSE);
 	}
-	joint_thread(thread_coder, thread_monitor, thread_scheduler,nb_coder);
-	free(thread_coder);
+	joint_thread(thread_coder, thread_monitor, thread_scheduler, nb_coder,scheduler);
+	//free(thread_coder);
 	return (TRUE);
 }

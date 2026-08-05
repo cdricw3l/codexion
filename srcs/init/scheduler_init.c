@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:44:35 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 16:58:53 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 19:25:50 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ t_scheduler *scheduler_init(int nb_coder, t_queue *queue)
 		schedul->can_compile[i] = FALSE;
         i++;
 	}
+	schedul->on_off = ON;
 	return (schedul);
 }

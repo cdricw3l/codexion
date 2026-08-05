@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:49 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 18:11:55 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:17:45 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ static	void	*set_coder_on(t_monitoring *monitor)
 void	*monitor_routine(void *data)
 {
 	int				i;
+	int 			end;
 	t_monitoring	*monitor;
 
 	monitor = (t_monitoring *)data;
 	i = 0;
 	set_coder_on(monitor);
+	end = 0;
 	while (1)
 	{
 		i = 0;
@@ -98,14 +100,16 @@ void	*monitor_routine(void *data)
 					monitor->last_compilations[i], monitor->params))
 			{
 				safe_print(monitor->coder[i], DEAD, monitor->display_f);
-				return (set_coder_off(monitor));
+				set_coder_off(monitor);
+				end = 1;
+				break;
 			}
 			i++;
-			pthread_mutex_unlock(monitor->display_f);
 		}
 		pthread_mutex_unlock(monitor->timestamp_f);
-		if (check_end(monitor->coder))
+		if (end || check_end(monitor->coder))
 			break ;
 	}
+
 	return (NULL);
 }

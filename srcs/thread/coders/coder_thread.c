@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 18:16:41 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:33:13 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ int	create_and_send_request(t_coder *coder)
 	return (TRUE);
 }
 
-int	check_state(t_coder *coder)
+int	is_dead(t_coder *coder)
 {
 	int	status;
 
-	status = TRUE;
+	status = FALSE;
 	pthread_mutex_lock(coder->coder_mutex.state);
 	if (coder->state == FALSE)
-		status = FALSE;
+		status = TRUE;
 	pthread_mutex_unlock(coder->coder_mutex.state);
 	return (status);
 }
@@ -76,10 +76,9 @@ void	*coder_routine(void *data)
 	t_coder		*coder;
 	coder = (t_coder *)data;
 	
-	assert(coder->nb_of_compil == 0 && coder->params[number_of_compiles_required] == 2);
-	while (!check_state(coder))
+	while (is_dead(coder))
 		usleep(10000);
-	while (coder->nb_of_compil < coder->params[number_of_compiles_required] && check_state(coder))
+	while (coder->nb_of_compil < coder->params[number_of_compiles_required] && !is_dead(coder))
 	{
 		pthread_mutex_lock(&coder->queue->queue_lock);
 		create_and_send_request(coder);
@@ -95,5 +94,8 @@ void	*coder_routine(void *data)
 		debbug(coder);
 		refactor(coder);
 	}
+	pthread_mutex_lock(coder->coder_mutex.display_f);
+	printf("End of coder %d\n", coder->id);
+	pthread_mutex_unlock(coder->coder_mutex.display_f);
 	return (NULL);
 }

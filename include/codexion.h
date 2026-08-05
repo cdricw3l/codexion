@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 16:54:08 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 19:25:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 # define RIGHT 1
 # define TIMESTAMP_DONGLE 0
 # define TIMESTAMP_COMPILATION 1
+# define ON 0
+# define OFF 1
+
 
 enum e_PARAMS
 {
@@ -159,7 +162,10 @@ typedef struct s_scheduler
 	t_queue			*queue;
 	pthread_mutex_t	*can_compile_mu;
 	pthread_cond_t	*can_compile_co;
-
+	t_coder			*coder;
+	pthread_mutex_t	*state;
+	int 			on_off;
+	
 } t_scheduler;
 
 /* error */
@@ -189,6 +195,8 @@ int				thread_launcher(t_scheduler *scheduler,
 					t_coder *coders, t_monitoring *monitor, int nb_coder);
 void			*monitor_routine(void *data);
 void 			*scheduler_routine(void *data);
+int				check_state(t_coder *coder);
+
 /* coder */
 void			*coder_routine(void *data);
 void			compile(t_coder *coder);
