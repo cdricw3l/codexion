@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:36:53 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 03:06:39 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 04:15:26 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,13 @@ int	clean_queue(t_queue *queue)
 	return (TRUE);
 }
 
-int	clean(int nb_coder, t_coder *coders, t_global_mutex *global_mu, t_monitoring *monitoring, t_queue *queue)
+int	clean(int nb_coder,
+	t_coder *coders, t_global_mutex *global_mu, t_queue *queue)
 {
 	mutex_destroy(nb_coder, global_mu);
 	if (coders)
 		free(coders);
 	if (queue)
 		clean_queue(queue);
-	if (monitoring)
-	{
-		free(monitoring->last_compilations);
-		free(monitoring);
-	}
 	return (0);
 }

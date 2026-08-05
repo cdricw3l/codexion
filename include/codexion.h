@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 03:51:52 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 04:14:27 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,9 @@ t_coder			*coders_init(int *params,
 t_queue			*queue_init(int type, int ttb);
 
 /* clean */
-int				clean(int nb_coder, t_coder *coders,
-					t_global_mutex *global_mu,
-					t_monitoring *monitoring, t_queue *queue);
+int				clean(int nb_coder,
+					t_coder *coders,
+					t_global_mutex *global_mu, t_queue *queue);
 
 /* time */
 long			second_to_nano(long sec);
