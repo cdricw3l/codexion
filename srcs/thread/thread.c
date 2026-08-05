@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:09:11 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 20:33:30 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:55:44 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	launch_coders(t_coder *coders,
 		coders[i].state = FALSE;
 		if (pthread_create(&thread_coder[i], NULL, coder_routine, &coders[i]))
 			return (error_msg(THREAD_CREATION_ERR, NULL));
+		usleep(10000);
 		i++;
 	}
 	return (TRUE);
@@ -48,19 +49,22 @@ static void	joint_thread(pthread_t *thread_coder,
 {
 	int	i;
 
+	
+	
 	if (pthread_join(thread_monitor, NULL))
 		error_msg(THREAD_JOINT_ERR, NULL);
-
+	printf("Join monitor\n");
 	scheduler->on_off = OFF;
 	if (pthread_join(thread_schedule, NULL))
 		error_msg(THREAD_JOINT_ERR, NULL);
-
+	printf("Join scheduler\n");
+	
 	for (i = 0; i < nb_coder; i++)
 	{
+
 		assert(!pthread_join(thread_coder[i], NULL));
+		printf("Join coder %d\n", i);
 	}
-	printf("coder %d is join\n", i);
-	
 	
 	
 	

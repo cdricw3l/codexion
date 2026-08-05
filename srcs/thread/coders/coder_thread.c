@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 20:33:13 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 20:56:37 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	*coder_routine(void *data)
 	
 	while (is_dead(coder))
 		usleep(10000);
-	while (coder->nb_of_compil < coder->params[number_of_compiles_required] && !is_dead(coder))
+	while (!is_dead(coder))
 	{
 		pthread_mutex_lock(&coder->queue->queue_lock);
 		create_and_send_request(coder);
@@ -89,13 +89,12 @@ void	*coder_routine(void *data)
 		{
 			pthread_cond_wait(coder->can_compile_cond, coder->coder_mutex.can_compile_mu);
 		}
+		*coder->can_compile = FALSE;
 		pthread_mutex_unlock(coder->coder_mutex.can_compile_mu);
+		
 		compile(coder);
 		debbug(coder);
 		refactor(coder);
 	}
-	pthread_mutex_lock(coder->coder_mutex.display_f);
-	printf("End of coder %d\n", coder->id);
-	pthread_mutex_unlock(coder->coder_mutex.display_f);
 	return (NULL);
 }
