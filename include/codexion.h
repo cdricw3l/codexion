@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 04:24:36 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 15:34:56 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_global_mutex
 	pthread_mutex_t	*dongles;
 	pthread_mutex_t	*state;
 
+
 }	t_global_mutex;
 
 typedef struct s_coder_mutex
@@ -118,6 +119,7 @@ typedef struct s_coder_mutex
 	pthread_mutex_t	*display_f;
 	pthread_mutex_t	*state;
 	pthread_mutex_t	*timestamp_f;
+	pthread_mutex_t	*can_compile_mu;
 	t_dongle		dongle_l;
 	t_dongle		dongle_r;
 
@@ -132,8 +134,9 @@ typedef struct s_coder
 	t_timespec		start;
 	clock_t			*last_compilation;
 	t_queue			*queue;
-	pthread_t		thread;
 	t_coder_mutex	coder_mutex;
+	pthread_cond_t *can_compile_cond;
+	int 			*can_compile;
 
 }	t_coder;
 
@@ -148,6 +151,15 @@ typedef struct s_monitoring
 	pthread_mutex_t	*state;
 
 }	t_monitoring;
+
+typedef struct s_scheduler
+{
+
+	pthread_mutex_t	*can_compile_mu;
+	pthread_cond_t	*can_compile_co;
+	int 			*can_compile;
+
+} t_scheduler;
 
 /* error */
 
@@ -172,10 +184,10 @@ void			ft_memcopy(void *src, void *dst, unsigned long size);
 int				max(int a, int b);
 
 /* thread */
-int				thread_launcher(t_coder *coder,
-					t_monitoring *monitor, int nb_coder);
+int				thread_launcher(t_scheduler *scheduler,
+					t_coder *coders, t_monitoring *monitor, int nb_coder);
 void			*monitor_routine(void *data);
-
+void 			*scheduler_routine(void *data);
 /* coder */
 void			*coder_routine(void *data);
 void			compile(t_coder *coder);
@@ -187,8 +199,9 @@ int				mutex_init(int nb_coder, t_global_mutex *global_mu);
 t_monitoring	*monitoring_init(int *params,
 					t_global_mutex *global_mu, t_coder *coder);
 t_coder			*coders_init(int *params,
-					t_global_mutex *global_mu, t_queue *queue);
+					t_global_mutex *global_mu, t_queue *queue, t_scheduler *schedul);
 t_queue			*queue_init(int type, int ttb);
+t_scheduler 	*scheduler_init(int nb_coder);
 
 /* clean */
 int				clean(int nb_coder,

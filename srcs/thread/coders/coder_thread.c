@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 03:33:17 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 15:39:21 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,41 +73,25 @@ void	action(t_coder *coder)
 
 void	*coder_routine(void *data)
 {
-	int			i;
 	t_coder		*coder;
-	//t_request	*request;
-	int start;
-	
-	i = 0;
 	coder = (t_coder *)data;
-	start = FALSE;
-	while (!start)
+	
+	while (1)
 	{
-		pthread_mutex_lock(coder->coder_mutex.state);
-		start = (coder->state == TRUE); 
-		pthread_mutex_unlock(coder->coder_mutex.state);
-		if (start)
-			break ;
+		pthread_mutex_lock(coder->coder_mutex.display_f);
+		printf("im the coder %d\n", coder->id);
+		pthread_mutex_unlock(coder->coder_mutex.display_f);
+		pthread_mutex_lock(coder->coder_mutex.can_compile_mu);
+		while (coder->can_compile == FALSE)
+		{
+			pthread_mutex_lock(coder->coder_mutex.display_f);
+			printf("I can't compile");
+			pthread_mutex_unlock(coder->coder_mutex.display_f);
+			pthread_cond_wait(coder->can_compile_cond, coder->coder_mutex.can_compile_mu);
+		}
+		pthread_mutex_unlock(coder->coder_mutex.can_compile_mu);
+
 	}
 	
-	while (i < coder->params[number_of_compiles_required] && check_state(coder))
-	{
-		pthread_mutex_lock(&coder->queue->queue_lock);
-		create_and_send_request(coder);
-		pthread_cond_broadcast(&coder->queue->cond);
-		while (!can_compile(coder))
-			pthread_cond_wait(&coder->queue->cond, &coder->queue->queue_lock);
-		// if (*coder->queue->request_queue)
-		// {
-		// 	request = coder->queue->request_queue[0];
-		// 	//printf("NExt request %d\n", coder->queue->request_queue[0]->left->coder_id);
-		// 	pop_request(coder->queue);
-		// 	free(request);
-		// }
-		pthread_mutex_unlock(&coder->queue->queue_lock);
-		pthread_cond_broadcast(&coder->queue->cond);
-		action(coder);
-		i++;
-	}
 	return (NULL);
 }

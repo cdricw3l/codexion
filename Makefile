@@ -3,14 +3,18 @@ NAME=codexion
 CFLAGS= -Wall -Wextra -Werror -g -pthread
 #CFLAGS=  -g -pthread
 SHELL=/bin/bash
-SRCS= srcs/codexion.c \
+SRCS= 	srcs/codexion.c \
 		srcs/parsing/parsing.c \
 		srcs/utils/utils.c \
 		srcs/display/display.c \
 		srcs/errors/error.c \
- 		srcs/time/time.c \
- 		srcs/time/time_conversion.c \
-		srcs/init/initialisation.c \
+		srcs/time/time.c \
+		srcs/time/time_conversion.c \
+		srcs/init/coder_init.c \
+		srcs/init/monitoring_init.c \
+		srcs/init/mutex_init.c \
+		srcs/init/queue_init.c \
+		srcs/init/scheduler_init.c \
 		srcs/clean/clean.c \
 		srcs/heap/heap_bfs.c \
 		srcs/heap/heap_pop_request.c \
@@ -21,8 +25,7 @@ SRCS= srcs/codexion.c \
 		srcs/thread/coders/coder_thread.c \
 		srcs/thread/coders/coder_actions.c \
 		srcs/thread/monitoring/monitoring_thread.c \
-
-
+		srcs/thread/scheduler/scheduler.c \
 
 SRCS_OBJS= ${SRCS:.c=.o}
 
