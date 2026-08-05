@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/31 15:08:09 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 18:02:54 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 18:16:41 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ int	check_state(t_coder *coder)
 	int	status;
 
 	status = TRUE;
+	pthread_mutex_lock(coder->coder_mutex.state);
 	if (coder->state == FALSE)
 		status = FALSE;
+	pthread_mutex_unlock(coder->coder_mutex.state);
 	return (status);
 }
 
@@ -75,14 +77,10 @@ void	*coder_routine(void *data)
 	coder = (t_coder *)data;
 	
 	assert(coder->nb_of_compil == 0 && coder->params[number_of_compiles_required] == 2);
-	while (coder->nb_of_compil < coder->params[number_of_compiles_required])
+	while (!check_state(coder))
+		usleep(10000);
+	while (coder->nb_of_compil < coder->params[number_of_compiles_required] && check_state(coder))
 	{
-		pthread_mutex_lock(coder->coder_mutex.state);
-		if(check_state(coder))
-			break;
-		pthread_mutex_unlock(coder->coder_mutex.state);
-
-		
 		pthread_mutex_lock(&coder->queue->queue_lock);
 		create_and_send_request(coder);
 		pthread_mutex_unlock(&coder->queue->queue_lock);

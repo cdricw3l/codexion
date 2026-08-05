@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:53:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 17:24:05 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 18:14:02 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_coder	*coders_init(int *params, t_global_mutex *global_mu, t_queue *queue, t_s
 		assert(schedul->can_compile[i] == FALSE); 
 		coders[i].can_compile_cond = &schedul->can_compile_co[i];
 		coders[i].coder_mutex.can_compile_mu = &schedul->can_compile_mu[i];
+		coders[i].state = FALSE;
 		coders[i].queue = queue;
 		i++;
 	}
