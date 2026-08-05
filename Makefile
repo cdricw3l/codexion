@@ -9,6 +9,7 @@ SRCS= srcs/codexion.c \
 		srcs/display/display.c \
 		srcs/errors/error.c \
  		srcs/time/time.c \
+ 		srcs/time/time_conversion.c \
 		srcs/init/initialisation.c \
 		srcs/clean/clean.c \
 		srcs/heap/heap_bfs.c \
