@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 14:44:35 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:41:11 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 15:43:32 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ t_scheduler *scheduler_init(int nb_coder)
             return (clean_schedul(&schedul, i));
         i++;
 	}
+	schedul->nb_coder = nb_coder;
 	return (schedul);
 }

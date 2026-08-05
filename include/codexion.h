@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:34:56 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 15:43:17 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ typedef struct s_scheduler
 	pthread_mutex_t	*can_compile_mu;
 	pthread_cond_t	*can_compile_co;
 	int 			*can_compile;
+	int 			nb_coder;
 
 } t_scheduler;
 
