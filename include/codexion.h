@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 04:14:27 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 04:24:36 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ enum e_PARSING_ERROR
 	NB_ARG,
 	BAD_ARG,
 	MUTEX_ERR,
+	QUEUE_ERR,
 	THREAD_CREATION_ERR,
-	THREAD_JOINT_ERR
+	THREAD_JOINT_ERR,
 };
 
 typedef enum e_actions
@@ -151,7 +152,7 @@ typedef struct s_monitoring
 /* error */
 
 int				error_msg(int code, char *arg);
-
+void			*queue_err(int code);
 /* parsing */
 
 int				parse_arguments(int argc, char **args, int params[8]);

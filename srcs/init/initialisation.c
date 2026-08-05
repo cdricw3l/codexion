@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 04:11:55 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 04:25:22 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@ t_queue	*queue_init(int type, int ttb)
 
 	request_queue = malloc(sizeof(t_queue));
 	if (!request_queue)
-	{
-		write(STDERR_FILENO, "Error init queue\n", strlen("Error init queue\n"));
-		return (NULL);
-	}
+		return (queue_err(QUEUE_ERR));
 	request_queue->request_queue = malloc(sizeof(t_request *));
 	if (!request_queue)
 	{
-		write(STDERR_FILENO, "Error init queue\n", strlen("Error init queue\n"));
 		free(request_queue);
-		return (FALSE);
+		return (queue_err(QUEUE_ERR));
 	}
 	request_queue->queue_type = type;
 	request_queue->ttb = ttb;
 	request_queue->size = 0;
 	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
-	request_queue->queue_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-	request_queue->cond = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+	if(pthread_mutex_init(&request_queue->queue_lock, NULL) || pthread_cond_init(&request_queue->cond, NULL))
+	{
+		free(request_queue->request_queue);
+		free(request_queue);
+		return (NULL);
+	}
 	return (request_queue);
 }
 
