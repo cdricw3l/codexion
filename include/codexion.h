@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:43:17 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:54:08 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,11 @@ typedef struct s_monitoring
 
 typedef struct s_scheduler
 {
-
+	int 			nb_coder;
+	int 			*can_compile;
+	t_queue			*queue;
 	pthread_mutex_t	*can_compile_mu;
 	pthread_cond_t	*can_compile_co;
-	int 			*can_compile;
-	int 			nb_coder;
 
 } t_scheduler;
 
@@ -202,7 +202,7 @@ t_monitoring	*monitoring_init(int *params,
 t_coder			*coders_init(int *params,
 					t_global_mutex *global_mu, t_queue *queue, t_scheduler *schedul);
 t_queue			*queue_init(int type, int ttb);
-t_scheduler 	*scheduler_init(int nb_coder);
+t_scheduler 	*scheduler_init(int nb_coder, t_queue *queue);
 
 /* clean */
 int				clean(int nb_coder,

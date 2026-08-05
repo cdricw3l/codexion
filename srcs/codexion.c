@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:16 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:25:48 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:10:59 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!mutex_init(params[nbc], &global_mu))
 		return (error_msg(MUTEX_ERR, NULL));
-	schedul = scheduler_init(params[nbc]);
-	assert(schedul);
+	
 	request_queue = queue_init(params[scheduler], params[time_to_burnout]);
 	if (!request_queue)
 		return (clean(params[nbc], NULL, &global_mu, NULL));
+	schedul = scheduler_init(params[nbc], request_queue);
 	coders = coders_init((int *)params, &global_mu, request_queue, schedul);
 	if (!coders)
 		return (clean(params[nbc], NULL, &global_mu, request_queue));

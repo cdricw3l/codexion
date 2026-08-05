@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/05 15:17:45 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 15:47:20 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 17:18:41 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,22 @@ void *scheduler_routine(void *data)
     t_scheduler *scheduler;
 
     scheduler = (t_scheduler *)data;
-    assert(scheduler->nb_coder == 4);
     while (1)
     {
         i = 0;
         while (i < scheduler->nb_coder)
         {
             pthread_mutex_lock(&scheduler->can_compile_mu[i]);
-            sleep(1);    
-            pthread_mutex_unlock(&scheduler->can_compile_mu[i]);
+            pthread_mutex_lock(&scheduler->queue->queue_lock);
+            if(*scheduler->queue->request_queue && scheduler->queue->request_queue[0]->coder_id)
+            {
+                scheduler->can_compile[i] = TRUE;
+                pop_request(scheduler->queue);
+            }
+            pthread_mutex_unlock(&scheduler->queue->queue_lock);
             pthread_cond_signal(&scheduler->can_compile_co[i]);
+            pthread_mutex_unlock(&scheduler->can_compile_mu[i]);
+            usleep(5000);
             i++;
         }
     }
