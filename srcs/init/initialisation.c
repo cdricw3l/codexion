@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 09:31:30 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 04:25:22 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 14:27:56 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_queue	*queue_init(int type, int ttb)
 	request_queue->size = 0;
 	request_queue->request_counter = 0;
 	*(request_queue->request_queue) = NULL;
-	if(pthread_mutex_init(&request_queue->queue_lock, NULL) || pthread_cond_init(&request_queue->cond, NULL))
+	if (pthread_mutex_init(&request_queue->queue_lock, NULL)
+		|| pthread_cond_init(&request_queue->cond, NULL))
 	{
 		free(request_queue->request_queue);
 		free(request_queue);

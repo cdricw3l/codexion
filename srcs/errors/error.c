@@ -6,7 +6,7 @@
 /*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:19:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/05 04:25:38 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/05 14:28:11 by cebouhad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	error_msg(int code, char *arg)
 	return (FALSE);
 }
 
-void *queue_err(int code)
+void	*queue_err(int code)
 {
 	if (code == QUEUE_ERR)
 		write(STDERR_FILENO, "Error init queue\n", strlen("Error init queue\n"));
