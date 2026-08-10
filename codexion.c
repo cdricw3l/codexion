@@ -6,12 +6,13 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:27:10 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 15:24:38 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 18:46:23 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
+#define CHECK_SIMULATION TRUE
 #define DISPLAY_PARAM FALSE
 #define DISPLAY_DONGLES FALSE
 
@@ -69,7 +70,8 @@ int main(int argc, char **argv)
         clean_dongles(dongles, params[number_of_coders]);
         return(1);
     }
-    printf(HGRN"INITIALISATION [OK]"CRESET"\n");
+    if (CHECK_SIMULATION)
+        check_simulation_data(&sim);
     clean_sim(&sim);
     clean_dongles(dongles, params[number_of_coders]);
     return (0);

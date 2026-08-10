@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 17:57:29 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 18:46:15 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,5 +158,6 @@ t_dongle    *dongles_initialisation(int nb_coder);
 /* display */
 void display_dongles_data(t_dongle *dongles, int nb_dongle);
 void display_params(int params[8], int nb);
+void check_simulation_data(t_sim *simulation);
 
 #endif
