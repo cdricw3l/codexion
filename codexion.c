@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:27:10 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 18:46:23 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 20:07:41 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ int clean_sim(t_sim *sim)
 int main(int argc, char **argv)
 {
     t_dongle    *dongles;
+    t_data      data[CODER_MAX];
     t_sim       sim;
-    int         params[8];
+    int         params[PARAMS_SIZE];
     
     if(!parse_arguments(&argv[1], params))
         return (write(STDERR_FILENO, "Error parsinfg arguments\n", strlen("Error parsinfg arguments\n")));
@@ -72,7 +73,12 @@ int main(int argc, char **argv)
     }
     if (CHECK_SIMULATION)
         check_simulation_data(&sim);
+
+    launch_thread(data, &sim);
+
+    
     clean_sim(&sim);
     clean_dongles(dongles, params[number_of_coders]);
+    
     return (0);
 }

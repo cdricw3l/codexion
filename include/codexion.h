@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 18:46:15 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 20:07:03 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@
 #define TIMESTAMP_COMPILATION 1
 #define OFF 0
 #define ON 1
+#define CODER_MAX 1
+#define PARAMS_SIZE 1
+
 
 
 enum e_PARAMS
@@ -125,6 +128,13 @@ typedef struct  s_sim
     
 } t_sim;
 
+typedef struct s_data
+{
+    int     id;
+    t_sim   *sim;
+
+} t_data;
+
 /* error */
 int     msg_error(int code);
 void ft_putnbr_error(int fd, int nb, int base);
@@ -160,4 +170,8 @@ void display_dongles_data(t_dongle *dongles, int nb_dongle);
 void display_params(int params[8], int nb);
 void check_simulation_data(t_sim *simulation);
 
+
+/* thread */
+
+int launch_thread(t_data *data, t_sim *sim);
 #endif

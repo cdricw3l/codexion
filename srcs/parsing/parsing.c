@@ -6,12 +6,11 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:51:42 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 10:10:08 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 19:55:30 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
-
 
 static int check_args(char *arg, int idx)
 {

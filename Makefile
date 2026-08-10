@@ -12,7 +12,8 @@ SRCS= 	codexion.c \
 		srcs/init/init.c \
 		srcs/utils/utils_1.c \
 		srcs/utils/utils_clean_pthread.c \
-		srcs/utils/utils_init_pthread.c
+		srcs/utils/utils_init_pthread.c \
+		srcs/thread/thread_launcher.c
 	
 OS_NAME = $(shell uname)
 
