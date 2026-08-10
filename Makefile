@@ -9,7 +9,10 @@ SRCS= 	codexion.c \
 		srcs/dongles.c \
 		srcs/parsing/parsing.c \
 		srcs/errors/error.c \
-		srcs/utils/utils.c 
+		srcs/init/init.c \
+		srcs/utils/utils_1.c \
+		srcs/utils/utils_clean_pthread.c \
+		srcs/utils/utils_init_pthread.c
 	
 OS_NAME = $(shell uname)
 
@@ -42,7 +45,9 @@ SRCS_DRAFT = draft.c \
 			srcs/dongles.c \
 			srcs/parsing/parsing.c \
 			srcs/errors/error.c \
-			srcs/utils/utils.c 
+			srcs/utils/utils_1.c \
+			srcs/utils/utils_clean_pthread.c \
+			srcs/utils/utils_init_pthread.c
 
 OBJS_DRAFT = ${SRCS_DRAFT:.c=.o}
 

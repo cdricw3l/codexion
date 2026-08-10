@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 12:49:40 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 16:14:27 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,23 +111,35 @@ typedef struct  s_sim
     clock_t         *timestamp;
     pthread_mutex_t *timestamp_mu;
     pthread_mutex_t display_mu;
-    pthread_mutex_t  *coder_mu;
+    pthread_mutex_t *coder_mu;
     pthread_cond_t  *coder_cond;
     
 } t_sim;
 
 /* error */
-int msg_error(int code);
-
+int     msg_error(int code);
+void ft_putnbr_error(int fd, int nb, int base);
 /* parsing */
 
 int parse_arguments(char **args, int params[8]);
 int parsing_error_msg(int code, char *arg);
 
-/* utils */
+/* init */
+
+int	init_sim(int *params, t_dongle *dongles, t_sim *sim);
+
+/* utils 1 */
 int ft_is_digit(char c);
 size_t get_str_arr_len(char **str_arr);
 
+/* utils 2 */
+
+pthread_t       *init_threads(int nb);
+clock_t         *init_clock(int nb);
+pthread_mutex_t *init_mutex(int nb);
+pthread_cond_t  *init_cond(int nb);
+int             clean_dynamique_cond(pthread_cond_t *cond, int nb);
+int             clean_dynamique_mutex(pthread_mutex_t *mutex, int nb);
 /* dongle managment */
 
 void        *clean_dongles(t_dongle *dongles, int idx);

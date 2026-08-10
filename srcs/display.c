@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:45:50 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 11:27:37 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 15:18:58 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void display_dongles_data(t_dongle *dongles, int nb_dongle)
     while (i < nb_dongle)
     {
         printf("Dongle id: %d\n", dongles[i].dongle_id);
-        printf("Dongle : %p\n\n", &dongles[i].dongle);
         printf("Dongle Last use: %lu\n", dongles[i].last_use);
-        printf("Dongle adresse: %p\n", &dongles[i].dongle);
         printf("Queue size: %d\n", dongles[i].queue_size);
         printf("Queue adresse: %p\n",dongles[i].queue);
         printf("Queue value: %p\n", *(dongles[i].queue));
