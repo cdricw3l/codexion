@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cebouhad <cebouhad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:19:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/07/31 13:06:15 by cebouhad         ###   ########.fr       */
+/*   Updated: 2026/08/10 12:49:52 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,28 @@ int parsing_error_msg(int code, char *arg)
     return (FALSE);
 }
 
+
+static char *get_error_msg(int code)
+{
+    if (code == CODER)
+        return ("Error initialisation thread coders\n");
+    if (code == TIMESTAMPS)
+        return ("Error initialisation timestamps\n");
+    if (code == TIMESTAMPS_MUTEX)
+        return ("Error initialisation timestamps mutext\n");
+    if (code == CODER_MUTEX)
+        return ("Error initialisation coder mutext\n");
+    if (code == CODER_COND)
+        return ("Error initialisation coder cond\n");
+    return ("");
+}
+
+int msg_error(int code)
+{
+    char *e_msg;
+
+    e_msg = get_error_msg(code);
+    write(STDERR_FILENO, e_msg, strlen(e_msg));
+        
+    return (1);
+}

@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:44:46 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 10:02:22 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 11:25:51 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ t_dongle	*dongles_initialisation(int nb_coder)
 	i = 0;
 	while (i < nb_coder)
 	{
-		if (pthread_mutex_init(&dongles[i].dongle, NULL))
+		if (pthread_mutex_init(&dongles[i].dongle, NULL)
+			|| pthread_mutex_init(&dongles[i].mu_dongle, NULL))
 			return (clean_dongles(dongles, i));
+		dongles[i].dongle_id= i;
 		dongles[i].last_use = 0;
 		dongles[i].queue = malloc(sizeof(t_queue_dongle *));
 		if (!dongles[i].queue)
@@ -61,6 +63,7 @@ t_dongle	*dongles_initialisation(int nb_coder)
 			write(STDERR_FILENO, "Error initialisation queue\n",
 				strlen("Error initialisation queue\n"));
 			pthread_mutex_destroy(&dongles[i].dongle);
+			pthread_mutex_destroy(&dongles[i].mu_dongle);
 			return (clean_dongles(dongles, i));
 		}
 		*(dongles[i].queue) = NULL;

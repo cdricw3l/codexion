@@ -37,6 +37,19 @@ ifeq ($(OS_NAME), Darwin)
 	leaks -atExit -- ./$(NAME) $(ARG)
 endif
 
+SRCS_DRAFT = draft.c \
+			srcs/display.c \
+			srcs/dongles.c \
+			srcs/parsing/parsing.c \
+			srcs/errors/error.c \
+			srcs/utils/utils.c 
+
+OBJS_DRAFT = ${SRCS_DRAFT:.c=.o}
+
+draft: $(OBJS_DRAFT)
+	$(CC) $(CFLAGS) srcs/*/*.c draft.c -o draft
+	./draft
+
 valrun: $(NAME)
 	@valgrind \
 	--log-file="valgrind.log" \
@@ -49,7 +62,7 @@ helrun: $(NAME)
 	valgrind --log-file="helgrind.log" --tool=helgrind ./$(NAME)  $(ARG)
 
 clean:
-	rm -f $(SRCS_OBJS)
+	rm -f $(SRCS_OBJS) $(OBJS_DRAFT)
 
 fclean: clean
 #@make  -s -C  assert fclean

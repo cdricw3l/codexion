@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 10:12:48 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 12:49:40 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <malloc/malloc.h>
 #include "color-codes.h"
 
 #define FALSE 0
@@ -66,28 +67,57 @@ typedef enum e_actions
 
 } t_actions;
 
+enum e_error_init
+{
+    CODER,
+    TIMESTAMPS,
+    TIMESTAMPS_MUTEX,
+    CODER_MUTEX,
+    CODER_COND
+};
+
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 
 typedef         struct timespec         timespec_t;
 
 
-typedef struct s_queue_dongle
+typedef struct s_requests
 {
     int id;
     struct s_queue_dongle *left;
     struct s_queue_dongle *right;
     
-} t_queue_dongle;
+} t_requests;
 
 
 typedef struct s_dongle
 {
-    clock_t         last_use;
-    pthread_mutex_t dongle;
+    int             dongle_id;
     int             queue_size;
-    t_queue_dongle  **queue;
+    clock_t         last_use;
+    t_requests      **queue;
+    pthread_mutex_t mu_dongle;
+    pthread_mutex_t mu_queue;
 
 } t_dongle;
+
+typedef struct  s_sim
+{
+    int             *params;
+    pthread_t       *coders;
+    pthread_t       monitor;
+    pthread_t       scheduler;
+    t_dongle        *dongles;
+    clock_t         *timestamp;
+    pthread_mutex_t *timestamp_mu;
+    pthread_mutex_t display_mu;
+    pthread_mutex_t  *coder_mu;
+    pthread_cond_t  *coder_cond;
+    
+} t_sim;
+
+/* error */
+int msg_error(int code);
 
 /* parsing */
 
