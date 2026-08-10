@@ -4,25 +4,11 @@ CFLAGS= -Wall -Wextra -Werror -g -pthread
 #CFLAGS= -Wextra -Werror -Wall  -g -pthread
 #CFLAGS=  -g -pthread
 SHELL=/bin/bash
-SRCS= srcs/codexion.c \
-		srcs/parsing/parsing.c \
-		srcs/utils/utils.c \
-		srcs/display/display.c \
-		srcs/errors/error.c \
- 		srcs/time/time.c \
-		srcs/init/initialisation.c \
-		srcs/clean/clean.c \
-		srcs/heap/heap_bfs.c \
-		srcs/heap/heap_pop_request.c \
-		srcs/heap/request.c \
-		srcs/heap/heap_push_request.c \
-		srcs/heap/heap_utils.c \
-		srcs/thread/thread.c \
-		srcs/thread/monitoring/monitoring_thread.c \
-		srcs/thread/coders/coder_actions.c \
-		srcs/thread/coders/coder_thread.c \
-
-
+SRCS= 	codexion.c \
+		srcs/display.c \
+		srcs/dongles.c \
+		srcs/parsing/parsing.c
+OS_NAME = $(shell uname)
 
 SRCS_OBJS= ${SRCS:.c=.o}
 
@@ -36,14 +22,23 @@ $(NAME): $(SRCS_OBJS)
 
 ARG=20 500 200 100 100 10 10 fifo
 
+t: $(NAME)
+ifeq ($(shell uname), "Darwin")
+	echo $("OS_NAME")
+#leaks -atExit -- ./$(NAME) $(ARG)
+endif
+
 run: $(NAME)
-	./$(NAME) $(ARG)
+
+ifeq ($(OS_NAME), Darwin)
+	leaks -atExit -- ./$(NAME) $(ARG)
+endif
 
 valrun: $(NAME)
 	@valgrind \
 	--log-file="valgrind.log" \
 	--leak-check=full \
-	--track-origins=yes \
+	--track-origins=                            yes \
 	--show-leak-kinds=all \
 	./$(NAME) $(ARG)
 
@@ -54,7 +49,7 @@ clean:
 	rm -f $(SRCS_OBJS)
 
 fclean: clean
-	@make  -s -C  assert fclean
+#@make  -s -C  assert fclean
 	rm -f $(NAME) *.log
 
 re: fclean $(NAME)
