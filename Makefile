@@ -7,7 +7,10 @@ SHELL=/bin/bash
 SRCS= 	codexion.c \
 		srcs/display.c \
 		srcs/dongles.c \
-		srcs/parsing/parsing.c
+		srcs/parsing/parsing.c \
+		srcs/errors/error.c \
+		srcs/utils/utils.c 
+	
 OS_NAME = $(shell uname)
 
 SRCS_OBJS= ${SRCS:.c=.o}

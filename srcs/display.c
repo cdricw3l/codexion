@@ -6,15 +6,15 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:45:50 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 10:04:49 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 10:13:42 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-void display_params(int params[8])
+void display_params(int params[8], int nb)
 {
-    printf(BHGRN"Program settings:\n");
+    printf(BHGRN"Program settings: %d\n", nb);
     printf(HBLU"[Number of philosopher]:"HYEL" %d\n", params[number_of_coders]);
     printf(HBLU"[Time to burnout]:"HYEL" %d ms\n", params[time_to_burnout]);
     printf(HBLU"[Time to compile]:"HYEL" %d ms\n", params[time_to_compile]);
@@ -27,6 +27,7 @@ void display_params(int params[8])
         printf("fifo"CRESET"\n");
     else if (params[scheduler] == EDF)
         printf("edf"CRESET"\n");
+    printf("\n");
 }
 
 void display_dongles_data(t_dongle *dongles, int nb_dongle)

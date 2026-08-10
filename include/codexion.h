@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 10:05:11 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 10:12:48 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,14 @@ typedef struct s_dongle
 
 } t_dongle;
 
+/* parsing */
+
+int parse_arguments(char **args, int params[8]);
+int parsing_error_msg(int code, char *arg);
+
+/* utils */
+int ft_is_digit(char c);
+size_t get_str_arr_len(char **str_arr);
 
 /* dongle managment */
 
@@ -97,6 +105,6 @@ t_dongle    *dongles_initialisation(int nb_coder);
 
 /* display */
 void display_dongles_data(t_dongle *dongles, int nb_dongle);
-void display_params(int params[8]);
+void display_params(int params[8], int nb);
 
 #endif
