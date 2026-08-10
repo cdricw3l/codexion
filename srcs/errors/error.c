@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:19:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 16:17:29 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 17:57:42 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ int	parsing_error_msg(int code, char *arg)
 
 static char	*get_error_msg(int code)
 {
+	if (code == STATE)
+		return ("Error initialisation state coders\n");
+	if (code == STATE_MUTEX)
+		return ("Error initialisation state mutex coders\n");
 	if (code == CODER)
 		return ("Error initialisation thread coders\n");
 	if (code == TIMESTAMPS)

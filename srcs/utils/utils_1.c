@@ -6,11 +6,22 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:53:00 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 15:28:12 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 17:54:36 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
+
+int *init_int_arr(int nb)
+{
+	int *arr;
+
+	arr = malloc(sizeof(int) * nb);
+	if(!arr)
+		return (NULL);
+	memset(arr, 0, sizeof(int) * nb);
+	return (arr);
+}
 
 int	max(int a, int b)
 {

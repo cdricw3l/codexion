@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 16:14:27 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/10 17:57:29 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@
 #define RIGHT 1
 #define TIMESTAMP_DONGLE 0
 #define TIMESTAMP_COMPILATION 1
+#define OFF 0
+#define ON 1
+
 
 enum e_PARAMS
 {
@@ -70,6 +73,8 @@ typedef enum e_actions
 enum e_error_init
 {
     CODER,
+    STATE,
+    STATE_MUTEX,
     TIMESTAMPS,
     TIMESTAMPS_MUTEX,
     CODER_MUTEX,
@@ -104,14 +109,18 @@ typedef struct s_dongle
 typedef struct  s_sim
 {
     int             *params;
+    int             simulation_state; //-->
+    int             *coder_state; //-->
     pthread_t       *coders;
     pthread_t       monitor;
     pthread_t       scheduler;
     t_dongle        *dongles;
     clock_t         *timestamp;
-    pthread_mutex_t *timestamp_mu;
     pthread_mutex_t display_mu;
+    pthread_mutex_t simulation_mu;
+    pthread_mutex_t *timestamp_mu;
     pthread_mutex_t *coder_mu;
+    pthread_mutex_t *coder_state_mu;  //-->
     pthread_cond_t  *coder_cond;
     
 } t_sim;
@@ -129,8 +138,9 @@ int parsing_error_msg(int code, char *arg);
 int	init_sim(int *params, t_dongle *dongles, t_sim *sim);
 
 /* utils 1 */
-int ft_is_digit(char c);
-size_t get_str_arr_len(char **str_arr);
+int     *init_int_arr(int nb);
+int     ft_is_digit(char c);
+size_t  get_str_arr_len(char **str_arr);
 
 /* utils 2 */
 
