@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/11 11:33:42 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/11 12:28:39 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 15:41:42 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void *scheduler_routine(void *data)
     t_sim *sim;
 
     sim = (t_sim *)data;
-    while (check_simulation_state(sim))
+    while (check_simulation_state(sim, ON))
     {
         pthread_mutex_lock(&sim->display_mu);
 

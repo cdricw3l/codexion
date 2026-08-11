@@ -6,23 +6,32 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/11 11:41:52 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/11 12:23:36 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 15:54:51 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-int check_simulation_state(t_sim *sim)
+void change_simulation_state(t_sim *sim, int state)
 {
-    int is_runing;
-
-    is_runing = TRUE;
     pthread_mutex_lock(&sim->simulation_mu);
-    if (sim->simulation_state == OFF)
-        is_runing = FALSE;
+    sim->simulation_state = state;
     pthread_mutex_unlock(&sim->simulation_mu);
-    return (is_runing);
 }
+
+int check_simulation_state(t_sim *sim, int state)
+{
+    int is_state;
+
+    is_state = TRUE;
+    pthread_mutex_lock(&sim->simulation_mu);
+    if (sim->simulation_state != state)
+        is_state = FALSE;
+    pthread_mutex_unlock(&sim->simulation_mu);
+    return (is_state);
+}
+
+
 
 int get_param(t_sim *sim, int param)
 {

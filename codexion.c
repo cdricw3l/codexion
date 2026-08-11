@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:27:10 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 20:07:41 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 16:10:49 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int main(int argc, char **argv)
         check_simulation_data(&sim);
 
     launch_thread(data, &sim);
-
-    
     clean_sim(&sim);
     clean_dongles(dongles, params[number_of_coders]);
     

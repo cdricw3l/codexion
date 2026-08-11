@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:45:50 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 18:57:36 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 13:12:45 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void check_simulation_data(t_sim *simulation)
     {
         assert(&simulation->coders[i]);
         printf("Coder thread %d :"GRN"[OK]"CRESET"\n", i);
-        
         assert(&simulation->coder_state[i] && simulation->coder_state[i] == OFF);
         printf("Coder state %d :"GRN"[OK]"CRESET"\n", i);
         assert(&simulation->coder_state_mu[i]);

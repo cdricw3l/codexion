@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/11 12:23:48 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 15:42:14 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ pthread_mutex_t *init_mutex(int nb);
 pthread_cond_t  *init_cond(int nb);
 int             clean_dynamique_cond(pthread_cond_t *cond, int nb);
 int             clean_dynamique_mutex(pthread_mutex_t *mutex, int nb);
+
 /* dongle managment */
 
 void        *clean_dongles(t_dongle *dongles, int idx);
@@ -178,6 +179,12 @@ void check_simulation_data(t_sim *simulation);
 int launch_thread(t_data *data, t_sim *sim);
 void *scheduler_routine(void *data);
 void *monitor_routine(void *data);
-int check_simulation_state(t_sim *sim);
-int get_param(t_sim *sim, int param);
+
+/* thread utils*/
+
+int     check_simulation_state(t_sim *sim, int state);
+void    change_simulation_state(t_sim *sim, int state);
+int     get_param(t_sim *sim, int param);
+
+
 #endif
