@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 20:07:03 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/11 12:23:48 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 #define OFF 0
 #define ON 1
 #define CODER_MAX 1
-#define PARAMS_SIZE 1
+#define PARAMS_SIZE 8
 
 
 
@@ -119,8 +119,10 @@ typedef struct  s_sim
     pthread_t       scheduler;
     t_dongle        *dongles;
     clock_t         *timestamp;
+    clock_t         start;
     pthread_mutex_t display_mu;
     pthread_mutex_t simulation_mu;
+    pthread_mutex_t param_mu;
     pthread_mutex_t *timestamp_mu;
     pthread_mutex_t *coder_mu;
     pthread_mutex_t *coder_state_mu;  //-->
@@ -174,4 +176,8 @@ void check_simulation_data(t_sim *simulation);
 /* thread */
 
 int launch_thread(t_data *data, t_sim *sim);
+void *scheduler_routine(void *data);
+void *monitor_routine(void *data);
+int check_simulation_state(t_sim *sim);
+int get_param(t_sim *sim, int param);
 #endif

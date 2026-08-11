@@ -13,7 +13,10 @@ SRCS= 	codexion.c \
 		srcs/utils/utils_1.c \
 		srcs/utils/utils_clean_pthread.c \
 		srcs/utils/utils_init_pthread.c \
-		srcs/thread/thread_launcher.c
+		srcs/thread/thread_launcher.c \
+		srcs/thread/thread_scheduler_routine.c \
+		srcs/thread/thread_monitor_routine.c \
+		srcs/thread/thread_utils.c
 	
 OS_NAME = $(shell uname)
 
