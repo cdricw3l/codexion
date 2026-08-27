@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 15:24:13 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 16:10:25 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/28 00:56:16 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ pthread_t	*init_threads(int nb)
 	return (thrd_coder);
 }
 
-clock_t	*init_clock(int nb)
-{
-	clock_t	*timestamps;
-
-	timestamps = malloc(sizeof(clock_t) * nb);
-	if (!timestamps)
-		return (NULL);
-	memset(timestamps, 0, sizeof(clock_t) * nb);
-	return (timestamps);
-}
 
 pthread_mutex_t	*init_mutex(int nb)
 {

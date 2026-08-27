@@ -6,40 +6,42 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/11 11:41:52 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/11 15:54:51 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/28 01:06:19 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
 
-void change_simulation_state(t_sim *sim, int state)
+void set_simulation_state(t_simulation *sim, int state)
 {
-    pthread_mutex_lock(&sim->simulation_mu);
-    sim->simulation_state = state;
-    pthread_mutex_unlock(&sim->simulation_mu);
+    if(state == TRUE || state == FALSE)
+    {
+        pthread_mutex_lock(&sim->sim_state_mutex);
+        sim->simulation_state = state;
+        pthread_mutex_unlock(&sim->sim_state_mutex);
+    }
 }
 
-int check_simulation_state(t_sim *sim, int state)
+int check_simulation_state(t_simulation *sim, int state)
 {
     int is_state;
 
     is_state = TRUE;
-    pthread_mutex_lock(&sim->simulation_mu);
-    if (sim->simulation_state != state)
-        is_state = FALSE;
-    pthread_mutex_unlock(&sim->simulation_mu);
+    if(state == TRUE || state == FALSE)
+    {
+        pthread_mutex_lock(&sim->sim_state_mutex);
+        if (sim->simulation_state != state)
+            is_state = FALSE;
+        pthread_mutex_unlock(&sim->sim_state_mutex);
+    }
     return (is_state);
 }
 
 
 
-int get_param(t_sim *sim, int param)
+void safe_printf(t_simulation *sim, char *msg)
 {
-    int value;
-    if (param < 0 || param > PARAMS_SIZE)
-        return (-1);
-    pthread_mutex_lock(&sim->param_mu);
-    value = sim->params[param];
-    pthread_mutex_unlock(&sim->param_mu);
-    return (value);
+    pthread_mutex_lock(&sim->display_mutex);
+    printf("%s\n", msg);
+    pthread_mutex_unlock(&sim->display_mutex);
 }

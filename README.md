@@ -1,5 +1,24 @@
 *This project has been created as part of the 42 curriculum by cebouhad*
 
+
+# Quel sont les ressource partagé.
+
+
+## thread de monitoring:
+
+* simulation state
+* timestamps -> t_
+* display
+
+# thread coder
+
+* display 
+* simulation state
+
+
+
+
+
 # 🧑‍🏭 codexion
 
 ## Description

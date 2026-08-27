@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/11 15:42:14 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/28 01:04:09 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 #define TIMESTAMP_COMPILATION 1
 #define OFF 0
 #define ON 1
-#define CODER_MAX 1
+#define CODER_MAX 200
 #define PARAMS_SIZE 8
 
 
@@ -81,13 +81,14 @@ enum e_error_init
     TIMESTAMPS,
     TIMESTAMPS_MUTEX,
     CODER_MUTEX,
-    CODER_COND
+    CODER_COND,
+    COUNTER,
+    COUNTER_MU
 };
 
 /* philo max is defined by: cat /proc/sys/kernel/threads-max */
 
 typedef         struct timespec         timespec_t;
-
 
 typedef struct s_requests
 {
@@ -109,37 +110,38 @@ typedef struct s_dongle
 
 } t_dongle;
 
-typedef struct  s_sim
+typedef struct s_simulation
 {
-    int             *params;
-    int             simulation_state; //-->
-    int             *coder_state; //-->
-    pthread_t       *coders;
-    pthread_t       monitor;
-    pthread_t       scheduler;
+    int             params[8];
+    int             simulation_state;
+    pthread_mutex_t sim_state_mutex;
     t_dongle        *dongles;
     clock_t         *timestamp;
-    clock_t         start;
-    pthread_mutex_t display_mu;
-    pthread_mutex_t simulation_mu;
-    pthread_mutex_t param_mu;
-    pthread_mutex_t *timestamp_mu;
-    pthread_mutex_t *coder_mu;
-    pthread_mutex_t *coder_state_mu;  //-->
-    pthread_cond_t  *coder_cond;
+    pthread_mutex_t *timestamp_mutext;
+    pthread_mutex_t display_mutex;
     
-} t_sim;
+} t_simulation;
 
-typedef struct s_data
+
+typedef struct s_coder
 {
-    int     id;
-    t_sim   *sim;
+    int             params[8];
+    clock_t         start;
+    int             compilation_counter;
+    pthread_mutex_t *compilation_counter_mutex;
+    t_simulation   *simulation_data;
+    t_dongle        *dongles_left;
+    t_dongle        *dongles_right;
+    clock_t         *timestamp;
+    pthread_mutex_t *timestamp_mutex;
+    pthread_mutex_t *display_mu;
+    
+} t_coder;
 
-} t_data;
 
 /* error */
 int     msg_error(int code);
-void ft_putnbr_error(int fd, int nb, int base);
+void    ft_putnbr_error(int fd, int nb, int base);
 /* parsing */
 
 int parse_arguments(char **args, int params[8]);
@@ -147,12 +149,12 @@ int parsing_error_msg(int code, char *arg);
 
 /* init */
 
-int	init_sim(int *params, t_dongle *dongles, t_sim *sim);
 
 /* utils 1 */
-int     *init_int_arr(int nb);
+void    *init_dyn_arr(int nb, int size);
 int     ft_is_digit(char c);
 size_t  get_str_arr_len(char **str_arr);
+void	ft_memcopy(void *src, void *dst, unsigned long size);
 
 /* utils 2 */
 
@@ -171,20 +173,22 @@ t_dongle    *dongles_initialisation(int nb_coder);
 /* display */
 void display_dongles_data(t_dongle *dongles, int nb_dongle);
 void display_params(int params[8], int nb);
-void check_simulation_data(t_sim *simulation);
 
 
 /* thread */
 
-int launch_thread(t_data *data, t_sim *sim);
-void *scheduler_routine(void *data);
-void *monitor_routine(void *data);
 
-/* thread utils*/
 
-int     check_simulation_state(t_sim *sim, int state);
-void    change_simulation_state(t_sim *sim, int state);
-int     get_param(t_sim *sim, int param);
+/* simulation utils*/
 
+int     check_simulation_state(t_simulation *sim, int state);
+void    set_simulation_state(t_simulation *sim, int state);
+int     get_param(t_simulation *sim, int param);
+void    safe_printf(t_simulation *sim, char *msg);
+
+/* time */
+
+clock_t time_calculation(struct timespec time);
+long    nano_to_ms(long nano);
 
 #endif

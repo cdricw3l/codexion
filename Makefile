@@ -16,7 +16,9 @@ SRCS= 	codexion.c \
 		srcs/thread/thread_launcher.c \
 		srcs/thread/thread_scheduler_routine.c \
 		srcs/thread/thread_monitor_routine.c \
-		srcs/thread/thread_utils.c
+		srcs/thread/thread_coders_routine.c \
+		srcs/thread/thread_utils.c \
+		srcs/time/time.c
 	
 OS_NAME = $(shell uname)
 
@@ -32,13 +34,13 @@ $(NAME): $(SRCS_OBJS)
 
 ARG=20 500 200 100 100 10 10 fifo
 
-t: $(NAME)
-ifeq ($(shell uname), "Darwin")
-	echo $("OS_NAME")
-#leaks -atExit -- ./$(NAME) $(ARG)
+run: $(NAME)
+
+ifeq ($(OS_NAME), Darwin)
+	./$(NAME) $(ARG)
 endif
 
-run: $(NAME)
+vrun: $(NAME)
 
 ifeq ($(OS_NAME), Darwin)
 	leaks -atExit -- ./$(NAME) $(ARG)

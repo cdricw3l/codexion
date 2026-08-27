@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 08:19:39 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/10 17:57:42 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/13 12:28:37 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ static char	*get_error_msg(int code)
 		return ("Error initialisation coder mutext\n");
 	if (code == CODER_COND)
 		return ("Error initialisation coder cond\n");
+	if (code == COUNTER)
+		return ("Error initialisation coder counter\n");
+	if (code == COUNTER_MU)
+		return ("Error initialisation coder counter mutex\n");
 	return ("");
 }
 
