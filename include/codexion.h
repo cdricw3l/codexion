@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 12:02:41 by cebouhad          #+#    #+#             */
-/*   Updated: 2026/08/28 01:04:09 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/28 01:09:18 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ int parsing_error_msg(int code, char *arg);
 
 /* init */
 
+int clean_simulation(t_simulation *sim, int code);
+int init_simulation(int params[8], t_simulation *sim);
 
 /* utils 1 */
 void    *init_dyn_arr(int nb, int size);

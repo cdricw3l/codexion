@@ -6,7 +6,7 @@
 /*   By: cdric.b <cdric.b@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 08:44:46 by cdric.b           #+#    #+#             */
-/*   Updated: 2026/08/10 15:21:34 by cdric.b          ###   ########.fr       */
+/*   Updated: 2026/08/28 01:28:01 by cdric.b          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 int	clean_queue(t_requests **queue)
 {
-	t_requests	**tmp;
+	int i;
 
-	tmp = queue;
-	while (*(tmp))
-	{
-		free(*(tmp));
-		tmp++;
-	}
+	i = 0;
+	while (queue[i])
+		free(queue[i++]);
 	free(queue);
 	return (TRUE);
 }
@@ -33,9 +30,9 @@ void	*clean_dongles(t_dongle *dongles, int idx)
 	i = 0;
 	while (i < idx)
 	{
-		clean_queue(dongles->queue);
-		pthread_mutex_destroy(&dongles->mu_dongle);
-		pthread_mutex_destroy(&dongles->mu_queue);
+		clean_queue(dongles[i].queue);
+		pthread_mutex_destroy(&dongles[i].mu_dongle);
+		pthread_mutex_destroy(&dongles[i].mu_queue);
 		i++;
 	}
 	free(dongles);
